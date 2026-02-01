@@ -37,6 +37,18 @@ app.use(express.urlencoded({ extended: true }));
 // ROUTES
 // ===============================
 const authRoutes = require("./routes/authRoutes");
+const protectedRoutes = require("./routes/protectedRoutes");
+const healthRoutes = require("./routes/healthRoutes");
+const medicineRoutes = require("./routes/medicineRoutes");
+
+// Medicine routes
+app.use("/api/medicines", medicineRoutes);
+
+// Health routes
+app.use("/api/health", healthRoutes);
+
+// Protected routes
+app.use("/api/protected", protectedRoutes);
 
 // Auth routes
 app.use("/api/auth", authRoutes);
