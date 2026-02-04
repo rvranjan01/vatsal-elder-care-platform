@@ -40,6 +40,18 @@ const authRoutes = require("./routes/authRoutes");
 const protectedRoutes = require("./routes/protectedRoutes");
 const healthRoutes = require("./routes/healthRoutes");
 const medicineRoutes = require("./routes/medicineRoutes");
+const gameRoutes = require("./routes/gameRoutes");
+const chatbotRoutes = require("./routes/chatbotRoutes");
+const yogaRoutes = require("./routes/yogaRoutes");
+
+// Yoga routes
+app.use("/api/yoga", yogaRoutes);
+
+// Chatbot routes
+app.use("/api/chatbot", chatbotRoutes);
+
+// Game routes
+app.use("/api/games", gameRoutes);
 
 // Medicine routes
 app.use("/api/medicines", medicineRoutes);
