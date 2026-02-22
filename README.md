@@ -48,56 +48,6 @@ This system allows elders to track their health data, play cognitive games, use 
 ---
 
 ## 📂 Project Structure
-# 🧓 Vatsal – Elder Care Management System
-
-Vatsal is a full-stack web application designed to help elderly users manage their health, activities, and family monitoring in a secure and user-friendly environment.
-
-This system allows elders to track their health data, play cognitive games, use yoga resources, and allows family members to monitor their linked elder’s data securely.
-
----
-
-## 🚀 Features Implemented (Current Stage)
-
-### 👴 Elder
-- Register with unique username
-- Login with JWT authentication
-- Secure dashboard access
-- Username-based identity for family mapping
-
-### 👨‍👩‍👧 Family
-- Register using elder’s unique username
-- Secure mapping to specific elder
-- Role-based login system
-
-### 🔐 Authentication
-- JWT-based authentication
-- Role-based access (Elder / Family)
-- Password hashing using bcrypt
-- Secure mapping using MongoDB ObjectId
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-- React.js
-- React Router DOM
-- Axios
-- Bootstrap
-
-### Backend
-- Node.js
-- Express.js
-- JWT (jsonwebtoken)
-- bcryptjs
-
-### Database
-- MongoDB
-- Mongoose ODM
-
----
-
-## 📂 Project Structure
 Vatsal/
 │
 ├── client/ # React Frontend
@@ -124,7 +74,7 @@ Vatsal/
 - git clone <your-repo-link>
 - cd Vatsal
 
-###🔹 2️⃣ Setup Backend (Server)
+### 🔹 2️⃣ Setup Backend (Server)
 - cd server
 - npm install
 
