@@ -70,14 +70,14 @@ Vatsal/
 ---
 ### 🔹 1️⃣ Clone The Repository
 
-```bash
+
 - git clone <your-repo-link>
 - cd Vatsal
-
+---
 ### 🔹 2️⃣ Setup Backend (Server)
 - cd server
 - npm install
-
+---
 Create a .env file inside server folder:
 - PORT=5000
 - MONGO_URI=your_mongodb_connection_string
@@ -91,7 +91,9 @@ OR
 Server will run on:
 http://localhost:5000
 
+---
 ### 🔹 3️⃣ Setup Frontend (Client)
+---
 Open new terminal:
 - cd client
 - npm install
