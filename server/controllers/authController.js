@@ -2,37 +2,76 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 
+
 exports.registerUser = async (req, res) => {
   try {
-    // 🔍 DEBUG (remove later)
     console.log("Incoming body:", req.body);
 
-    // ✅ SAFE destructuring (prevents crash)
-    const { name, email, password, role } = req.body || {};
+    const { name, email, password, role, username, elderUsername } = req.body || {};
 
-    // ✅ VALIDATION FIRST
+    // ✅ Basic validation
     if (!name || !email || !password) {
       return res.status(400).json({
         message: "Name, email and password are required",
       });
     }
 
-    // check if user exists
+    // ✅ Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // hash password
+    let mappedElder = null;
+
+    // 🔥 If role is elder → require unique username
+    if (role === "elder") {
+      if (!username) {
+        return res.status(400).json({
+          message: "Username is required for elder registration",
+        });
+      }
+
+      const existingUsername = await User.findOne({ username });
+      if (existingUsername) {
+        return res.status(400).json({
+          message: "Username already taken",
+        });
+      }
+    }
+
+    // 🔥 If role is family → require elderUsername
+    if (role === "family") {
+      if (!elderUsername) {
+        return res.status(400).json({
+          message: "Elder username is required",
+        });
+      }
+
+      mappedElder = await User.findOne({
+        username: elderUsername,
+        role: "elder",
+      });
+
+      if (!mappedElder) {
+        return res.status(400).json({
+          message: "Invalid elder username",
+        });
+      }
+    }
+
+    // ✅ Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // create user
+    // ✅ Create user
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
-      role: role || "user", // default role
+      role: role || "elder",
+      username: role === "elder" ? username : null,
+      elderId: role === "family" ? mappedElder._id : null,
     });
 
     res.status(201).json({
@@ -89,3 +128,4 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
