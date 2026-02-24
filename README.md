@@ -124,7 +124,7 @@ http://localhost:3000
 👨‍💻 Author
 
 Ranjan Kumar Verma
-Full Stack Developer (Learning Phase 🚀)
+Full Stack Developer
 
 ### 📌 Note
 
