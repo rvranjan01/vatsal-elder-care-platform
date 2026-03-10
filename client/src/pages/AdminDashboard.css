@@ -1,0 +1,173 @@
+/* Admin Dashboard Styles */
+
+.ad-tab-content {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ad-provider-card {
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+.ad-provider-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.ad-provider-card .card-header {
+  font-weight: 600;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.ad-provider-card .card-body {
+  font-size: 0.95rem;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+.table th {
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #dee2e6;
+}
+
+/* Modal Backdrop */
+.ad-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  padding: 1rem;
+}
+
+.ad-modal {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  max-width: 450px;
+  width: 100%;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ad-modal .modal-title {
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* Badge styling */
+.badge {
+  font-size: 0.8rem;
+  padding: 0.35rem 0.6rem;
+  font-weight: 600;
+}
+
+/* Tab styling */
+.nav-link {
+  color: #666;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.nav-link.active {
+  color: #0d6efd;
+  border-bottom: 3px solid #0d6efd;
+}
+
+.nav-link:hover:not(.active) {
+  color: #0d6efd;
+  cursor: pointer;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ad-modal {
+    max-width: 100%;
+  }
+
+  .table {
+    font-size: 0.85rem;
+  }
+
+  .btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .nav-tabs .nav-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Status indicators */
+.bg-success {
+  background-color: #198754 !important;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+}
+
+.text-dark {
+  color: #333 !important;
+}
+
+/* Section headers */
+h5 {
+  font-weight: 700;
+  color: #333;
+  border-left: 4px solid #0d6efd;
+  padding-left: 1rem;
+}
+
+h5.text-primary {
+  border-left-color: #0d6efd;
+}
+
+h5.text-success {
+  border-left-color: #198754;
+}
+
+h5.text-danger {
+  border-left-color: #dc3545;
+}

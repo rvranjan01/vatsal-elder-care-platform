@@ -16,9 +16,16 @@ function Login() {
       localStorage.setItem("role", res.data.user.role);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
+      // Dispatch custom event to notify navbar of login
+      window.dispatchEvent(new Event("authChange"));
+
       if (res.data.user.role === "elder") {
         navigate("/elder-dashboard");
-      } else {
+      } 
+      else if (res.data.user.role === "admin") {
+        navigate("/admin-dashboard");
+      }
+      else {
         navigate("/family-dashboard");
       }
     } catch (err) {

@@ -1,4 +1,5 @@
 const Yoga = require("../models/yoga");
+const YogaSession = require("../models/yogaSession");
 
 exports.addYoga = async (req, res) => {
   try {
@@ -28,5 +29,30 @@ exports.getYogaList = async (req, res) => {
     res.status(200).json(yogaList);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.logYogaSession = async (req, res) => {
+  try {
+    const session = new YogaSession({
+      ...req.body,
+      user: req.user.id  // From auth middleware
+    });
+    await session.save();
+    res.status(201).json({ session, message: 'Session logged successfully' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.getMyYogaSessions = async (req, res) => {
+  try {
+    const sessions = await YogaSession.find({ user: req.user.id })
+      .populate('exerciseId', 'title')
+      .sort({ date: -1 })
+      .limit(50);
+    res.json(sessions);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
 };

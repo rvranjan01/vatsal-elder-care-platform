@@ -29,9 +29,6 @@ app.use(express.json());
 // Parse URL-encoded data (forms, etc.)
 app.use(express.urlencoded({ extended: true }));
 
-// 👉 ADD MORE GLOBAL MIDDLEWARES BELOW
-// app.use(morgan("dev"));
-// app.use(cookieParser());
 
 // ===============================
 // ROUTES
@@ -43,6 +40,9 @@ const medicineRoutes = require("./routes/medicineRoutes");
 const gameRoutes = require("./routes/gameRoutes");
 const chatbotRoutes = require("./routes/chatbotRoutes");
 const yogaRoutes = require("./routes/yogaRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+const yogaAdminRoutes = require("./routes/yogaAdminRoutes");
 
 // Yoga routes
 app.use("/api/yoga", yogaRoutes);
@@ -59,16 +59,18 @@ app.use("/api/medicines", medicineRoutes);
 // Health routes
 app.use("/api/health", healthRoutes);
 
+// Booking routes
+app.use("/api/bookings", bookingRoutes);
+
+// Admin routes
+app.use("/api/admin", adminRoutes);
+app.use("/api/admin", yogaAdminRoutes); // Admin-only yoga management routes
+
 // Protected routes
 app.use("/api/protected", protectedRoutes);
 
 // Auth routes
 app.use("/api/auth", authRoutes);
-
-// 👉 ADD MORE ROUTE FILES BELOW
-// app.use("/api/users", userRoutes);
-// app.use("/api/elder", elderRoutes);
-// app.use("/api/games", gameRoutes);
 
 // ===============================
 // DEFAULT / HEALTH CHECK ROUTE
@@ -77,17 +79,32 @@ app.get("/", (req, res) => {
   res.send("Vatsal Backend Running 🚀");
 });
 
-// ===============================
-// ERROR HANDLING (ADD LATER)
-// ===============================
-// app.use(notFound);
-// app.use(errorHandler);
 
 // ===============================
-// SERVER START
+// SERVER START (with Socket.io)
 // ===============================
+const http = require('http');
+const server = http.createServer(app);
+
+const { Server } = require('socket.io');
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+  }
+});
+
+// Expose io via app locals
+app.set('io', io);
+
+io.on('connection', (socket) => {
+  console.log('Socket connected:', socket.id);
+  socket.on('disconnect', () => {
+    console.log('Socket disconnected:', socket.id);
+  });
+});
+
 const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

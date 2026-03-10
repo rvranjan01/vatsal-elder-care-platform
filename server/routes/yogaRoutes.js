@@ -1,13 +1,27 @@
-const express = require("express");
-const { addYoga, getYogaList } = require("../controllers/yogaController");
-const { protect, authorize } = require("../middleware/authMiddleware");
+const express = require('express');
+const { protect } = require('../middleware/authMiddleware'); 
+const { logYogaSession, getMyYogaSessions } = require('../controllers/yogaController');
 
+const YogaExercise = require('../models/yogaExercise');
 const router = express.Router();
+// PUBLIC ROUTE - Elders see admin-created exercises
+router.get('/list', async (req, res) => {
+  try {
+    const exercises = await YogaExercise.find({ isActive: true })
+      .select('title description duration benefits category difficulty')
+      .sort({ createdAt: -1 })
+      .limit(20);
+    res.json(exercises);  // Matches: Yoga.jsx + ElderDashboard expect array directly
+  } catch (error) {
+    console.error('Yoga list error:', error);
+    res.status(500).json([]);
+  }
+});
 
-// Add yoga (admin use / testing)
-router.post("/add", protect, authorize("elder"), addYoga);
+// ✅ NEW: Protected session routes
+router.use(protect);  // All session routes need auth
 
-// View yoga list
-router.get("/list", protect, getYogaList);
+router.post('/log-session', logYogaSession);
+router.get('/my-sessions', getMyYogaSessions);
 
 module.exports = router;

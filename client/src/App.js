@@ -4,8 +4,10 @@ import Footer from "./components/Footer";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import AdminDashboard from "./pages/AdminDashboard";
 import ElderDashboard from "./pages/ElderDashboard";
 import FamilyDashboard from "./pages/FamilyDashboard";
+import ProviderDashboard from "./pages/ProviderDashboard";
 import Health from "./pages/Health";
 import Games from "./pages/Games";
 import Yoga from "./pages/Yoga";
@@ -19,9 +21,12 @@ function App() {
       <div className="container mt-4">
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/elder-dashboard" element={<ElderDashboard />} />
           <Route path="/family-dashboard" element={<FamilyDashboard />} />
+          <Route path="/provider-dashboard" element={<ProviderDashboard />} />
           <Route path="/health" element={<Health />} />
           <Route path="/games" element={<Games />} />
           <Route path="/yoga" element={<Yoga />} />

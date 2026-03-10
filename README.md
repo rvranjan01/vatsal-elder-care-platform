@@ -121,10 +121,10 @@ http://localhost:3000
 7. Deployment (Render / Vercel)
 
 
-👨‍💻 Author
+### 👨‍💻 Author
 
 Ranjan Kumar Verma
-Full Stack Developer
+Saurav Gupta
 
 ### 📌 Note
 
