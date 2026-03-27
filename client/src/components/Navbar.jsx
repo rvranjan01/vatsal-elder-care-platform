@@ -109,7 +109,7 @@ function Navbar() {
             {isLoggedIn && (userRole === "doctor" || userRole === "companion" || userRole === "nurse") && (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/provider-dashboard">
+                  <Link className="nav-link" to="/doctor-dashboard">
                     My Bookings
                   </Link>
                 </li>

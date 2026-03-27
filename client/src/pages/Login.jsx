@@ -25,8 +25,20 @@ function Login() {
       else if (res.data.user.role === "admin") {
         navigate("/admin-dashboard");
       }
-      else {
+      else if (res.data.user.role === "doctor"){
+        navigate("/doctor-dashboard");
+      }
+      else if (res.data.user.role === "companion") {
+        navigate("/companion-dashboard")
+      }
+      else if (res.data.user.role === "nurse") {
+        navigate("/nurse-dashboard"); 
+      }
+      else if (res.data.user.role === "family") {
         navigate("/family-dashboard");
+      }
+      else {
+        navigate("/");
       }
     } catch (err) {
       alert("Login failed");

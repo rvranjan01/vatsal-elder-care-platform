@@ -43,6 +43,7 @@ const yogaRoutes = require("./routes/yogaRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const yogaAdminRoutes = require("./routes/yogaAdminRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 // Yoga routes
 app.use("/api/yoga", yogaRoutes);
@@ -65,6 +66,9 @@ app.use("/api/bookings", bookingRoutes);
 // Admin routes
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin", yogaAdminRoutes); // Admin-only yoga management routes
+
+//userRoutes
+app.use("/api/users", userRoutes);
 
 // Protected routes
 app.use("/api/protected", protectedRoutes);

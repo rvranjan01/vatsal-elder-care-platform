@@ -1,0 +1,13 @@
+.profile-card {
+  max-width: 500px;
+  margin: auto;
+  border-radius: 12px;
+}
+
+.profile-card input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
