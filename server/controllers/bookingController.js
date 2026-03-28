@@ -243,11 +243,15 @@ exports.getPendingBookingsForProvider = async (req, res) => {
       return res.status(403).json({ message: "Only providers can access this" });
     }
 
-    // Get bookings where serviceType matches provider role and confirmation is pending
-    let query = { 
-      confirmationStatus: "Waiting",
-      serviceType: req.user.role === "doctor" ? "Doctor" : (req.user.role === "nurse" ? "Companion" : "Companion")
-    };
+    let query = {
+  confirmationStatus: "Waiting",
+  serviceType:
+    req.user.role === "doctor"
+      ? "Doctor"
+      : req.user.role === "nurse"
+      ? "Nurse"
+      : "Companion"
+};
 
     const bookings = await Booking.find(query).populate('elder', 'name username').sort({ appointmentDate: 1 });
     res.status(200).json({ bookings });

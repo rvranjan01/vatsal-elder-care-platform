@@ -1,10 +1,13 @@
+// NurseDashboard - View pending care requests, accept/reject them, and see accepted visits. Also has a profile tab.
 import { useState, useEffect } from "react";
 import API from "../services/api";
-import "./ProviderDashboard.css"; // ✅ reuse CSS
+import NurseProfile from "./NurseProfile";
+import "./ProviderDashboard.css";
 
 function NurseDashboard() {
   const [pendingBookings, setPendingBookings] = useState([]);
   const [confirmedBookings, setConfirmedBookings] = useState([]);
+  const [allBookings, setAllBookings] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -34,16 +37,17 @@ function NurseDashboard() {
       setPendingBookings(waiting);
 
       const allRes = await API.get("/bookings/all");
-      const allBookings = allRes.data.bookings || [];
+      const all = allRes.data.bookings || [];
 
-      const confirmed = allBookings.filter(
+      const nurseBookings = all.filter((b) => b.serviceType === "Nurse");
+      setAllBookings(nurseBookings);
+
+      const confirmed = nurseBookings.filter(
         (b) =>
           b.confirmationStatus === "Confirmed" &&
           b.status === "Confirmed"
       );
-
       setConfirmedBookings(confirmed);
-
     } catch (err) {
       console.error("Error fetching bookings:", err);
     } finally {
@@ -95,7 +99,6 @@ function NurseDashboard() {
 
       {loading && <div className="alert alert-info">Loading...</div>}
 
-      {/* Tabs */}
       <div className="nav nav-tabs mb-4">
         <button
           className={`nav-link ${activeTab === "pending" ? "active" : ""}`}
@@ -110,9 +113,22 @@ function NurseDashboard() {
         >
           Accepted Visits ({confirmedBookings.length})
         </button>
+
+        <button
+          className={`nav-link ${activeTab === "all" ? "active" : ""}`}
+          onClick={() => setActiveTab("all")}
+        >
+          All Bookings ({allBookings.length})
+        </button>
+
+        <button
+          className={`nav-link ${activeTab === "profile" ? "active" : ""}`}
+          onClick={() => setActiveTab("profile")}
+        >
+          Profile
+        </button>
       </div>
 
-      {/* Pending */}
       {activeTab === "pending" && (
         <div className="row g-3">
           {pendingBookings.length === 0 ? (
@@ -149,7 +165,6 @@ function NurseDashboard() {
         </div>
       )}
 
-      {/* Confirmed */}
       {activeTab === "confirmed" && (
         <div className="row g-3">
           {confirmedBookings.length === 0 ? (
@@ -172,7 +187,61 @@ function NurseDashboard() {
         </div>
       )}
 
-      {/* Confirm Modal */}
+      {activeTab === "all" && (
+        <div className="table-responsive">
+          <table className="table table-bordered table-striped">
+            <thead className="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Elder</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Confirmation</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allBookings.map((b, index) => (
+                <tr key={b._id}>
+                  <td>{index + 1}</td>
+                  <td>{b.elderName}</td>
+                  <td>{b.serviceType}</td>
+                  <td>{formatDate(b.appointmentDate)}</td>
+                  <td>
+                    <span
+                      className={`badge ${
+                        b.status === "Confirmed"
+                          ? "bg-success"
+                          : b.status === "Cancelled"
+                          ? "bg-danger"
+                          : "bg-warning text-dark"
+                      }`}
+                    >
+                      {b.status}
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      className={`badge ${
+                        b.confirmationStatus === "Confirmed"
+                          ? "bg-success"
+                          : b.confirmationStatus === "Rejected"
+                          ? "bg-danger"
+                          : "bg-secondary"
+                      }`}
+                    >
+                      {b.confirmationStatus}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {activeTab === "profile" && <NurseProfile />}
+
       {showConfirmModal && (
         <div className="pd-modal-backdrop">
           <div className="pd-modal">
@@ -196,7 +265,6 @@ function NurseDashboard() {
         </div>
       )}
 
-      {/* Reject Modal */}
       {showRejectModal && (
         <div className="pd-modal-backdrop">
           <div className="pd-modal">

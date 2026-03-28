@@ -1,10 +1,14 @@
+// CompanionDashboard - View pending companion requests, accept/reject them, and see accepted visits. Also has a profile tab.
+
 import { useState, useEffect } from "react";
 import API from "../services/api";
-import "./ProviderDashboard.css"; // ✅ reuse same CSS
+import CompanionProfile from "./CompanionProfile";
+import "./ProviderDashboard.css";
 
 function CompanionDashboard() {
   const [pendingBookings, setPendingBookings] = useState([]);
   const [confirmedBookings, setConfirmedBookings] = useState([]);
+  const [allBookings, setAllBookings] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -27,23 +31,22 @@ function CompanionDashboard() {
 
       const pendingRes = await API.get("/bookings/pending");
       const pending = pendingRes.data.bookings || [];
-
-      const waiting = pending.filter(
-        (b) => b.confirmationStatus === "Waiting"
-      );
+      const waiting = pending.filter((b) => b.confirmationStatus === "Waiting");
       setPendingBookings(waiting);
 
       const allRes = await API.get("/bookings/all");
-      const allBookings = allRes.data.bookings || [];
+      const all = allRes.data.bookings || [];
+      setAllBookings(all);
 
-      const confirmed = allBookings.filter(
-        (b) =>
-          b.confirmationStatus === "Confirmed" &&
-          b.status === "Confirmed"
-      );
+      const companionBookings = all
+  .filter(
+    (b) =>
+      b.serviceType === "Companion" &&
+      b.confirmationStatus !== "Rejected"
+  );
 
-      setConfirmedBookings(confirmed);
-
+setAllBookings(companionBookings);
+      // setConfirmedBookings(confirmed);
     } catch (err) {
       console.error("Error fetching bookings:", err);
     } finally {
@@ -95,7 +98,6 @@ function CompanionDashboard() {
 
       {loading && <div className="alert alert-info">Loading...</div>}
 
-      {/* Tabs */}
       <div className="nav nav-tabs mb-4">
         <button
           className={`nav-link ${activeTab === "pending" ? "active" : ""}`}
@@ -110,15 +112,26 @@ function CompanionDashboard() {
         >
           Accepted Requests ({confirmedBookings.length})
         </button>
+
+        <button
+          className={`nav-link ${activeTab === "all" ? "active" : ""}`}
+          onClick={() => setActiveTab("all")}
+        >
+          All Bookings ({allBookings.length})
+        </button>
+
+        <button
+          className={`nav-link ${activeTab === "profile" ? "active" : ""}`}
+          onClick={() => setActiveTab("profile")}
+        >
+          Profile
+        </button>
       </div>
 
-      {/* Pending */}
       {activeTab === "pending" && (
         <div className="row g-3">
           {pendingBookings.length === 0 ? (
-            <div className="alert alert-info">
-              No pending requests available.
-            </div>
+            <div className="alert alert-info">No pending requests available.</div>
           ) : (
             pendingBookings.map((b) => (
               <div key={b._id} className="col-md-6 col-lg-4">
@@ -149,13 +162,10 @@ function CompanionDashboard() {
         </div>
       )}
 
-      {/* Confirmed */}
       {activeTab === "confirmed" && (
         <div className="row g-3">
           {confirmedBookings.length === 0 ? (
-            <div className="alert alert-info">
-              No accepted bookings yet.
-            </div>
+            <div className="alert alert-info">No accepted bookings yet.</div>
           ) : (
             confirmedBookings.map((b) => (
               <div key={b._id} className="col-md-6 col-lg-4">
@@ -172,7 +182,112 @@ function CompanionDashboard() {
         </div>
       )}
 
-      {/* Confirm Modal */}
+      {/* {activeTab === "all" && (
+        <div className="table-responsive">
+          <table className="table table-bordered table-striped">
+            <thead className="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Elder</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Confirmation</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allBookings.map((b, index) => (
+                <tr key={b._id}>
+                  <td>{index + 1}</td>
+                  <td>{b.elderName}</td>
+                  <td>{b.serviceType}</td>
+                  <td>{formatDate(b.appointmentDate)}</td>
+                  <td>
+                    <span
+                      className={`badge ${
+                        b.status === "Confirmed"
+                          ? "bg-success"
+                          : b.status === "Cancelled"
+                          ? "bg-danger"
+                          : "bg-warning text-dark"
+                      }`}
+                    >
+                      {b.status}
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      className={`badge ${
+                        b.confirmationStatus === "Confirmed"
+                          ? "bg-success"
+                          : b.confirmationStatus === "Rejected"
+                          ? "bg-danger"
+                          : "bg-secondary"
+                      }`}
+                    >
+                      {b.confirmationStatus}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )} */}
+
+      {activeTab === "all" && (
+  <div className="table-responsive">
+    <table className="table table-bordered table-striped">
+      <thead className="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Elder</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Confirmation</th>
+        </tr>
+      </thead>
+      <tbody>
+        {allBookings.map((b, index) => (
+          <tr key={b._id}>
+            <td>{index + 1}</td>
+            <td>{b.elderName}</td>
+            <td>{formatDate(b.appointmentDate)}</td>
+            <td>
+              <span
+                className={`badge ${
+                  b.status === "Confirmed"
+                    ? "bg-success"
+                    : b.status === "Cancelled"
+                    ? "bg-danger"
+                    : "bg-warning text-dark"
+                }`}
+              >
+                {b.status}
+              </span>
+            </td>
+            <td>
+              <span
+                className={`badge ${
+                  b.confirmationStatus === "Confirmed"
+                    ? "bg-success"
+                    : b.confirmationStatus === "Rejected"
+                    ? "bg-danger"
+                    : "bg-secondary"
+                }`}
+              >
+                {b.confirmationStatus}
+              </span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
+
+      {activeTab === "profile" && <CompanionProfile />}
+
       {showConfirmModal && (
         <div className="pd-modal-backdrop">
           <div className="pd-modal">
@@ -196,7 +311,6 @@ function CompanionDashboard() {
         </div>
       )}
 
-      {/* Reject Modal */}
       {showRejectModal && (
         <div className="pd-modal-backdrop">
           <div className="pd-modal">
