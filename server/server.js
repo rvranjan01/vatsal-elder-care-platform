@@ -44,9 +44,13 @@ const bookingRoutes = require("./routes/bookingRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const yogaAdminRoutes = require("./routes/yogaAdminRoutes");
 const userRoutes = require("./routes/userRoutes");
+const companionRoutes = require("./routes/companionRoutes");
 
 // Yoga routes
 app.use("/api/yoga", yogaRoutes);
+
+//companion routes
+app.use("/api/companions", companionRoutes);
 
 // Chatbot routes
 app.use("/api/chatbot", chatbotRoutes);

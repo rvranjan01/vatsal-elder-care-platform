@@ -9,7 +9,8 @@ const {
   deleteBooking,
   getPendingBookingsForProvider,
   confirmBooking,
-  rejectBooking
+  rejectBooking,
+  bookCompanion
 } = require("../controllers/bookingController");
 const { protect, authorize } = require("../middleware/authMiddleware");
 
@@ -17,6 +18,10 @@ const router = express.Router();
 
 // Both elder and family can create bookings
 router.post("/create", protect, authorize("elder", "family"), createBooking);
+
+// Specific route for booking a companion
+// router.post("/book-companion", authMiddleware.protect, bookCompanion);
+router.post("/book-companion", protect, authorize("elder", "family"), bookCompanion);
 
 // Get user's own bookings
 router.get("/my-bookings", protect, authorize("elder", "family"), getMyBookings);

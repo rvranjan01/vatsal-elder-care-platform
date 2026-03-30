@@ -1,4 +1,5 @@
 const Booking = require("../models/booking");
+const User = require("../models/user");
 
 // Create a new booking
 exports.createBooking = async (req, res) => {
@@ -344,5 +345,174 @@ exports.rejectBooking = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+// companion booking controller
+// exports.bookCompanion = async (req, res) => {
+//   try {
+//     const {
+//       companionId,
+//       elderName,
+//       elderAge,
+//       appointmentDate,
+//       timeSlot,
+//       address,
+//       notes
+//     } = req.body;
+
+//     const companion = await User.findOne({
+//       _id: companionId,
+//       role: "companion"
+//     });
+
+//     if (!companion) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Companion not found"
+//       });
+//     }
+
+//     const booking = new Booking({
+//       user: req.user.id,
+//       providerId: companion._id,
+//       elderName,
+//       elderAge,
+//       appointmentDate,
+//       timeSlot,
+//       address,
+//       notes,
+//       serviceType: "Companion",
+//       status: "Pending",
+//       confirmationStatus: "Waiting"
+//     });
+
+//     await booking.save();
+
+//     res.status(201).json({
+//       success: true,
+//       message: "Companion booking created successfully",
+//       booking
+//     });
+//   } catch (error) {
+//     console.error("Error booking companion:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Server error while booking companion"
+//     });
+//   }
+// };
+
+// exports.bookCompanion = async (req, res) => {
+//   try {
+//     const {
+//       companionId,
+//       elderName,
+//       elderAge,
+//       appointmentDate,
+//       timeSlot,
+//       address,
+//       notes
+//     } = req.body;
+
+//     if (!companionId || !appointmentDate || !timeSlot) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Companion, appointment date, and time slot are required"
+//       });
+//     }
+
+//     const companion = await User.findOne({
+//       _id: companionId,
+//       role: "companion"
+//     });
+
+//     if (!companion) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Companion not found"
+//       });
+//     }
+
+//     const booking = new Booking({
+//       user: req.user.id,
+//       elder: req.user.id,
+//       elderName,
+//       serviceType: "Companion",
+//       appointmentDate,
+//       timeSlot,
+//       notes,
+//       status: "Pending",
+//       confirmationStatus: "Waiting"
+//     });
+
+//     if (elderAge !== undefined) booking.elderAge = elderAge;
+//     if (address !== undefined) booking.address = address;
+//     if (companionId !== undefined) booking.providerId = companion._id;
+
+//     await booking.save();
+
+//     res.status(201).json({
+//       success: true,
+//       message: "Companion booking created successfully",
+//       booking
+//     });
+//   } catch (error) {
+//     console.error("Error booking companion:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: error.message || "Server error while booking companion"
+//     });
+//   }
+// };
+
+exports.bookCompanion = async (req, res) => {
+  try {
+    const {
+      companionId,
+      elderName,
+      appointmentDate,
+      timeSlot,
+      notes
+    } = req.body;
+
+    const companion = await User.findOne({
+      _id: companionId,
+      role: "companion"
+    });
+
+    if (!companion) {
+      return res.status(404).json({
+        success: false,
+        message: "Companion not found"
+      });
+    }
+
+    const booking = new Booking({
+      user: req.user.id,
+      elder: req.user.id,
+      elderName,
+      serviceType: "Companion",
+      appointmentDate,
+      timeSlot,
+      notes,
+      status: "Pending",
+      confirmationStatus: "Waiting"
+    });
+
+    await booking.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Companion booking created successfully",
+      booking
+    });
+  } catch (error) {
+    console.error("Error booking companion:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Server error while booking companion"
+    });
   }
 };

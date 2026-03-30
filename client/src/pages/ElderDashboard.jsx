@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import API from "../services/api";
 import "./ElderDashboard.css";
 
 function ElderDashboard() {
+  const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [healthData, setHealthData] = useState([]);
   const [medicines, setMedicines] = useState([]);
@@ -12,6 +14,91 @@ function ElderDashboard() {
   const [bookings, setBookings] = useState([]);
   const [chatMessages, setChatMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+
+  const [companions, setCompanions] = useState([]);
+  const [loadingCompanions, setLoadingCompanions] = useState(true);
+
+  const dummyCompanions = [
+  {
+    _id: "dummy1",
+    name: "Priya Sharma",
+    role: "Healthcare Aide",
+    availability: "✓ Available today"
+  },
+  {
+    _id: "dummy2",
+    name: "Rajesh Kumar",
+    role: "Outdoor Companion",
+    availability: "✓ Available today"
+  },
+  {
+    _id: "dummy3",
+    name: "Meena Devi",
+    role: "Activity Partner",
+    availability: "✓ Available today"
+  }
+];
+
+useEffect(() => {
+  fetchDashboardCompanions();
+}, []);
+
+const fetchDashboardCompanions = async () => {
+  try {
+    const res = await API.get("/companions");
+    const backendCompanions = res.data.companions || [];
+
+    if (backendCompanions.length > 0) {
+      const formattedCompanions = backendCompanions.slice(0, 3).map((c) => ({
+        _id: c._id,
+        name: c.name || "Unknown",
+        role: c.specialty || c.specialization || "Companion",
+        availability: "✓ Available today"
+      }));
+
+      setCompanions(formattedCompanions);
+    } else {
+      setCompanions(dummyCompanions);
+    }
+  } catch (error) {
+    console.error("Error fetching companions:", error);
+    setCompanions(dummyCompanions);
+  } finally {
+    setLoadingCompanions(false);
+  }
+};
+
+const getInitials = (name) => {
+  if (!name) return "NA";
+
+  return name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+};
+
+const handleBookCompanion = (companion) => {
+  const isDummy = companion._id.startsWith("dummy");
+
+  if (isDummy) {
+    alert("Dummy companion is for demo only.");
+    return;
+  }
+
+  navigate(`/companions/${companion._id}/book`, {
+    state: { companion }
+  });
+};
+
+const handleViewCompanionProfile = (companion) => {
+  navigate(`/companions/${companion._id}`, {
+    state: { companion }
+  });
+};
+
+  
   const [stats, setStats] = useState({
     healthScore: 85,
     doctorsConsulted: 0,
@@ -153,7 +240,7 @@ function ElderDashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="stats-grid">
+      {/* <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-icon health-icon">❤️</div>
           <p className="stat-value">{stats.healthScore}%</p>
@@ -190,7 +277,7 @@ function ElderDashboard() {
           <p className="stat-label">Yoga Sessions</p>
           <span className="stat-change">This month</span>
         </div>
-      </div>
+      </div> */}
 
       <div className="dashboard-grid">
         {/* Health Overview */}
@@ -354,7 +441,7 @@ function ElderDashboard() {
         </div>
 
         {/* Book a Companion */}
-        <div className="dashboard-section book-companion">
+        {/* <div className="dashboard-section book-companion">
           <h3>👥 Book a Companion</h3>
           <div className="companions-list">
             <div className="companion-card">
@@ -385,8 +472,59 @@ function ElderDashboard() {
               <button className="book-btn">Book</button>
             </div>
           </div>
-          <Link to="/booking" className="view-more-btn">View All →</Link>
-        </div>
+          <Link to="/companions" className="view-more-btn">View All →</Link>
+        </div> */}
+
+        <div className="dashboard-section book-companion">
+  <h3>👥 Book a Companion</h3>
+
+  <div className="companions-list">
+    {loadingCompanions ? (
+      <p>Loading companions...</p>
+    ) : (
+      companions.map((companion) => {
+        const isDummy = companion._id.startsWith("dummy");
+
+        return (
+          <div className="companion-card" key={companion._id}>
+            <div className="companion-avatar">
+              {getInitials(companion.name)}
+            </div>
+
+            <div className="companion-info">
+              <p className="companion-name">{companion.name}</p>
+              <p className="companion-role">{companion.role}</p>
+              <p className="companion-availability">
+                {companion.availability}
+              </p>
+            </div>
+
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              <button
+                className="book-btn"
+                onClick={() => handleViewCompanionProfile(companion)}
+              >
+                View
+              </button>
+
+              <button
+                className="book-btn"
+                disabled={isDummy}
+                onClick={() => handleBookCompanion(companion)}
+              >
+                {isDummy ? "Demo Only" : "Book"}
+              </button>
+            </div>
+          </div>
+        );
+      })
+    )}
+  </div>
+
+  <Link to="/companions" className="view-more-btn">
+    View All →
+  </Link>
+</div>
       </div>
 
       {/* Chat Companion */}
