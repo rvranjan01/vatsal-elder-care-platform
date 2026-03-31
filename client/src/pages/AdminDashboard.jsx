@@ -3,6 +3,7 @@ import API from "../services/api";
 import socket from "../services/socket";
 import "./AdminDashboard.css";
 import YogaExercisesTab from "../components/Admin/YogaExercisesTab";
+import LocalEventsTab from "../components/Admin/LocalEventsTab";
 
 
 function AdminDashboard() {
@@ -15,6 +16,7 @@ function AdminDashboard() {
   const [confirmAction, setConfirmAction] = useState(null);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [yogaExercises, setYogaExercises] = useState([]);
+  const [localEvents, setLocalEvents] = useState([]);
 
 
   useEffect(() => {
@@ -59,6 +61,8 @@ function AdminDashboard() {
       const yogaRes = await API.get("/admin/yoga-exercises");
       setYogaExercises(yogaRes.data.exercises || []);
 
+      const eventsRes = await API.get("/admin/local-events");
+      setLocalEvents(eventsRes.data.events || []);
 
       // Group by role
       const grouped = {
@@ -159,6 +163,14 @@ function AdminDashboard() {
         >
         <span className="badge bg-info me-2">{yogaExercises.length}</span>
           Yoga Exercises
+        </button>
+
+        <button
+        className={`nav-link ${activeTab === "events" ? "active" : ""}`}
+        onClick={() => setActiveTab("events")}
+        >
+        <span className="badge bg-primary me-2">{localEvents.length}</span>
+          Local Events
         </button>
 
       </div>
@@ -406,6 +418,13 @@ function AdminDashboard() {
       {activeTab === "yoga" && (
       <YogaExercisesTab 
        yogaExercises={yogaExercises} 
+      onRefresh={fetchData} 
+      />
+      )}
+
+      {activeTab === "events" && (
+      <LocalEventsTab 
+        localEvents={localEvents} 
       onRefresh={fetchData} 
       />
       )}

@@ -16,14 +16,17 @@ import CompanionProfile from "./pages/CompanionProfile";
 import CompanionBooking from "./pages/CompanionBooking";
 import ViewCompanionProfile from "./pages/ViewCompanionProfile";
 import ViewDoctorProfile from "./pages/ViewDoctorProfile";
+import DoctorsList from "./pages/DoctorsList";
 import DoctorBooking from "./pages/DoctorBooking";
 
 import ViewNurseProfile from "./pages/ViewNurseProfile";
 import NurseBooking from "./pages/NurseBooking";
+import NursesList from "./pages/NursesList";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import Health from "./pages/Health";
 import Games from "./pages/Games";
 import Yoga from "./pages/Yoga";
+import Events from "./pages/Events";
 import Booking from "./pages/Booking";
 import Chatbot from "./pages/Chatbot";
 
@@ -44,6 +47,8 @@ function App() {
           <Route path="/nurse-dashboard" element={<NurseDashboard />} />
           <Route path="/doctor-profile" element={<DoctorProfile />} />
           <Route path="/companions" element={<CompanionList />} />
+          <Route path="/doctors" element={<DoctorsList />} />
+          <Route path="/nurses" element={<NursesList />} />
           {/* <Route path="/companions/:id" element={<CompanionProfile />} /> */}
           <Route path="/companions/:id" element={<ViewCompanionProfile />} />
           <Route path="/companions/:id/book" element={<CompanionBooking />} />
@@ -55,6 +60,7 @@ function App() {
           <Route path="/health" element={<Health />} />
           <Route path="/games" element={<Games />} />
           <Route path="/yoga" element={<Yoga />} />
+          <Route path="/events" element={<Events />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/chatbot" element={<Chatbot />} />
         </Routes>

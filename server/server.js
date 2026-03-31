@@ -47,6 +47,14 @@ const userRoutes = require("./routes/userRoutes");
 const companionRoutes = require("./routes/companionRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const nurseRoutes = require("./routes/nurseRoutes");
+const localEventRoutes = require("./routes/localEvents");
+const publicEventRoutes = require("./routes/publicEvents");
+
+// Public routes
+app.use("/api", publicEventRoutes);
+
+// Local Events routes
+app.use("/api/admin", localEventRoutes);
 
 // Doctor routes
 app.use("/api/doctors", doctorRoutes);

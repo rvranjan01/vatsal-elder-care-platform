@@ -11,6 +11,7 @@ function ElderDashboard() {
   const [medicines, setMedicines] = useState([]);
   const [games, setGames] = useState([]);
   const [yogaActivities, setYogaActivities] = useState([]);
+  const [localEvents, setLocalEvents] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [chatMessages, setChatMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -311,6 +312,9 @@ const handleBookDoctor = (doctor) => {
       //Fetching yoga sessions for stats
       const sessionRes = await API.get("/yoga/my-sessions");
       const yogaSessions = sessionRes.data || [];
+
+      const eventsRes = await API.get("/local-events");
+      setLocalEvents(eventsRes.data.events || []);
       // Fetch bookings
       const bookingRes = await API.get("/bookings/my-bookings");
       setBookings(bookingRes.data.bookings || []);
@@ -575,7 +579,7 @@ const handleBookDoctor = (doctor) => {
 
       <div className="dashboard-grid">
         {/* Local Events */}
-        <div className="dashboard-section local-events">
+        {/* <div className="dashboard-section local-events">
           <h3>📍 Local Events</h3>
           <div className="events-list">
             <div className="event-item">
@@ -607,7 +611,39 @@ const handleBookDoctor = (doctor) => {
             </div>
           </div>
           <Link to="/booking" className="view-more-btn">View All →</Link>
+        </div> */}
+
+        <div className="dashboard-section local-events">
+  <h3>📍 Local Events</h3>
+  <div className="events-list">
+    {localEvents.length > 0 ? (
+      localEvents.slice(0, 3).map((event) => (
+        <div key={event._id} className="event-item">
+          <div className="event-header">
+            <p className="event-name">{event.title}</p>
+            <span className={`event-tag ${
+              event.type === 'health' ? 'bg-danger text-white' :
+              event.type === 'social' ? 'bg-info text-white' :
+              event.type === 'creative' ? 'bg-warning text-dark' : 'bg-success text-white'
+            }`}>
+              {event.type}
+            </span>
+          </div>
+          <p className="event-time">📅 {new Date(event.date).toLocaleDateString()}, {event.time || 'TBD'}</p>
+          <p className="event-location">📍 {event.location}</p>
         </div>
+      ))
+    ) : (
+      // Your existing hardcoded events as fallback
+      <>
+        <div className="event-item"> {/* Morning Walk Group */} </div>
+        <div className="event-item"> {/* Bhajan Sandhya */} </div>
+        <div className="event-item"> {/* Senior Art Workshop */} </div>
+      </>
+    )}
+  </div>
+  <Link to="/events" className="view-more-btn">View All →</Link>
+</div>
 
         {/* Book a Companion */}
         {/* <div className="dashboard-section book-companion">
