@@ -18,6 +18,12 @@ function ElderDashboard() {
   const [companions, setCompanions] = useState([]);
   const [loadingCompanions, setLoadingCompanions] = useState(true);
 
+    const [doctors, setDoctors] = useState([]);
+  const [loadingDoctors, setLoadingDoctors] = useState(false);
+
+  const [nurses, setNurses] = useState([]);
+  const [loadingNurses, setLoadingNurses] = useState(false);
+
   const dummyCompanions = [
   {
     _id: "dummy1",
@@ -39,8 +45,52 @@ function ElderDashboard() {
   }
 ];
 
+const dummyDoctors = [
+    {
+      _id: "doctor1",
+      name: "Dr. Amit Verma",
+      role: "General Physician",
+      availability: "✓ Available today"
+    },
+    {
+      _id: "doctor2",
+      name: "Dr. Sneha Reddy",
+      role: "Cardiologist",
+      availability: "✓ Available today"
+    },
+    {
+      _id: "doctor3",
+      name: "Dr. Kiran Rao",
+      role: "Orthopedic Specialist",
+      availability: "✓ Available today"
+    }
+  ];
+
+  const dummyNurses = [
+    {
+      _id: "nurse1",
+      name: "Nurse Kavya",
+      role: "Home Care Nurse",
+      availability: "✓ Available today"
+    },
+    {
+      _id: "nurse2",
+      name: "Nurse Deepa",
+      role: "Medication Support Nurse",
+      availability: "✓ Available today"
+    },
+    {
+      _id: "nurse3",
+      name: "Nurse Arjun",
+      role: "Elder Care Nurse",
+      availability: "✓ Available today"
+    }
+  ];
+
 useEffect(() => {
   fetchDashboardCompanions();
+  fetchDashboardDoctors();
+  fetchDashboardNurses();
 }, []);
 
 const fetchDashboardCompanions = async () => {
@@ -65,6 +115,101 @@ const fetchDashboardCompanions = async () => {
     setCompanions(dummyCompanions);
   } finally {
     setLoadingCompanions(false);
+  }
+};
+
+// const fetchDashboardDoctors = async () => {
+//   try {
+//     setLoadingDoctors(true);
+//     const res = await API.get("/users");
+//     const backendUsers = res.data || [];
+
+//     const doctors = backendUsers
+//       .filter(u => u.role === "doctor" && u.isActive)
+//       .slice(0, 3)
+//       .map((d) => ({
+//         _id: d._id,
+//         name: d.name || "Unknown",
+//         role: d.specialty || "Doctor",
+//         availability: "✓ Available today"
+//       }));
+
+//     setDoctors(doctors);
+//   } catch (error) {
+//     console.error("Error fetching doctors:", error);
+//     setDoctors([]);
+//   } finally {
+//     setLoadingDoctors(false);
+//   }
+// };
+
+const fetchDashboardDoctors = async () => {
+  try {
+    setLoadingDoctors(true);
+
+    const res = await API.get("/doctors");
+
+    const formattedDoctors = (res.data.doctors || []).map((doctor) => ({
+      _id: doctor._id,
+      name: doctor.name,
+      role: doctor.specialty || "Doctor",
+      availability: doctor.isActive ? "✓ Available today" : "Not available"
+    }));
+
+    setDoctors(formattedDoctors);
+  } catch (error) {
+    console.error("Error fetching doctors:", error);
+    setDoctors([]);
+  } finally {
+    setLoadingDoctors(false);
+  }
+};
+
+// const fetchDashboardNurses = async () => {
+//   try {
+//     setLoadingNurses(true);
+//     const res = await API.get("/users");
+//     const backendUsers = res.data || [];
+
+//     const nurses = backendUsers
+//       .filter(u => u.role === "nurse" && u.isActive)
+//       .slice(0, 3)
+//       .map((n) => ({
+//         _id: n._id,
+//         name: n.name || "Unknown",
+//         role: n.specialty || "Nurse",
+//         availability: "✓ Available today"
+//       }));
+
+//     setNurses(nurses);
+//   } catch (error) {
+//     console.error("Error fetching nurses:", error);
+//     setNurses([]);
+//   } finally {
+//     setLoadingNurses(false);
+//   }
+// };
+
+
+const fetchDashboardNurses = async () => {
+  try {
+    setLoadingNurses(true);
+
+    const res = await API.get("/nurses");
+
+    const formattedNurses = (res.data.nurses || []).map((nurse) => ({
+      _id: nurse._id,
+      name: nurse.name,
+      role: nurse.specialty || "Nurse",
+      availability: nurse.isActive ? "✓ Available today" : "Not available"
+    }));
+
+    setNurses(formattedNurses);
+  } catch (error) {
+    console.error("Error fetching nurses:", error);
+    setNurses([]);
+  } finally {
+    setLoadingNurses(false);
   }
 };
 
@@ -98,6 +243,30 @@ const handleViewCompanionProfile = (companion) => {
   });
 };
 
+
+const handleBookDoctor = (doctor) => {
+    navigate(`/doctors/${doctor._id}/book`, {
+      state: { doctor }
+    });
+  };
+
+  const handleViewDoctorProfile = (doctor) => {
+    navigate(`/doctors/${doctor._id}`, {
+      state: { doctor }
+    });
+  };
+
+  const handleBookNurse = (nurse) => {
+    navigate(`/nurses/${nurse._id}/book`, {
+      state: { nurse }
+    });
+  };
+
+  const handleViewNurseProfile = (nurse) => {
+    navigate(`/nurses/${nurse._id}`, {
+      state: { nurse }
+    });
+  };
   
   const [stats, setStats] = useState({
     healthScore: 85,
@@ -516,6 +685,7 @@ const handleViewCompanionProfile = (companion) => {
               </button>
             </div>
           </div>
+          
         );
       })
     )}
@@ -525,6 +695,100 @@ const handleViewCompanionProfile = (companion) => {
     View All →
   </Link>
 </div>
+      </div>
+
+      <div className="dashboard-grid">
+        <div className="dashboard-section book-companion">
+          <h3>🩺 Book Doctor</h3>
+
+          <div className="companions-list">
+            {loadingDoctors ? (
+              <p>Loading doctors...</p>
+            ) : (
+              doctors.map((doctor) => (
+                <div className="companion-card" key={doctor._id}>
+                  <div className="companion-avatar">
+                    {getInitials(doctor.name)}
+                  </div>
+
+                  <div className="companion-info">
+                    <p className="companion-name">{doctor.name}</p>
+                    <p className="companion-role">{doctor.role}</p>
+                    <p className="companion-availability">
+                      {doctor.availability}
+                    </p>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                    <button
+                      className="book-btn"
+                      onClick={() => handleViewDoctorProfile(doctor)}
+                    >
+                      View
+                    </button>
+
+                    <button
+                      className="book-btn"
+                      onClick={() => handleBookDoctor(doctor)}
+                    >
+                      Book
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          <Link to="/doctors" className="view-more-btn">
+            View All →
+          </Link>
+        </div>
+
+        <div className="dashboard-section book-companion">
+          <h3>🧑‍⚕️ Book Nurse</h3>
+
+          <div className="companions-list">
+            {loadingNurses ? (
+              <p>Loading nurses...</p>
+            ) : (
+              nurses.map((nurse) => (
+                <div className="companion-card" key={nurse._id}>
+                  <div className="companion-avatar">
+                    {getInitials(nurse.name)}
+                  </div>
+
+                  <div className="companion-info">
+                    <p className="companion-name">{nurse.name}</p>
+                    <p className="companion-role">{nurse.role}</p>
+                    <p className="companion-availability">
+                      {nurse.availability}
+                    </p>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                    <button
+                      className="book-btn"
+                      onClick={() => handleViewNurseProfile(nurse)}
+                    >
+                      View
+                    </button>
+
+                    <button
+                      className="book-btn"
+                      onClick={() => handleBookNurse(nurse)}
+                    >
+                      Book
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          <Link to="/nurses" className="view-more-btn">
+            View All →
+          </Link>
+        </div>
       </div>
 
       {/* Chat Companion */}

@@ -6,9 +6,9 @@ const {
 } = require("../controllers/companionController");
 const authMiddleware = require("../middleware/authMiddleware");
 
-console.log("getAllCompanions:", getAllCompanions);
-console.log("getCompanionById:", getCompanionById);
-console.log("authMiddleware:", authMiddleware);
+// console.log("getAllCompanions:", getAllCompanions);
+// console.log("getCompanionById:", getCompanionById);
+// console.log("authMiddleware:", authMiddleware);
 
 
 router.get("/", authMiddleware.protect, getAllCompanions);

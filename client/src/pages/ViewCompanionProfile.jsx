@@ -11,6 +11,8 @@ function ViewCompanionProfile() {
   const [companion, setCompanion] = useState(location.state?.companion || null);
   const [loading, setLoading] = useState(!location.state?.companion);
 
+
+
   const dummyProfiles = {
     dummy1: {
       _id: "dummy1",

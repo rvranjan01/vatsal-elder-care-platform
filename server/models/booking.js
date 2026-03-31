@@ -19,7 +19,7 @@ const bookingSchema = new mongoose.Schema(
     // serviceType can be 'Doctor' (medical appointment), 'Companion' (caregiver), or 'Event'
     serviceType: {
       type: String,
-      enum: ["Doctor", "Companion", "Event"],
+      enum: ["Doctor", "Companion","Nurse", "Event"],
       default: "Doctor"
     },
     doctorName: {
@@ -27,7 +27,7 @@ const bookingSchema = new mongoose.Schema(
     },
     specialty: {
       type: String,
-      enum: ["General Practitioner", "Cardiologist", "Orthopedist", "Neurologist", "Dermatologist", "Pediatrician", "Psychiatrist", "Dentist"],
+      enum: ["General", "Cardiologist", "Orthopedist", "Neurologist", "Dermatologist", "Pediatrician", "Psychiatrist", "Dentist"],
     },
     consultationType: {
       type: String,
@@ -72,3 +72,4 @@ const bookingSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("Booking", bookingSchema);
+

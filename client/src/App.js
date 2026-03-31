@@ -15,6 +15,11 @@ import CompanionList from "./pages/CompanionList";
 import CompanionProfile from "./pages/CompanionProfile";
 import CompanionBooking from "./pages/CompanionBooking";
 import ViewCompanionProfile from "./pages/ViewCompanionProfile";
+import ViewDoctorProfile from "./pages/ViewDoctorProfile";
+import DoctorBooking from "./pages/DoctorBooking";
+
+import ViewNurseProfile from "./pages/ViewNurseProfile";
+import NurseBooking from "./pages/NurseBooking";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import Health from "./pages/Health";
 import Games from "./pages/Games";
@@ -42,6 +47,10 @@ function App() {
           {/* <Route path="/companions/:id" element={<CompanionProfile />} /> */}
           <Route path="/companions/:id" element={<ViewCompanionProfile />} />
           <Route path="/companions/:id/book" element={<CompanionBooking />} />
+          <Route path="/doctors/:id" element={<ViewDoctorProfile />} />
+          <Route path="/doctors/:id/book" element={<DoctorBooking />} />
+          <Route path="/nurses/:id" element={<ViewNurseProfile />} />
+          <Route path="/nurses/:id/book" element={<NurseBooking />} />
           <Route path="/provider-dashboard" element={<ProviderDashboard />} />
           <Route path="/health" element={<Health />} />
           <Route path="/games" element={<Games />} />

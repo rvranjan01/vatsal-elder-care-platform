@@ -10,7 +10,8 @@ const {
   getPendingBookingsForProvider,
   confirmBooking,
   rejectBooking,
-  bookCompanion
+  bookCompanion,
+  bookNurse
 } = require("../controllers/bookingController");
 const { protect, authorize } = require("../middleware/authMiddleware");
 
@@ -22,6 +23,8 @@ router.post("/create", protect, authorize("elder", "family"), createBooking);
 // Specific route for booking a companion
 // router.post("/book-companion", authMiddleware.protect, bookCompanion);
 router.post("/book-companion", protect, authorize("elder", "family"), bookCompanion);
+
+router.post("/book-nurse", protect, authorize("elder", "family"), bookNurse);
 
 // Get user's own bookings
 router.get("/my-bookings", protect, authorize("elder", "family"), getMyBookings);

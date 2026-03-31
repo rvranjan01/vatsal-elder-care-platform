@@ -43,7 +43,9 @@ function DoctorDashboard() {
     const allRes = await API.get("/bookings/all");
     const all = allRes.data.bookings || [];
 
-    setAllBookings(all);
+    const doctorOnly = all.filter((b) => b.serviceType === "Doctor");
+    setAllBookings(doctorOnly);
+    // setAllBookings(all);
 
     } catch (err) {
       console.error(err);

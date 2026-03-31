@@ -22,18 +22,38 @@ exports.createBooking = async (req, res) => {
     }
 
     // Basic validation based on service type
+    // if (serviceType === 'Doctor') {
+    //   if (!doctorName || !specialty || !consultationType || !appointmentDate || !timeSlot || !reason) {
+    //     return res.status(400).json({ message: 'Please provide all required fields for doctor appointment' });
+    //   }
+    //   if (new Date(appointmentDate) < new Date()) return res.status(400).json({ message: 'Appointment date must be in the future' });
+    // }
     if (serviceType === 'Doctor') {
-      if (!doctorName || !specialty || !consultationType || !appointmentDate || !timeSlot || !reason) {
-        return res.status(400).json({ message: 'Please provide all required fields for doctor appointment' });
-      }
-      if (new Date(appointmentDate) < new Date()) return res.status(400).json({ message: 'Appointment date must be in the future' });
-    } else if (serviceType === 'Companion') {
+  // Only these fields are truly required; others can be empty
+  if (!doctorName || !consultationType || !appointmentDate || !timeSlot || !reason) {
+    return res.status(400).json({ message: 'Please provide all required fields for doctor appointment' });
+  }
+
+  // Still require future date
+  if (new Date(appointmentDate) < new Date()) {
+    return res.status(400).json({ message: 'Appointment date must be in the future' });
+  }
+
+  // You can also normalize empty optional fields here if you like:
+  // specialty = specialty || "";
+  // medicalHistory = medicalHistory || "";
+  // currentMedications = currentMedications || "";
+  // notes = notes || "";
+}
+    else if (serviceType === 'Companion') {
       if (!appointmentDate || !timeSlot) return res.status(400).json({ message: 'Please provide date and time for companion booking' });
       if (new Date(appointmentDate) < new Date()) return res.status(400).json({ message: 'Appointment date must be in the future' });
     } else if (serviceType === 'Event') {
       if (!appointmentDate) return res.status(400).json({ message: 'Event date is required' });
     }
 
+    console.log("Creating booking with user:", req.user?.id);
+    console.log("Creating booking with elder:", targetElder);
     const booking = await Booking.create({
       user: req.user.id,
       elder: targetElder,
@@ -349,6 +369,8 @@ exports.rejectBooking = async (req, res) => {
 };
 
 
+
+
 // companion booking controller
 // exports.bookCompanion = async (req, res) => {
 //   try {
@@ -514,5 +536,105 @@ exports.bookCompanion = async (req, res) => {
       success: false,
       message: error.message || "Server error while booking companion"
     });
+  }
+};
+
+// exports.bookNurse = async (req, res) => {
+//   try {
+//     const {
+//       nurseId,
+//       elderName,
+//       elderAge,
+//       appointmentDate,
+//       timeSlot,
+//       address,
+//       careType,
+//       medicalNeeds,
+//       notes,
+//     } = req.body;
+
+//     if (!nurseId || !elderName || !appointmentDate || !timeSlot || !address || !careType || !medicalNeeds) {
+//       return res.status(400).json({ message: "Please fill all required nurse booking fields" });
+//     }
+
+//     const nurse = await User.findById(nurseId);
+//     if (!nurse || nurse.role !== "nurse") {
+//       return res.status(404).json({ message: "Nurse not found" });
+//     }
+
+//     const booking = await Booking.create({
+//       elderId: req.user._id,
+//       nurseId,
+//       nurseName: nurse.name,
+//       elderName,
+//       elderAge,
+//       serviceType: "Nurse",
+//       appointmentDate,
+//       timeSlot,
+//       address,
+//       careType,
+//       medicalNeeds,
+//       notes,
+//       status: "Pending",
+//     });
+
+//     res.status(201).json({
+//       success: true,
+//       message: "Nurse booking created successfully",
+//       booking,
+//     });
+//   } catch (error) {
+//     console.error("Book nurse error:", error);
+//     res.status(500).json({ message: "Server error while booking nurse" });
+//   }
+// };
+
+exports.bookNurse = async (req, res) => {
+  try {
+    const {
+      nurseId,
+      elderName,
+      elderAge,
+      appointmentDate,
+      timeSlot,
+      address,
+      careType,
+      medicalNeeds,
+      notes,
+    } = req.body;
+
+    if (!nurseId || !elderName || !appointmentDate || !timeSlot || !address || !careType || !medicalNeeds) {
+      return res.status(400).json({ message: "Please fill all required nurse booking fields" });
+    }
+
+    const nurse = await User.findById(nurseId);
+    if (!nurse || nurse.role !== "nurse") {
+      return res.status(404).json({ message: "Nurse not found" });
+    }
+
+    const booking = await Booking.create({
+      user: req.user.id,
+      elder: req.user.id,
+      elderName,
+      elderAge,
+      serviceType: "Nurse",
+      appointmentDate,
+      timeSlot,
+      address,
+      careType,
+      medicalNeeds,
+      notes,
+      status: "Pending",
+      confirmationStatus: "Waiting"
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Nurse booking created successfully",
+      booking,
+    });
+  } catch (error) {
+    console.error("Book nurse error:", error);
+    res.status(500).json({ message: "Server error while booking nurse" });
   }
 };

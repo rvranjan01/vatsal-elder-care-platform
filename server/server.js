@@ -45,6 +45,14 @@ const adminRoutes = require("./routes/adminRoutes");
 const yogaAdminRoutes = require("./routes/yogaAdminRoutes");
 const userRoutes = require("./routes/userRoutes");
 const companionRoutes = require("./routes/companionRoutes");
+const doctorRoutes = require("./routes/doctorRoutes");
+const nurseRoutes = require("./routes/nurseRoutes");
+
+// Doctor routes
+app.use("/api/doctors", doctorRoutes);
+
+// Nurse routes
+app.use("/api/nurses", nurseRoutes);
 
 // Yoga routes
 app.use("/api/yoga", yogaRoutes);
