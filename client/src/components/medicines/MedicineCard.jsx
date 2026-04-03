@@ -1,11 +1,14 @@
+
+
 function MedicineCard({
   medicine,
-  onTakeSlot,
-  onSkipSlot,
   onViewHistory,
   onEdit,
   onRefill,
-}) {
+  onTake,
+  onSkip,
+  onDelete,
+}){
   const {
     _id,
     medicineName,
@@ -117,7 +120,7 @@ function MedicineCard({
                       <button
                         className="btn btn-success btn-sm"
                         disabled={slotStatus === "taken" || Number(currentStock) <= 0}
-                        onClick={() => onTakeSlot(_id, slot)}
+                        onClick={() => onTake(_id, slot)}
                       >
                         Take
                       </button>
@@ -125,7 +128,7 @@ function MedicineCard({
                       <button
                         className="btn btn-outline-secondary btn-sm"
                         disabled={slotStatus === "taken"}
-                        onClick={() => onSkipSlot(_id, slot)}
+                        onClick={() => onSkip(_id, slot)}
                       >
                         Skip
                       </button>

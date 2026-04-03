@@ -386,3 +386,13 @@
     gap: 6px;
   }
 }
+.btn-delete {
+  background: #dc3545;
+  color: #fff;
+  border: 1px solid #bb2d3b;
+}
+
+.btn-delete:hover {
+  background: #bb2d3b;
+  color: #fff;
+}

@@ -108,6 +108,27 @@ function MedicinesPage() {
     }
   };
 
+  const handleDeleteMedicine = async (medicine) => {
+  const confirmDelete = window.confirm(
+    `Are you sure you want to delete ${medicine.medicineName}?`
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    await API.delete(`/medicines/${medicine._id}`);
+    await fetchMedicines();
+
+    if (selectedMedicine?._id === medicine._id) {
+      setSelectedMedicine(null);
+      setHistory([]);
+    }
+  } catch (error) {
+    console.error("Error deleting medicine:", error);
+    alert(error?.response?.data?.message || "Failed to delete medicine.");
+  }
+};
+
   const handleOpenHistory = async (medicine) => {
     setSelectedMedicine(medicine);
     await fetchMedicineHistory(medicine._id);
@@ -220,15 +241,17 @@ function MedicinesPage() {
 
       <div className="row g-4 mt-1">
         <div className="col-lg-8">
+         
           <MedicineList
-            medicines={filteredMedicines}
-            loading={loading}
-            onTakeSlot={handleTakeSlot}
-            onSkipSlot={handleSkipSlot}
-            onViewHistory={handleOpenHistory}
-            onEdit={handleOpenEdit}
-            onRefill={handleOpenRefill}
-          />
+  medicines={filteredMedicines}
+  loading={loading}
+  onViewHistory={handleOpenHistory}
+  onEdit={handleOpenEdit}
+  onRefill={handleOpenRefill}
+  onTake={handleTakeSlot}
+  onSkip={handleSkipSlot}
+  onDelete={handleDeleteMedicine}
+/>
         </div>
 
         <div className="col-lg-4">
