@@ -19,7 +19,7 @@ exports.protect = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded; // attach user info to request
-    console.log("TOKEN USER:", req.User);
+    console.log("TOKEN USER:", req.user);
     // User.findById(req.user.id)
     
     next();

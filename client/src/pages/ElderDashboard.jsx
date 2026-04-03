@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import API from "../services/api";
-import gamesData from "../components/games/gamesData";
+// import gamesData from "../components/games/gamesData";
 import "./ElderDashboard.css";
 
 function ElderDashboard() {
@@ -253,9 +253,29 @@ const handleBookDoctor = (doctor) => {
       setMedicines(medicineRes.data || []);
 
       // Fetch games
-      // const gameRes = await API.get("/games/list");
+      const [gameRes, bestScoresRes] = await Promise.all([
+  API.get("/games/games-list"),
+  API.get("/games/best-scores")
+]);
+
+const gamesData = gameRes.data || [];
+const bestScoresData = bestScoresRes.data || [];
+
+const bestScoreMap = {};
+bestScoresData.forEach((item) => {
+  bestScoreMap[item._id] = item.bestScore;
+});
+
+const mergedGames = gamesData.map((game) => ({
+  ...game,
+  bestScore: bestScoreMap[game._id] || 0
+}));
+
+setGames(mergedGames);
+      // const gameRes = await API.get("/games/games-list");
       // setGames(gameRes.data || []);
-      setGames(gamesData);  // Using static data for now
+      
+      // setGames(gamesData);  // Using static data for now
 
       // Fetch yoga activities
       // const yogaRes = await API.get("/yoga/list");
@@ -273,8 +293,8 @@ const handleBookDoctor = (doctor) => {
       setBookings(bookingRes.data.bookings || []);
 
       // Calculate stats
-      calculateStats(healthRes.data, medicineRes.data,  yogaRes.data, bookingRes.data.bookings, yogaSessions);
-        // gameRes.data, 
+      calculateStats(healthRes.data, medicineRes.data, gameRes.data, yogaRes.data, bookingRes.data.bookings, yogaSessions);
+
       // Initialize chat with greeting
       setChatMessages([
         {
@@ -486,29 +506,41 @@ const handleBookDoctor = (doctor) => {
 
       <div className="dashboard-grid">
         {/* Mind Games */}
+        
         <div className="dashboard-section mind-games">
-          <h3>🎮 Mind Games</h3>
-          {games.length > 0 ? (
-            <div className="games-list">
-              {games.slice(0, 3).map((game, idx) => (
-                <div key={idx} className="game-item">
-                  <div className="game-icon">🎯</div>
-                  <div className="game-content">
-                    <p className="game-name">{game.gameName}</p>
-                    <p className="game-score">Score: {game.score} • Best: 1100</p>
-                  </div>
-                  {/* <button className="play-btn">Play</button> */}
-                  <button className="play-btn" onClick={() => navigate(`/games/${game._id}/play`, { state: { game } })}>
-                    Play
-                  </button>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="no-data">No games available.</p>
-          )}
-          <Link to="/games" className="view-more-btn">View All →</Link>
+  <div className="section-header">
+    <h3>🎮 Mind Games</h3>
+    <span className="section-badge">{games.length} games</span>
+  </div>
+
+  {games.length > 0 ? (
+    <div className="games-list">
+      {games.slice(0, 3).map((game) => (
+        <div key={game._id} className="game-item">
+          <div className="game-icon">{game.icon || "🎯"}</div>
+
+          <div className="game-content">
+            <p className="game-name">{game.gameName}</p>
+            <p className="game-score">
+              {game.category || "Mind Game"} • Best: {game.bestScore || 0}
+            </p>
+          </div>
+
+          <button
+            className="play-btn"
+            onClick={() => navigate(`/games/${game._id}/play`, { state: { game } })}
+          >
+            Play
+          </button>
         </div>
+      ))}
+    </div>
+  ) : (
+    <p className="no-data">No games available.</p>
+  )}
+
+  <Link to="/games" className="view-more-btn">View All →</Link>
+</div>
 
         {/* Yoga & Breathing */}
         <div className="dashboard-section yoga-breathing">
