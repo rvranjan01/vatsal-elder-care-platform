@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import API from "../services/api";
+import gamesData from "../components/games/gamesData";
 import "./ElderDashboard.css";
 
 function ElderDashboard() {
@@ -119,30 +120,6 @@ const fetchDashboardCompanions = async () => {
   }
 };
 
-// const fetchDashboardDoctors = async () => {
-//   try {
-//     setLoadingDoctors(true);
-//     const res = await API.get("/users");
-//     const backendUsers = res.data || [];
-
-//     const doctors = backendUsers
-//       .filter(u => u.role === "doctor" && u.isActive)
-//       .slice(0, 3)
-//       .map((d) => ({
-//         _id: d._id,
-//         name: d.name || "Unknown",
-//         role: d.specialty || "Doctor",
-//         availability: "✓ Available today"
-//       }));
-
-//     setDoctors(doctors);
-//   } catch (error) {
-//     console.error("Error fetching doctors:", error);
-//     setDoctors([]);
-//   } finally {
-//     setLoadingDoctors(false);
-//   }
-// };
 
 const fetchDashboardDoctors = async () => {
   try {
@@ -165,31 +142,6 @@ const fetchDashboardDoctors = async () => {
     setLoadingDoctors(false);
   }
 };
-
-// const fetchDashboardNurses = async () => {
-//   try {
-//     setLoadingNurses(true);
-//     const res = await API.get("/users");
-//     const backendUsers = res.data || [];
-
-//     const nurses = backendUsers
-//       .filter(u => u.role === "nurse" && u.isActive)
-//       .slice(0, 3)
-//       .map((n) => ({
-//         _id: n._id,
-//         name: n.name || "Unknown",
-//         role: n.specialty || "Nurse",
-//         availability: "✓ Available today"
-//       }));
-
-//     setNurses(nurses);
-//   } catch (error) {
-//     console.error("Error fetching nurses:", error);
-//     setNurses([]);
-//   } finally {
-//     setLoadingNurses(false);
-//   }
-// };
 
 
 const fetchDashboardNurses = async () => {
@@ -301,8 +253,9 @@ const handleBookDoctor = (doctor) => {
       setMedicines(medicineRes.data || []);
 
       // Fetch games
-      const gameRes = await API.get("/games/list");
-      setGames(gameRes.data || []);
+      // const gameRes = await API.get("/games/list");
+      // setGames(gameRes.data || []);
+      setGames(gamesData);  // Using static data for now
 
       // Fetch yoga activities
       // const yogaRes = await API.get("/yoga/list");
@@ -320,8 +273,8 @@ const handleBookDoctor = (doctor) => {
       setBookings(bookingRes.data.bookings || []);
 
       // Calculate stats
-      calculateStats(healthRes.data, medicineRes.data, gameRes.data, yogaRes.data, bookingRes.data.bookings, yogaSessions);
-
+      calculateStats(healthRes.data, medicineRes.data,  yogaRes.data, bookingRes.data.bookings, yogaSessions);
+        // gameRes.data, 
       // Initialize chat with greeting
       setChatMessages([
         {
@@ -544,7 +497,10 @@ const handleBookDoctor = (doctor) => {
                     <p className="game-name">{game.gameName}</p>
                     <p className="game-score">Score: {game.score} • Best: 1100</p>
                   </div>
-                  <button className="play-btn">Play</button>
+                  {/* <button className="play-btn">Play</button> */}
+                  <button className="play-btn" onClick={() => navigate(`/games/${game._id}/play`, { state: { game } })}>
+                    Play
+                  </button>
                 </div>
               ))}
             </div>
@@ -579,39 +535,7 @@ const handleBookDoctor = (doctor) => {
 
       <div className="dashboard-grid">
         {/* Local Events */}
-        {/* <div className="dashboard-section local-events">
-          <h3>📍 Local Events</h3>
-          <div className="events-list">
-            <div className="event-item">
-              <div className="event-header">
-                <p className="event-name">Morning Walk Group</p>
-                <span className="event-tag">Health</span>
-              </div>
-              <p className="event-time">📅 Today, 6:30 AM</p>
-              <p className="event-location">📍 Outdoor Park</p>
-              <p className="event-attendance">👥 12 attending</p>
-            </div>
-            <div className="event-item">
-              <div className="event-header">
-                <p className="event-name">Bhajan Sandhya</p>
-                <span className="event-tag">Social</span>
-              </div>
-              <p className="event-time">📅 Tomorrow, 5:00 PM</p>
-              <p className="event-location">📍 Community Hall</p>
-              <p className="event-attendance">👥 30 attending</p>
-            </div>
-            <div className="event-item">
-              <div className="event-header">
-                <p className="event-name">Senior Art Workshop</p>
-                <span className="event-tag">Creative</span>
-              </div>
-              <p className="event-time">📅 Feb 27, 10:00 AM</p>
-              <p className="event-location">📍 Cultural Center</p>
-              <p className="event-attendance">👥 8 attending</p>
-            </div>
-          </div>
-          <Link to="/booking" className="view-more-btn">View All →</Link>
-        </div> */}
+        
 
         <div className="dashboard-section local-events">
   <h3>📍 Local Events</h3>
@@ -646,40 +570,7 @@ const handleBookDoctor = (doctor) => {
 </div>
 
         {/* Book a Companion */}
-        {/* <div className="dashboard-section book-companion">
-          <h3>👥 Book a Companion</h3>
-          <div className="companions-list">
-            <div className="companion-card">
-              <div className="companion-avatar">PS</div>
-              <div className="companion-info">
-                <p className="companion-name">Priya Sharma</p>
-                <p className="companion-role">Healthcare Aide</p>
-                <p className="companion-availability">✓ Available today</p>
-              </div>
-              <button className="book-btn">Book</button>
-            </div>
-            <div className="companion-card">
-              <div className="companion-avatar">RK</div>
-              <div className="companion-info">
-                <p className="companion-name">Rajesh Kumar</p>
-                <p className="companion-role">Outdoor Companion</p>
-                <p className="companion-availability">✓ Available today</p>
-              </div>
-              <button className="book-btn">Book</button>
-            </div>
-            <div className="companion-card">
-              <div className="companion-avatar">MD</div>
-              <div className="companion-info">
-                <p className="companion-name">Meena Devi</p>
-                <p className="companion-role">Activity Partner</p>
-                <p className="companion-availability">✓ Available today</p>
-              </div>
-              <button className="book-btn">Book</button>
-            </div>
-          </div>
-          <Link to="/companions" className="view-more-btn">View All →</Link>
-        </div> */}
-
+      
         <div className="dashboard-section book-companion">
   <h3>👥 Book a Companion</h3>
 
