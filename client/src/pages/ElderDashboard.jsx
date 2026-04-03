@@ -10,6 +10,7 @@ function ElderDashboard() {
   const [userName, setUserName] = useState("");
   const [healthData, setHealthData] = useState([]);
   const [medicines, setMedicines] = useState([]);
+  const [medicineReminders, setMedicineReminders] = useState([]);
   const [games, setGames] = useState([]);
   const [yogaActivities, setYogaActivities] = useState([]);
   const [localEvents, setLocalEvents] = useState([]);
@@ -250,7 +251,11 @@ const handleBookDoctor = (doctor) => {
 
       // Fetch medicines
       const medicineRes = await API.get("/medicines/list");
-      setMedicines(medicineRes.data || []);
+      // setMedicines(medicineRes.data || []);
+      setMedicines(medicineRes.data.medicines || []);
+
+      const reminderRes = await API.get("/medicines/reminders/upcoming");
+      setMedicineReminders(reminderRes.data.reminders || []);
 
       // Fetch games
       const [gameRes, bestScoresRes] = await Promise.all([
@@ -380,7 +385,12 @@ setGames(mergedGames);
           <div className="welcome-text">
             <p className="greeting">Good Afternoon 🙏</p>
             <h2>Welcome back, {userName}!</h2>
-            <p className="health-status">Your health is looking great today. You have 2 medicines pending and 1 event nearby.</p>
+            {/* <p className="health-status">Your health is looking great today. You have 2 medicines pending and 1 event nearby.</p> */}
+            <p className="health-status">
+  Your health is looking great today. You have{" "}
+  {medicineReminders.filter((item) => item.status === "pending").length} medicine
+  reminder(s) pending and {localEvents.length} event(s) nearby.
+</p>
           </div>
         </div>
       </div>
@@ -478,30 +488,58 @@ setGames(mergedGames);
           <Link to="/health" className="view-more-btn">View Details →</Link>
         </div>
 
-        {/* Medicine Reminders */}
-        <div className="dashboard-section medicine-reminders">
-          <div className="section-header">
-            <h3>💊 Medicine Reminders</h3>
-            <span className="section-badge">{medicines.length} medications</span>
+{/* Medicine Reminders */}
+<div className="dashboard-section medicine-reminders">
+  <div className="section-header">
+    <h3>💊 Medicine Reminders</h3>
+    <span className="section-badge">
+      {medicineReminders.filter((item) => item.status === "pending").length} pending
+    </span>
+  </div>
+
+  {medicineReminders.length > 0 ? (
+    <div className="reminder-list">
+      {medicineReminders.slice(0, 4).map((reminder) => (
+        <div key={reminder._id} className="reminder-item">
+          <div className="reminder-icon">
+            {reminder.medicineType === "injection" ? "💉" : "💊"}
           </div>
-          {medicines.length > 0 ? (
-            <div className="reminder-list">
-              {medicines.slice(0, 4).map((med, idx) => (
-                <div key={idx} className="reminder-item">
-                  <div className="reminder-icon">💊</div>
-                  <div className="reminder-content">
-                    <p className="reminder-name">{med.medicineName || "Medicine"}</p>
-                    <p className="reminder-time">{med.dosage || "As prescribed"}, 8:00 AM</p>
-                  </div>
-                  <button className="reminder-btn">Undo</button>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="no-data">No medicines scheduled.</p>
-          )}
-          <Link to="/health" className="view-more-btn">View All →</Link>
+
+          <div className="reminder-content">
+            <p className="reminder-name">{reminder.medicineName}</p>
+            <p className="reminder-time">
+              {reminder.slot} • {reminder.dosage}
+            </p>
+            <p className="reminder-stock">
+              Stock: {reminder.currentStock}/{reminder.initialStock}
+              {reminder.lowStock && (
+                <span className="low-stock-tag ms-2">Low stock</span>
+              )}
+            </p>
+          </div>
+
+          <span
+            className={`reminder-status-badge ${
+              reminder.status === "taken"
+                ? "taken"
+                : reminder.status === "skipped"
+                ? "skipped"
+                : reminder.status === "missed"
+                ? "missed"
+                : "pending"
+            }`}
+          >
+            {reminder.status}
+          </span>
         </div>
+      ))}
+    </div>
+  ) : (
+    <p className="no-data">No medicine reminders for today.</p>
+  )}
+
+  <Link to="/medicines" className="view-more-btn">View All →</Link>
+</div>
       </div>
 
       <div className="dashboard-grid">

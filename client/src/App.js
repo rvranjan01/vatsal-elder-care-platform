@@ -30,6 +30,8 @@ import GamesPage from "./pages/games/GamesPage";
 import GamePlayPage from "./pages/games/GamePlayPage";
 import GameScorePage from "./pages/games/GameScorePage";
 import GameDetailPage from "./pages/games/GameDetailPage";
+
+import MedicinesPage from "./pages/MedicinesPage";
 // .............. 
 import Yoga from "./pages/Yoga";
 import Events from "./pages/Events";
@@ -64,6 +66,7 @@ function App() {
           <Route path="/nurses/:id/book" element={<NurseBooking />} />
           <Route path="/provider-dashboard" element={<ProviderDashboard />} />
           <Route path="/health" element={<Health />} />
+          <Route path="/medicines" element={<MedicinesPage />} />
           {/* <Route path="/games" element={<Games />} /> */}
           <Route path="/games" element={<GamesPage />} />
           <Route path="/games/:gameId" element={<GameDetailPage />} />
