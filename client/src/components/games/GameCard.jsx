@@ -30,7 +30,9 @@ function GameCard({ game, showViewButton = true }) {
         <div className="mt-auto d-flex gap-2 flex-wrap">
           <button
             className="btn btn-primary btn-sm"
-            onClick={() => navigate(`/games/${game._id}/play`, { state: { game } })}
+            onClick={() =>
+              navigate(`/games/${game._id}/play`, { state: { game } })
+            }
           >
             Play
           </button>
@@ -38,7 +40,9 @@ function GameCard({ game, showViewButton = true }) {
           {showViewButton && (
             <button
               className="btn btn-outline-secondary btn-sm"
-              onClick={() => navigate(`/games/${game._id}`, { state: { game } })}
+              onClick={() =>
+                navigate(`/games/${game._id}`, { state: { game } })
+              }
             >
               View Details
             </button>
@@ -46,7 +50,9 @@ function GameCard({ game, showViewButton = true }) {
 
           <button
             className="btn btn-outline-dark btn-sm"
-            onClick={() => navigate(`/games/${game._id}/scores`, { state: { game } })}
+            onClick={() =>
+              navigate(`/games/${game._id}/scores`, { state: { game } })
+            }
           >
             Scores
           </button>

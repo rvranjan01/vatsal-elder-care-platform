@@ -109,7 +109,8 @@ function DoctorBooking() {
         <h2 className="mb-3">Book Doctor</h2>
 
         <div className="alert alert-info">
-          Booking for: <strong>{formData.doctorName}</strong> ({formData.specialty || "General"})
+          Booking for: <strong>{formData.doctorName}</strong> (
+          {formData.specialty || "General"})
         </div>
 
         <form onSubmit={handleSubmit}>

@@ -1,5 +1,3 @@
-
-
 const mongoose = require("mongoose");
 
 const medicineLogSchema = new mongoose.Schema(
@@ -40,7 +38,7 @@ const medicineLogSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("MedicineLog", medicineLogSchema);

@@ -2,11 +2,13 @@ const User = require("../models/user");
 
 exports.getAllNurses = async (req, res) => {
   try {
-    const nurses = await User.find({ role: "nurse", isActive: true }).select("-password");
+    const nurses = await User.find({ role: "nurse", isActive: true }).select(
+      "-password",
+    );
 
     res.status(200).json({
       success: true,
-      nurses
+      nurses,
     });
   } catch (error) {
     console.error("Error fetching nurses:", error);
@@ -19,19 +21,19 @@ exports.getNurseById = async (req, res) => {
     const nurse = await User.findOne({
       _id: req.params.id,
       role: "nurse",
-      isActive: true
+      isActive: true,
     }).select("-password");
 
     if (!nurse) {
       return res.status(404).json({
         success: false,
-        message: "Nurse not found"
+        message: "Nurse not found",
       });
     }
 
     res.status(200).json({
       success: true,
-      nurse
+      nurse,
     });
   } catch (error) {
     console.error("Error fetching nurse profile:", error);

@@ -2,15 +2,28 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 
-
 exports.registerUser = async (req, res) => {
   try {
     console.log("Incoming body:", req.body);
 
-    const { name, email, password, role, username, elderUsername, elderUsernames, specialty, experience, certifications, licenseNumber } = req.body || {};
+    const {
+      name,
+      email,
+      password,
+      role,
+      username,
+      elderUsername,
+      elderUsernames,
+      specialty,
+      experience,
+      certifications,
+      licenseNumber,
+    } = req.body || {};
 
     if (!name || !email || !password) {
-      return res.status(400).json({ message: "Name, email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Name, email and password are required" });
     }
 
     const existingUser = await User.findOne({ email });
@@ -21,7 +34,9 @@ exports.registerUser = async (req, res) => {
     // Validate elder username for elder role
     if (role === "elder") {
       if (!username) {
-        return res.status(400).json({ message: "Username is required for elder registration" });
+        return res
+          .status(400)
+          .json({ message: "Username is required for elder registration" });
       }
 
       const existingUsername = await User.findOne({ username });
@@ -38,13 +53,20 @@ exports.registerUser = async (req, res) => {
       if (elderUsername) usernames.push(elderUsername);
 
       if (usernames.length === 0) {
-        return res.status(400).json({ message: "At least one elder username is required for family registration" });
+        return res
+          .status(400)
+          .json({
+            message:
+              "At least one elder username is required for family registration",
+          });
       }
 
       for (const u of usernames) {
         const mapped = await User.findOne({ username: u, role: "elder" });
         if (!mapped) {
-          return res.status(400).json({ message: `Invalid elder username: ${u}` });
+          return res
+            .status(400)
+            .json({ message: `Invalid elder username: ${u}` });
         }
         elderIds.push(mapped._id);
       }
@@ -64,7 +86,7 @@ exports.registerUser = async (req, res) => {
       password: hashedPassword,
       role: role || "elder",
       elderIds: role === "family" ? elderIds : [],
-      isActive: isProvider ? false : true
+      isActive: isProvider ? false : true,
     };
 
     // only add username property when registering an elder; leave it undefined otherwise
@@ -88,15 +110,14 @@ exports.registerUser = async (req, res) => {
         id: user._id,
         name: user.name,
         role: user.role,
-        isActive: user.isActive
-      }
+        isActive: user.isActive,
+      },
     });
   } catch (error) {
     console.error("Register error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
-
 
 exports.loginUser = async (req, res) => {
   try {
@@ -109,7 +130,9 @@ exports.loginUser = async (req, res) => {
 
     // If account is not active (pending admin approval)
     if (user.isActive === false) {
-      return res.status(403).json({ message: "Account is pending activation by admin" });
+      return res
+        .status(403)
+        .json({ message: "Account is pending activation by admin" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -120,7 +143,7 @@ exports.loginUser = async (req, res) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
 
     res.status(200).json({
@@ -130,10 +153,9 @@ exports.loginUser = async (req, res) => {
         id: user._id,
         name: user.name,
         role: user.role,
-        isActive: user.isActive
-      }
+        isActive: user.isActive,
+      },
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -143,16 +165,14 @@ exports.loginUser = async (req, res) => {
 // Return current user info (protected route)
 exports.getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password').populate({
-      path: 'elderIds',
-      select: 'name username role _id'
+    const user = await User.findById(req.user.id).select("-password").populate({
+      path: "elderIds",
+      select: "name username role _id",
     });
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) return res.status(404).json({ message: "User not found" });
     res.status(200).json({ user });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
-
-

@@ -38,14 +38,12 @@ function CompanionDashboard() {
       const all = allRes.data.bookings || [];
       setAllBookings(all);
 
-      const companionBookings = all
-  .filter(
-    (b) =>
-      b.serviceType === "Companion" &&
-      b.confirmationStatus !== "Rejected"
-  );
+      const companionBookings = all.filter(
+        (b) =>
+          b.serviceType === "Companion" && b.confirmationStatus !== "Rejected",
+      );
 
-setAllBookings(companionBookings);
+      setAllBookings(companionBookings);
       // setConfirmedBookings(confirmed);
     } catch (err) {
       console.error("Error fetching bookings:", err);
@@ -131,15 +129,23 @@ setAllBookings(companionBookings);
       {activeTab === "pending" && (
         <div className="row g-3">
           {pendingBookings.length === 0 ? (
-            <div className="alert alert-info">No pending requests available.</div>
+            <div className="alert alert-info">
+              No pending requests available.
+            </div>
           ) : (
             pendingBookings.map((b) => (
               <div key={b._id} className="col-md-6 col-lg-4">
                 <div className="card border-warning">
                   <div className="card-body">
-                    <p><strong>Elder:</strong> {b.elderName}</p>
-                    <p><strong>Service:</strong> {b.serviceType}</p>
-                    <p><strong>Date:</strong> {formatDate(b.appointmentDate)}</p>
+                    <p>
+                      <strong>Elder:</strong> {b.elderName}
+                    </p>
+                    <p>
+                      <strong>Service:</strong> {b.serviceType}
+                    </p>
+                    <p>
+                      <strong>Date:</strong> {formatDate(b.appointmentDate)}
+                    </p>
 
                     <button
                       className="btn btn-success btn-sm me-2"
@@ -171,9 +177,15 @@ setAllBookings(companionBookings);
               <div key={b._id} className="col-md-6 col-lg-4">
                 <div className="card border-success">
                   <div className="card-body">
-                    <p><strong>Elder:</strong> {b.elderName}</p>
-                    <p><strong>Status:</strong> Accepted</p>
-                    <p><strong>Date:</strong> {formatDate(b.appointmentDate)}</p>
+                    <p>
+                      <strong>Elder:</strong> {b.elderName}
+                    </p>
+                    <p>
+                      <strong>Status:</strong> Accepted
+                    </p>
+                    <p>
+                      <strong>Date:</strong> {formatDate(b.appointmentDate)}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -182,14 +194,13 @@ setAllBookings(companionBookings);
         </div>
       )}
 
-      {/* {activeTab === "all" && (
+      {activeTab === "all" && (
         <div className="table-responsive">
           <table className="table table-bordered table-striped">
             <thead className="table-dark">
               <tr>
                 <th>#</th>
                 <th>Elder</th>
-                <th>Service</th>
                 <th>Date</th>
                 <th>Status</th>
                 <th>Confirmation</th>
@@ -200,7 +211,6 @@ setAllBookings(companionBookings);
                 <tr key={b._id}>
                   <td>{index + 1}</td>
                   <td>{b.elderName}</td>
-                  <td>{b.serviceType}</td>
                   <td>{formatDate(b.appointmentDate)}</td>
                   <td>
                     <span
@@ -208,8 +218,8 @@ setAllBookings(companionBookings);
                         b.status === "Confirmed"
                           ? "bg-success"
                           : b.status === "Cancelled"
-                          ? "bg-danger"
-                          : "bg-warning text-dark"
+                            ? "bg-danger"
+                            : "bg-warning text-dark"
                       }`}
                     >
                       {b.status}
@@ -221,8 +231,8 @@ setAllBookings(companionBookings);
                         b.confirmationStatus === "Confirmed"
                           ? "bg-success"
                           : b.confirmationStatus === "Rejected"
-                          ? "bg-danger"
-                          : "bg-secondary"
+                            ? "bg-danger"
+                            : "bg-secondary"
                       }`}
                     >
                       {b.confirmationStatus}
@@ -233,58 +243,7 @@ setAllBookings(companionBookings);
             </tbody>
           </table>
         </div>
-      )} */}
-
-      {activeTab === "all" && (
-  <div className="table-responsive">
-    <table className="table table-bordered table-striped">
-      <thead className="table-dark">
-        <tr>
-          <th>#</th>
-          <th>Elder</th>
-          <th>Date</th>
-          <th>Status</th>
-          <th>Confirmation</th>
-        </tr>
-      </thead>
-      <tbody>
-        {allBookings.map((b, index) => (
-          <tr key={b._id}>
-            <td>{index + 1}</td>
-            <td>{b.elderName}</td>
-            <td>{formatDate(b.appointmentDate)}</td>
-            <td>
-              <span
-                className={`badge ${
-                  b.status === "Confirmed"
-                    ? "bg-success"
-                    : b.status === "Cancelled"
-                    ? "bg-danger"
-                    : "bg-warning text-dark"
-                }`}
-              >
-                {b.status}
-              </span>
-            </td>
-            <td>
-              <span
-                className={`badge ${
-                  b.confirmationStatus === "Confirmed"
-                    ? "bg-success"
-                    : b.confirmationStatus === "Rejected"
-                    ? "bg-danger"
-                    : "bg-secondary"
-                }`}
-              >
-                {b.confirmationStatus}
-              </span>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-)}
+      )}
 
       {activeTab === "profile" && <CompanionProfile />}
 

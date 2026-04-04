@@ -3,7 +3,6 @@ import API from "../services/api";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Health.css";
 
-
 function Health() {
   const [healthData, setHealthData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +11,7 @@ function Health() {
   const [formData, setFormData] = useState({
     bloodPressure: "",
     sugarLevel: "",
-    notes: ""
+    notes: "",
   });
 
   const [elders, setElders] = useState([]);
@@ -33,7 +32,8 @@ function Health() {
       setLoading(true);
       const res = await API.get("/auth/me");
       const user = res.data.user;
-      const linked = user.elderIds && Array.isArray(user.elderIds) ? user.elderIds : [];
+      const linked =
+        user.elderIds && Array.isArray(user.elderIds) ? user.elderIds : [];
       setElders(linked);
       if (linked.length > 0) {
         const id = linked[0]._id || linked[0].id;
@@ -73,7 +73,7 @@ function Health() {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -112,7 +112,9 @@ function Health() {
       {/* elder selector for family users */}
       {role === "family" && elders.length > 0 && (
         <div className="mb-3">
-          <label className="form-label me-2"><strong>Select Elder:</strong></label>
+          <label className="form-label me-2">
+            <strong>Select Elder:</strong>
+          </label>
           <select
             className="form-select w-auto d-inline"
             value={selectedElder}

@@ -1,6 +1,3 @@
-
-// ...................... NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
 import { useState, useEffect } from "react";
 import API from "../services/api";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,7 +13,7 @@ function Yoga() {
     exerciseTitle: "",
     date: new Date().toISOString().split("T")[0],
     duration: "",
-    notes: ""
+    notes: "",
   });
 
   // Admin: add new yoga pose
@@ -24,7 +21,7 @@ function Yoga() {
     title: "",
     description: "",
     duration: "",
-    benefits: ""
+    benefits: "",
   });
 
   const role = localStorage.getItem("role");
@@ -38,7 +35,7 @@ function Yoga() {
         "Stand with feet hip-width apart. Press all four corners of your feet into the ground. Lengthen your spine, relax your shoulders, and let your arms hang at your sides with palms facing forward.",
       duration: "5-10 mins",
       benefits:
-        "Improves posture, strengthens legs, reduces anxiety, increases balance and body awareness. Great for core stability."
+        "Improves posture, strengthens legs, reduces anxiety, increases balance and body awareness. Great for core stability.",
     },
     {
       _id: "pose2",
@@ -47,7 +44,7 @@ function Yoga() {
         "Lie on your stomach with legs extended. Place hands under shoulders. Press into your hands and lift your chest off the ground. Keep your elbows close to your ribs. Hold and breathe deeply.",
       duration: "3-5 mins",
       benefits:
-        "Strengthens the back, stretches chest and shoulders, improves flexibility, and opens the heart. Aids digestion."
+        "Strengthens the back, stretches chest and shoulders, improves flexibility, and opens the heart. Aids digestion.",
     },
     {
       _id: "pose3",
@@ -56,7 +53,7 @@ function Yoga() {
         "Stand on one leg. Place the sole of your other foot on your inner thigh (or calf if you're just starting). Bring your palms together in front of your heart or raise them overhead. Balance for 30 seconds each side.",
       duration: "2-5 mins",
       benefits:
-        "Enhances balance, strengthens legs and core, improves focus and concentration, calms the mind."
+        "Enhances balance, strengthens legs and core, improves focus and concentration, calms the mind.",
     },
     {
       _id: "pose4",
@@ -65,7 +62,7 @@ function Yoga() {
         "Sit with legs extended. Bend one knee and place that foot outside the opposite leg. Twist gently towards the bent knee. Hold for 20-30 seconds. Repeat on the other side.",
       duration: "3-5 mins",
       benefits:
-        "Stretches spine and back muscles, improves digestion, reduces lower back tension, and increases spinal mobility."
+        "Stretches spine and back muscles, improves digestion, reduces lower back tension, and increases spinal mobility.",
     },
     {
       _id: "pose5",
@@ -74,7 +71,7 @@ function Yoga() {
         "Kneel on the floor. Bring your big toes together and spread your knees apart. Fold forward and rest your forehead on a pillow if needed. Let your arms relax naturally.",
       duration: "5-10 mins",
       benefits:
-        "Calms the nervous system, stretches the back, reduces stress and anxiety. Great for relaxation and recovery."
+        "Calms the nervous system, stretches the back, reduces stress and anxiety. Great for relaxation and recovery.",
     },
     {
       _id: "pose6",
@@ -83,8 +80,8 @@ function Yoga() {
         "Start on hands and knees. Spread fingers wide and press palms into the ground. Curl your toes under and lift your hips high. Head should hang freely between your arms. Hold for 5-10 breaths.",
       duration: "5-15 mins",
       benefits:
-        "Strengthens arms and shoulders, stretches hamstrings and calves, improves blood circulation, and calms the mind."
-    }
+        "Strengthens arms and shoulders, stretches hamstrings and calves, improves blood circulation, and calms the mind.",
+    },
   ];
 
   const displayExercises =
@@ -101,7 +98,7 @@ function Yoga() {
       setLoading(true);
       // const res = await API.get("/yoga/list");
       const res = await API.get("/yoga/list");
-      const list = res.data || res || [];  // Handle both response formats
+      const list = res.data || res || []; // Handle both response formats
       setYogaExercises(list);
       // const list = res.data || [];
       setYogaExercises(list);
@@ -131,13 +128,12 @@ function Yoga() {
         exerciseId: session.exerciseId,
         date: session.date,
         duration: session.duration,
-        notes: session.notes
+        notes: session.notes,
       }));
       setCompletedSessions(backendSessions);
     } catch (err) {
       console.log("Backend sessions unavailable, loading from localStorage");
-      const sessions =
-        JSON.parse(localStorage.getItem("yogaSessions")) || [];
+      const sessions = JSON.parse(localStorage.getItem("yogaSessions")) || [];
       setCompletedSessions(sessions);
     }
   };
@@ -154,9 +150,8 @@ function Yoga() {
       exerciseId: selectedExercise._id,
       exerciseTitle: selectedExercise.title,
       date: sessionForm.date,
-      duration:
-        sessionForm.duration || selectedExercise.duration || "30 mins",
-      notes: sessionForm.notes
+      duration: sessionForm.duration || selectedExercise.duration || "30 mins",
+      notes: sessionForm.notes,
     };
 
     try {
@@ -166,7 +161,7 @@ function Yoga() {
       const localSession = {
         id: Date.now(),
         ...sessionData,
-        date: new Date().toLocaleString()
+        date: new Date().toLocaleString(),
       };
       const updated = [localSession, ...completedSessions];
       setCompletedSessions(updated);
@@ -177,7 +172,7 @@ function Yoga() {
         exerciseTitle: "",
         date: new Date().toISOString().split("T")[0],
         duration: "",
-        notes: ""
+        notes: "",
       });
     } catch (err) {
       console.error("Backend save failed:", err);
@@ -189,7 +184,7 @@ function Yoga() {
         date: new Date().toLocaleString(),
         duration:
           sessionForm.duration || selectedExercise.duration || "30 mins",
-        notes: sessionForm.notes
+        notes: sessionForm.notes,
       };
       const updated = [localSession, ...completedSessions];
       setCompletedSessions(updated);
@@ -214,7 +209,7 @@ function Yoga() {
         month: "short",
         day: "numeric",
         hour: "2-digit",
-        minute: "2-digit"
+        minute: "2-digit",
       });
     } catch {
       return dateStr;
@@ -244,7 +239,7 @@ function Yoga() {
         title: "",
         description: "",
         duration: "",
-        benefits: ""
+        benefits: "",
       });
 
       alert("Yoga pose added to backend successfully");
@@ -308,7 +303,7 @@ function Yoga() {
                       onChange={(e) =>
                         setNewPose({
                           ...newPose,
-                          description: e.target.value
+                          description: e.target.value,
                         })
                       }
                       placeholder="How to perform the pose..."
@@ -429,7 +424,7 @@ function Yoga() {
                           onChange={(e) =>
                             setSessionForm({
                               ...sessionForm,
-                              date: e.target.value
+                              date: e.target.value,
                             })
                           }
                         />
@@ -444,7 +439,7 @@ function Yoga() {
                           onChange={(e) =>
                             setSessionForm({
                               ...sessionForm,
-                              duration: e.target.value
+                              duration: e.target.value,
                             })
                           }
                         />
@@ -459,7 +454,7 @@ function Yoga() {
                         onChange={(e) =>
                           setSessionForm({
                             ...sessionForm,
-                            notes: e.target.value
+                            notes: e.target.value,
                           })
                         }
                         rows="3"

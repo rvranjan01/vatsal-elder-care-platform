@@ -5,7 +5,6 @@ import "./AdminDashboard.css";
 import YogaExercisesTab from "../components/Admin/YogaExercisesTab";
 import LocalEventsTab from "../components/Admin/LocalEventsTab";
 
-
 function AdminDashboard() {
   const [pendingProviders, setPendingProviders] = useState([]);
   const [activeProviders, setActiveProviders] = useState([]);
@@ -17,7 +16,6 @@ function AdminDashboard() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [yogaExercises, setYogaExercises] = useState([]);
   const [localEvents, setLocalEvents] = useState([]);
-
 
   useEffect(() => {
     fetchData();
@@ -56,7 +54,7 @@ function AdminDashboard() {
       // Get signups by role
       const signupsRes = await API.get("/admin/signups");
       const signups = signupsRes.data.signups || [];
-      
+
       // After signups fetch, add:
       const yogaRes = await API.get("/admin/yoga-exercises");
       setYogaExercises(yogaRes.data.exercises || []);
@@ -68,17 +66,17 @@ function AdminDashboard() {
       const grouped = {
         doctor: [],
         companion: [],
-        nurse: []
+        nurse: [],
       };
-      
-      signups.forEach(user => {
+
+      signups.forEach((user) => {
         if (grouped.hasOwnProperty(user.role)) {
           grouped[user.role].push(user);
         }
       });
-      
+
       setSignupsByRole(grouped);
-      
+
       console.log("Pending providers:", pendingRes.data);
       console.log("Active providers:", activeRes.data);
       console.log("Signups by role:", grouped);
@@ -117,7 +115,11 @@ function AdminDashboard() {
   const formatDate = (dateStr) => {
     if (!dateStr) return "N/A";
     const date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   };
 
   return (
@@ -135,7 +137,9 @@ function AdminDashboard() {
           onClick={() => setActiveTab("pending")}
           role="tab"
         >
-          <span className="badge bg-danger me-2">{pendingProviders.length}</span>
+          <span className="badge bg-danger me-2">
+            {pendingProviders.length}
+          </span>
           Pending Activation
         </button>
         <button
@@ -143,7 +147,9 @@ function AdminDashboard() {
           onClick={() => setActiveTab("active")}
           role="tab"
         >
-          <span className="badge bg-success me-2">{activeProviders.length}</span>
+          <span className="badge bg-success me-2">
+            {activeProviders.length}
+          </span>
           Active Providers
         </button>
         <button
@@ -152,7 +158,9 @@ function AdminDashboard() {
           role="tab"
         >
           <span className="badge bg-warning text-dark me-2">
-            {(signupsByRole.doctor?.length || 0) + (signupsByRole.companion?.length || 0) + (signupsByRole.nurse?.length || 0)}
+            {(signupsByRole.doctor?.length || 0) +
+              (signupsByRole.companion?.length || 0) +
+              (signupsByRole.nurse?.length || 0)}
           </span>
           All Signups
         </button>
@@ -161,18 +169,17 @@ function AdminDashboard() {
           className={`nav-link ${activeTab === "yoga" ? "active" : ""}`}
           onClick={() => setActiveTab("yoga")}
         >
-        <span className="badge bg-info me-2">{yogaExercises.length}</span>
+          <span className="badge bg-info me-2">{yogaExercises.length}</span>
           Yoga Exercises
         </button>
 
         <button
-        className={`nav-link ${activeTab === "events" ? "active" : ""}`}
-        onClick={() => setActiveTab("events")}
+          className={`nav-link ${activeTab === "events" ? "active" : ""}`}
+          onClick={() => setActiveTab("events")}
         >
-        <span className="badge bg-primary me-2">{localEvents.length}</span>
+          <span className="badge bg-primary me-2">{localEvents.length}</span>
           Local Events
         </button>
-
       </div>
 
       {/* Pending Activation Tab */}
@@ -202,7 +209,8 @@ function AdminDashboard() {
                       <td>{provider.email}</td>
                       <td>
                         <span className="badge bg-secondary">
-                          {provider.role.charAt(0).toUpperCase() + provider.role.slice(1)}
+                          {provider.role.charAt(0).toUpperCase() +
+                            provider.role.slice(1)}
                         </span>
                       </td>
                       <td>{formatDate(provider.createdAt)}</td>
@@ -251,16 +259,19 @@ function AdminDashboard() {
                     <div className="card-header bg-success text-white d-flex justify-content-between align-items-center">
                       <h6 className="mb-0">{provider.name}</h6>
                       <span className="badge bg-light text-dark">
-                        {provider.role.charAt(0).toUpperCase() + provider.role.slice(1)}
+                        {provider.role.charAt(0).toUpperCase() +
+                          provider.role.slice(1)}
                       </span>
                     </div>
                     <div className="card-body">
                       <p className="mb-2">
-                        <strong>Email:</strong><br />
+                        <strong>Email:</strong>
+                        <br />
                         <small>{provider.email}</small>
                       </p>
                       <p className="mb-2">
-                        <strong>Activated:</strong><br />
+                        <strong>Activated:</strong>
+                        <br />
                         <small>{formatDate(provider.updatedAt)}</small>
                       </p>
                       <p className="mb-3">
@@ -305,7 +316,8 @@ function AdminDashboard() {
           {/* Doctors Section */}
           <div className="mb-4">
             <h6 className="text-primary mb-3">
-              <i className="bi bi-person-check"></i> Doctors ({signupsByRole.doctor?.length || 0})
+              <i className="bi bi-person-check"></i> Doctors (
+              {signupsByRole.doctor?.length || 0})
             </h6>
             {signupsByRole.doctor?.length === 0 ? (
               <p className="text-muted">No doctor signups yet.</p>
@@ -326,7 +338,9 @@ function AdminDashboard() {
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>
-                          <span className={`badge ${user.isActive ? "bg-success" : "bg-warning text-dark"}`}>
+                          <span
+                            className={`badge ${user.isActive ? "bg-success" : "bg-warning text-dark"}`}
+                          >
                             {user.isActive ? "Active" : "Pending"}
                           </span>
                         </td>
@@ -342,7 +356,8 @@ function AdminDashboard() {
           {/* Companions Section */}
           <div className="mb-4">
             <h6 className="text-success mb-3">
-              <i className="bi bi-person-hands-raised"></i> Companions/Caregivers ({signupsByRole.companion?.length || 0})
+              <i className="bi bi-person-hands-raised"></i>{" "}
+              Companions/Caregivers ({signupsByRole.companion?.length || 0})
             </h6>
             {signupsByRole.companion?.length === 0 ? (
               <p className="text-muted">No companion signups yet.</p>
@@ -363,7 +378,9 @@ function AdminDashboard() {
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>
-                          <span className={`badge ${user.isActive ? "bg-success" : "bg-warning text-dark"}`}>
+                          <span
+                            className={`badge ${user.isActive ? "bg-success" : "bg-warning text-dark"}`}
+                          >
                             {user.isActive ? "Active" : "Pending"}
                           </span>
                         </td>
@@ -379,7 +396,8 @@ function AdminDashboard() {
           {/* Nurses Section */}
           <div className="mb-4">
             <h6 className="text-danger mb-3">
-              <i className="bi bi-hospital"></i> Nurses ({signupsByRole.nurse?.length || 0})
+              <i className="bi bi-hospital"></i> Nurses (
+              {signupsByRole.nurse?.length || 0})
             </h6>
             {signupsByRole.nurse?.length === 0 ? (
               <p className="text-muted">No nurse signups yet.</p>
@@ -400,7 +418,9 @@ function AdminDashboard() {
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>
-                          <span className={`badge ${user.isActive ? "bg-success" : "bg-warning text-dark"}`}>
+                          <span
+                            className={`badge ${user.isActive ? "bg-success" : "bg-warning text-dark"}`}
+                          >
                             {user.isActive ? "Active" : "Pending"}
                           </span>
                         </td>
@@ -416,39 +436,38 @@ function AdminDashboard() {
       )}
       {/* Yoga Exercises Tab  */}
       {activeTab === "yoga" && (
-      <YogaExercisesTab 
-       yogaExercises={yogaExercises} 
-      onRefresh={fetchData} 
-      />
+        <YogaExercisesTab yogaExercises={yogaExercises} onRefresh={fetchData} />
       )}
 
       {activeTab === "events" && (
-      <LocalEventsTab 
-        localEvents={localEvents} 
-      onRefresh={fetchData} 
-      />
+        <LocalEventsTab localEvents={localEvents} onRefresh={fetchData} />
       )}
-
 
       {/* Confirmation Modal */}
       {confirmAction && selectedProvider && (
         <div className="ad-modal-backdrop">
           <div className="ad-modal">
             <h5 className="modal-title mb-3">
-              {confirmAction === "activate" ? "Activate Provider" : "Deactivate Provider"}
+              {confirmAction === "activate"
+                ? "Activate Provider"
+                : "Deactivate Provider"}
             </h5>
             <p className="text-muted">
               {confirmAction === "activate" ? (
                 <>
-                  You are about to <strong>activate</strong> <strong>{selectedProvider.name}</strong> ({selectedProvider.role}
+                  You are about to <strong>activate</strong>{" "}
+                  <strong>{selectedProvider.name}</strong> (
+                  {selectedProvider.role}
                   ).
                   <br />
-                  They will receive a notification email and can start accepting bookings.
+                  They will receive a notification email and can start accepting
+                  bookings.
                 </>
               ) : (
                 <>
-                  You are about to <strong>deactivate</strong> <strong>{selectedProvider.name}</strong>. They will not be able to login or accept
-                  bookings.
+                  You are about to <strong>deactivate</strong>{" "}
+                  <strong>{selectedProvider.name}</strong>. They will not be
+                  able to login or accept bookings.
                 </>
               )}
             </p>
@@ -485,15 +504,46 @@ function AdminDashboard() {
         <div className="ad-modal-backdrop">
           <div className="ad-modal">
             <h5 className="modal-title mb-3">Provider Profile</h5>
-            <p><strong>Name:</strong> {selectedProvider.name}</p>
-            <p><strong>Email:</strong> {selectedProvider.email}</p>
-            <p><strong>Role:</strong> {selectedProvider.role}</p>
-            {selectedProvider.specialty && <p><strong>Specialty:</strong> {selectedProvider.specialty}</p>}
-            {selectedProvider.experience && <p><strong>Experience:</strong> {selectedProvider.experience}</p>}
-            {selectedProvider.certifications && <p><strong>Certifications:</strong> {selectedProvider.certifications}</p>}
-            {selectedProvider.licenseNumber && <p><strong>License:</strong> {selectedProvider.licenseNumber}</p>}
+            <p>
+              <strong>Name:</strong> {selectedProvider.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {selectedProvider.email}
+            </p>
+            <p>
+              <strong>Role:</strong> {selectedProvider.role}
+            </p>
+            {selectedProvider.specialty && (
+              <p>
+                <strong>Specialty:</strong> {selectedProvider.specialty}
+              </p>
+            )}
+            {selectedProvider.experience && (
+              <p>
+                <strong>Experience:</strong> {selectedProvider.experience}
+              </p>
+            )}
+            {selectedProvider.certifications && (
+              <p>
+                <strong>Certifications:</strong>{" "}
+                {selectedProvider.certifications}
+              </p>
+            )}
+            {selectedProvider.licenseNumber && (
+              <p>
+                <strong>License:</strong> {selectedProvider.licenseNumber}
+              </p>
+            )}
             <div className="d-flex gap-2 mt-3">
-              <button className="btn btn-primary flex-grow-1" onClick={() => { setShowProfileModal(false); setSelectedProvider(null); }}>Close</button>
+              <button
+                className="btn btn-primary flex-grow-1"
+                onClick={() => {
+                  setShowProfileModal(false);
+                  setSelectedProvider(null);
+                }}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>

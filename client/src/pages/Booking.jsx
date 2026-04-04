@@ -19,7 +19,7 @@ function Booking() {
     reason: "",
     medicalHistory: "",
     currentMedications: "",
-    notes: ""
+    notes: "",
   });
 
   // Fetch bookings on component mount
@@ -44,7 +44,7 @@ function Booking() {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -52,7 +52,12 @@ function Booking() {
     e.preventDefault();
 
     // Validation
-    if (!formData.elderName || !formData.doctorName || !formData.appointmentDate || !formData.reason) {
+    if (
+      !formData.elderName ||
+      !formData.doctorName ||
+      !formData.appointmentDate ||
+      !formData.reason
+    ) {
       alert("Please fill in all required fields");
       return;
     }
@@ -71,7 +76,7 @@ function Booking() {
         reason: "",
         medicalHistory: "",
         currentMedications: "",
-        notes: ""
+        notes: "",
       });
       setIsCreating(false);
     } catch (error) {
@@ -81,7 +86,7 @@ function Booking() {
   };
 
   const handleUpdateBooking = async (id) => {
-    const booking = bookings.find(b => b._id === id);
+    const booking = bookings.find((b) => b._id === id);
     if (!booking) return;
 
     try {
@@ -95,10 +100,10 @@ function Booking() {
         reason: booking.reason,
         medicalHistory: booking.medicalHistory,
         currentMedications: booking.currentMedications,
-        notes: booking.notes
+        notes: booking.notes,
       });
-      
-      setBookings(bookings.map(b => b._id === id ? res.data.booking : b));
+
+      setBookings(bookings.map((b) => (b._id === id ? res.data.booking : b)));
       setEditingId(null);
       alert("Booking updated successfully!");
     } catch (error) {
@@ -114,7 +119,9 @@ function Booking() {
 
     try {
       await API.delete(`/bookings/cancel/${id}`);
-      setBookings(bookings.map(b => b._id === id ? { ...b, status: "Cancelled" } : b));
+      setBookings(
+        bookings.map((b) => (b._id === id ? { ...b, status: "Cancelled" } : b)),
+      );
       alert("Booking cancelled successfully!");
     } catch (error) {
       console.error("Error cancelling booking:", error);
@@ -129,7 +136,7 @@ function Booking() {
 
     try {
       await API.delete(`/bookings/${id}`);
-      setBookings(bookings.filter(b => b._id !== id));
+      setBookings(bookings.filter((b) => b._id !== id));
       alert("Booking deleted successfully!");
     } catch (error) {
       console.error("Error deleting booking:", error);
@@ -139,10 +146,10 @@ function Booking() {
 
   const getStatusBadge = (status) => {
     const statusColors = {
-      "Pending": "badge-warning",
-      "Confirmed": "badge-success",
-      "Completed": "badge-info",
-      "Cancelled": "badge-danger"
+      Pending: "badge-warning",
+      Confirmed: "badge-success",
+      Completed: "badge-info",
+      Cancelled: "badge-danger",
     };
     return statusColors[status] || "badge-secondary";
   };
@@ -151,7 +158,7 @@ function Booking() {
     return new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
-      day: "numeric"
+      day: "numeric",
     });
   };
 
@@ -218,7 +225,9 @@ function Booking() {
                     onChange={handleInputChange}
                     required
                   >
-                    <option value="General Practitioner">General Practitioner</option>
+                    <option value="General Practitioner">
+                      General Practitioner
+                    </option>
                     <option value="Cardiologist">Cardiologist</option>
                     <option value="Orthopedist">Orthopedist</option>
                     <option value="Neurologist">Neurologist</option>
@@ -347,14 +356,18 @@ function Booking() {
         {loading ? (
           <p className="text-center text-muted">Loading bookings...</p>
         ) : bookings.length === 0 ? (
-          <p className="text-center text-muted">No bookings yet. Create one to get started!</p>
+          <p className="text-center text-muted">
+            No bookings yet. Create one to get started!
+          </p>
         ) : (
           <div className="row">
             {bookings.map((booking) => (
               <div key={booking._id} className="col-md-6 mb-3">
                 <div className="card h-100">
                   <div className="card-header d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">{booking.doctorName} - {booking.specialty}</h5>
+                    <h5 className="mb-0">
+                      {booking.doctorName} - {booking.specialty}
+                    </h5>
                     <span className={`badge ${getStatusBadge(booking.status)}`}>
                       {booking.status}
                     </span>
@@ -375,8 +388,10 @@ function Booking() {
                             onChange={(e) =>
                               setBookings(
                                 bookings.map((b) =>
-                                  b._id === booking._id ? { ...b, elderName: e.target.value } : b
-                                )
+                                  b._id === booking._id
+                                    ? { ...b, elderName: e.target.value }
+                                    : b,
+                                ),
                               )
                             }
                             placeholder="Elder Name"
@@ -388,8 +403,10 @@ function Booking() {
                             onChange={(e) =>
                               setBookings(
                                 bookings.map((b) =>
-                                  b._id === booking._id ? { ...b, reason: e.target.value } : b
-                                )
+                                  b._id === booking._id
+                                    ? { ...b, reason: e.target.value }
+                                    : b,
+                                ),
                               )
                             }
                             placeholder="Reason"
@@ -401,8 +418,10 @@ function Booking() {
                             onChange={(e) =>
                               setBookings(
                                 bookings.map((b) =>
-                                  b._id === booking._id ? { ...b, appointmentDate: e.target.value } : b
-                                )
+                                  b._id === booking._id
+                                    ? { ...b, appointmentDate: e.target.value }
+                                    : b,
+                                ),
                               )
                             }
                           />
@@ -412,8 +431,10 @@ function Booking() {
                             onChange={(e) =>
                               setBookings(
                                 bookings.map((b) =>
-                                  b._id === booking._id ? { ...b, timeSlot: e.target.value } : b
-                                )
+                                  b._id === booking._id
+                                    ? { ...b, timeSlot: e.target.value }
+                                    : b,
+                                ),
                               )
                             }
                           >
@@ -446,7 +467,8 @@ function Booking() {
                           <strong>Elder:</strong> {booking.elderName}
                         </p>
                         <p className="mb-1">
-                          <strong>Date:</strong> {formatDate(booking.appointmentDate)}
+                          <strong>Date:</strong>{" "}
+                          {formatDate(booking.appointmentDate)}
                         </p>
                         <p className="mb-1">
                           <strong>Time:</strong> {booking.timeSlot}
@@ -459,12 +481,14 @@ function Booking() {
                         </p>
                         {booking.medicalHistory && (
                           <p className="mb-1 text-muted small">
-                            <strong>Medical History:</strong> {booking.medicalHistory}
+                            <strong>Medical History:</strong>{" "}
+                            {booking.medicalHistory}
                           </p>
                         )}
                         {booking.currentMedications && (
                           <p className="mb-1 text-muted small">
-                            <strong>Medications:</strong> {booking.currentMedications}
+                            <strong>Medications:</strong>{" "}
+                            {booking.currentMedications}
                           </p>
                         )}
                         {booking.notes && (
@@ -476,23 +500,24 @@ function Booking() {
                     )}
                   </div>
                   <div className="card-footer bg-light">
-                    {booking.status !== "Completed" && booking.status !== "Cancelled" && (
-                      <>
-                        <button
-                          className="btn btn-sm btn-warning me-2"
-                          onClick={() => setEditingId(booking._id)}
-                          disabled={editingId !== null}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="btn btn-sm btn-danger me-2"
-                          onClick={() => handleCancelBooking(booking._id)}
-                        >
-                          Cancel
-                        </button>
-                      </>
-                    )}
+                    {booking.status !== "Completed" &&
+                      booking.status !== "Cancelled" && (
+                        <>
+                          <button
+                            className="btn btn-sm btn-warning me-2"
+                            onClick={() => setEditingId(booking._id)}
+                            disabled={editingId !== null}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn btn-sm btn-danger me-2"
+                            onClick={() => handleCancelBooking(booking._id)}
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      )}
                     <button
                       className="btn btn-sm btn-outline-danger"
                       onClick={() => handleDeleteBooking(booking._id)}

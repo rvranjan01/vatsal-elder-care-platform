@@ -18,7 +18,7 @@ function NursesList() {
       experience: "5 years",
       specialty: "Home Care Nurse",
       address: "Bengaluru",
-      bio: "Experienced in elder home care and daily health support."
+      bio: "Experienced in elder home care and daily health support.",
     },
     {
       _id: "dummy2",
@@ -30,8 +30,8 @@ function NursesList() {
       experience: "7 years",
       specialty: "Medication Support Nurse",
       address: "Bengaluru",
-      bio: "Specialized in medication routines and patient support."
-    }
+      bio: "Specialized in medication routines and patient support.",
+    },
   ];
 
   useEffect(() => {
@@ -70,9 +70,16 @@ function NursesList() {
             <div className="card h-100 shadow-sm">
               <div className="card-body">
                 <h5>{nurse.name}</h5>
-                <p><strong>Specialty:</strong> {nurse.specialty || "General care"}</p>
-                <p><strong>Experience:</strong> {nurse.experience || "N/A"}</p>
-                <p><strong>Location:</strong> {nurse.address || "N/A"}</p>
+                <p>
+                  <strong>Specialty:</strong>{" "}
+                  {nurse.specialty || "General care"}
+                </p>
+                <p>
+                  <strong>Experience:</strong> {nurse.experience || "N/A"}
+                </p>
+                <p>
+                  <strong>Location:</strong> {nurse.address || "N/A"}
+                </p>
 
                 <div className="d-flex gap-2 mt-3">
                   <Link
@@ -87,7 +94,7 @@ function NursesList() {
                     className="btn btn-primary btn-sm"
                     onClick={() =>
                       navigate(`/nurses/${nurse._id}/book`, {
-                        state: { nurse }
+                        state: { nurse },
                       })
                     }
                   >

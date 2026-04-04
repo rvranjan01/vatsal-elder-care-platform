@@ -11,8 +11,6 @@ function ViewCompanionProfile() {
   const [companion, setCompanion] = useState(location.state?.companion || null);
   const [loading, setLoading] = useState(!location.state?.companion);
 
-
-
   const dummyProfiles = {
     dummy1: {
       _id: "dummy1",
@@ -23,7 +21,7 @@ function ViewCompanionProfile() {
       certifications: "Senior Care, First Aid",
       licenseNumber: "N/A",
       bio: "Friendly and experienced companion for emotional support and daily assistance.",
-      address: "Bengaluru"
+      address: "Bengaluru",
     },
     dummy2: {
       _id: "dummy2",
@@ -34,8 +32,8 @@ function ViewCompanionProfile() {
       certifications: "Basic Caregiving",
       licenseNumber: "N/A",
       bio: "Reliable companion experienced in mobility assistance and home visits.",
-      address: "Bengaluru"
-    }
+      address: "Bengaluru",
+    },
   };
 
   useEffect(() => {
@@ -113,7 +111,7 @@ function ViewCompanionProfile() {
             disabled={isDummy}
             onClick={() =>
               navigate(`/companions/${companion._id}/book`, {
-                state: { companion }
+                state: { companion },
               })
             }
           >

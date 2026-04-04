@@ -1,21 +1,3 @@
-// const express = require("express");
-// const {
-//   addGameScore,
-//   getGameHistory
-// } = require("../controllers/gameController");
-// const { protect, authorize } = require("../middleware/authMiddleware");
-
-// const router = express.Router();
-
-// // Elder submits game score
-// router.post("/add", protect, authorize("elder"), addGameScore);
-
-// // Elder & Family view game history
-// router.get("/list", protect, authorize("elder", "family"), getGameHistory);
-
-// module.exports = router;
-
-
 const express = require("express");
 const {
   addGameScore,
@@ -24,7 +6,7 @@ const {
   getGameById,
   getGameScoresByGameId,
   getMyBestScores,
-  getTriviaQuestions
+  getTriviaQuestions,
 } = require("../controllers/gameController");
 const { protect, authorize } = require("../middleware/authMiddleware");
 
@@ -48,6 +30,11 @@ router.get("/list/:gameId", protect, authorize("elder"), getGameScoresByGameId);
 // Elder views best scores summary
 router.get("/best-scores", protect, authorize("elder"), getMyBestScores);
 
-router.get("/trivia-questions", protect, authorize("elder"), getTriviaQuestions);
+router.get(
+  "/trivia-questions",
+  protect,
+  authorize("elder"),
+  getTriviaQuestions,
+);
 
 module.exports = router;

@@ -1,71 +1,74 @@
-  const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-  const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     name: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     email: {
       type: String,
       required: true,
       unique: true,
-      lowercase: true
+      lowercase: true,
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
     role: {
       type: String,
       enum: ["elder", "family", "doctor", "companion", "nurse", "admin"],
-      required: true
+      required: true,
     },
     username: {
       type: String,
       trim: true,
       unique: true,
       sparse: true,
-      required: function() {
-        return this.role === 'elder';
-      }
+      required: function () {
+        return this.role === "elder";
+      },
     },
     // For families: link to one or more elder accounts
     elderIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-      }
+        ref: "User",
+      },
     ],
     // Provider metadata
     specialty: {
       type: String,
       trim: true,
-      default: null
+      default: null,
     },
     experience: {
       type: String,
       trim: true,
-      default: null
+      default: null,
     },
     certifications: {
       type: String,
       trim: true,
-      default: null
+      default: null,
     },
     licenseNumber: {
       type: String,
       trim: true,
-      default: null
+      default: null,
     },
     // Account activation (providers need admin approval)
     isActive: {
       type: Boolean,
-      default: true
-    }
-  }, { timestamps: true });
+      default: true,
+    },
+  },
+  { timestamps: true },
+);
 
-  // make sure the unique index only applies to documents where username is a string
-  // userSchema.index({ username: 1 }, { unique: true, partialFilterExpression: { username: { $type: 'string' } } });
+// make sure the unique index only applies to documents where username is a string
+// userSchema.index({ username: 1 }, { unique: true, partialFilterExpression: { username: { $type: 'string' } } });
 
-  module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("User", userSchema);

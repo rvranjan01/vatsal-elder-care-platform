@@ -4,61 +4,10 @@ const User = require("../models/user");
 // Create a new booking
 exports.createBooking = async (req, res) => {
   try {
-    const { elderId, elderName, serviceType, doctorName, specialty, consultationType, appointmentDate, timeSlot, reason, medicalHistory, currentMedications, notes } = req.body;
-
-    // Determine the elder for whom the booking is created
-    let targetElder = elderId;
-    if (req.user.role === 'elder') targetElder = req.user.id;
-
-    if (!targetElder) {
-      return res.status(400).json({ message: 'Elder ID is required' });
-    }
-
-    // If the requester is family, ensure the elder is linked to them
-    if (req.user.role === 'family') {
-      const user = await require('../models/user').findById(req.user.id);
-      const linked = (user.elderIds && user.elderIds.map(String).includes(String(targetElder))) || (user.elderId && String(user.elderId) === String(targetElder));
-      if (!linked) return res.status(403).json({ message: "Not authorized to book for this elder" });
-    }
-
-    // Basic validation based on service type
-    // if (serviceType === 'Doctor') {
-    //   if (!doctorName || !specialty || !consultationType || !appointmentDate || !timeSlot || !reason) {
-    //     return res.status(400).json({ message: 'Please provide all required fields for doctor appointment' });
-    //   }
-    //   if (new Date(appointmentDate) < new Date()) return res.status(400).json({ message: 'Appointment date must be in the future' });
-    // }
-    if (serviceType === 'Doctor') {
-  // Only these fields are truly required; others can be empty
-  if (!doctorName || !consultationType || !appointmentDate || !timeSlot || !reason) {
-    return res.status(400).json({ message: 'Please provide all required fields for doctor appointment' });
-  }
-
-  // Still require future date
-  if (new Date(appointmentDate) < new Date()) {
-    return res.status(400).json({ message: 'Appointment date must be in the future' });
-  }
-
-  // You can also normalize empty optional fields here if you like:
-  // specialty = specialty || "";
-  // medicalHistory = medicalHistory || "";
-  // currentMedications = currentMedications || "";
-  // notes = notes || "";
-}
-    else if (serviceType === 'Companion') {
-      if (!appointmentDate || !timeSlot) return res.status(400).json({ message: 'Please provide date and time for companion booking' });
-      if (new Date(appointmentDate) < new Date()) return res.status(400).json({ message: 'Appointment date must be in the future' });
-    } else if (serviceType === 'Event') {
-      if (!appointmentDate) return res.status(400).json({ message: 'Event date is required' });
-    }
-
-    console.log("Creating booking with user:", req.user?.id);
-    console.log("Creating booking with elder:", targetElder);
-    const booking = await Booking.create({
-      user: req.user.id,
-      elder: targetElder,
-      elderName: elderName || undefined,
-      serviceType: serviceType || 'Doctor',
+    const {
+      elderId,
+      elderName,
+      serviceType,
       doctorName,
       specialty,
       consultationType,
@@ -67,31 +16,117 @@ exports.createBooking = async (req, res) => {
       reason,
       medicalHistory,
       currentMedications,
-      notes
+      notes,
+    } = req.body;
+
+    // Determine the elder for whom the booking is created
+    let targetElder = elderId;
+    if (req.user.role === "elder") targetElder = req.user.id;
+
+    if (!targetElder) {
+      return res.status(400).json({ message: "Elder ID is required" });
+    }
+
+    // If the requester is family, ensure the elder is linked to them
+    if (req.user.role === "family") {
+      const user = await require("../models/user").findById(req.user.id);
+      const linked =
+        (user.elderIds &&
+          user.elderIds.map(String).includes(String(targetElder))) ||
+        (user.elderId && String(user.elderId) === String(targetElder));
+      if (!linked)
+        return res
+          .status(403)
+          .json({ message: "Not authorized to book for this elder" });
+    }
+
+    // Basic validation based on service type
+
+    if (serviceType === "Doctor") {
+      // Only these fields are truly required; others can be empty
+      if (
+        !doctorName ||
+        !consultationType ||
+        !appointmentDate ||
+        !timeSlot ||
+        !reason
+      ) {
+        return res
+          .status(400)
+          .json({
+            message:
+              "Please provide all required fields for doctor appointment",
+          });
+      }
+
+      // Still require future date
+      if (new Date(appointmentDate) < new Date()) {
+        return res
+          .status(400)
+          .json({ message: "Appointment date must be in the future" });
+      }
+
+      // You can also normalize empty optional fields here if you like:
+      // specialty = specialty || "";
+      // medicalHistory = medicalHistory || "";
+      // currentMedications = currentMedications || "";
+      // notes = notes || "";
+    } else if (serviceType === "Companion") {
+      if (!appointmentDate || !timeSlot)
+        return res
+          .status(400)
+          .json({
+            message: "Please provide date and time for companion booking",
+          });
+      if (new Date(appointmentDate) < new Date())
+        return res
+          .status(400)
+          .json({ message: "Appointment date must be in the future" });
+    } else if (serviceType === "Event") {
+      if (!appointmentDate)
+        return res.status(400).json({ message: "Event date is required" });
+    }
+
+    console.log("Creating booking with user:", req.user?.id);
+    console.log("Creating booking with elder:", targetElder);
+    const booking = await Booking.create({
+      user: req.user.id,
+      elder: targetElder,
+      elderName: elderName || undefined,
+      serviceType: serviceType || "Doctor",
+      doctorName,
+      specialty,
+      consultationType,
+      appointmentDate,
+      timeSlot,
+      reason,
+      medicalHistory,
+      currentMedications,
+      notes,
     });
 
     // Emit socket event for new booking
     try {
-      const io = req.app.get('io');
+      const io = req.app.get("io");
       if (io) {
-        io.emit('bookingCreated', {
+        io.emit("bookingCreated", {
           bookingId: booking._id,
           user: req.user.id,
           elder: booking.elder,
           serviceType: booking.serviceType,
           appointmentDate: booking.appointmentDate,
           timeSlot: booking.timeSlot,
-          createdAt: booking.createdAt
+          createdAt: booking.createdAt,
         });
       }
     } catch (e) {
-      console.error('Socket emit error (bookingCreated):', e);
+      console.error("Socket emit error (bookingCreated):", e);
     }
 
-    res.status(201).json({ message: 'Booking created successfully', booking });
+    res.status(201).json({ message: "Booking created successfully", booking });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -101,40 +136,58 @@ exports.getMyBookings = async (req, res) => {
     let bookings;
 
     // If elder requests -> return bookings where elder == user
-    if (req.user.role === 'elder') {
-      bookings = await Booking.find({ elder: req.user.id }).sort({ appointmentDate: 1 });
-    } else if (req.user.role === 'family') {
+    if (req.user.role === "elder") {
+      bookings = await Booking.find({ elder: req.user.id }).sort({
+        appointmentDate: 1,
+      });
+    } else if (req.user.role === "family") {
       // If family passes elderId as query param, return bookings for that elder (ensure linked)
       const elderId = req.query.elderId;
       if (elderId) {
-        const user = await require('../models/user').findById(req.user.id);
-        const linked = (user.elderIds && user.elderIds.map(String).includes(String(elderId))) || (user.elderId && String(user.elderId) === String(elderId));
-        if (!linked) return res.status(403).json({ message: 'Not authorized to view this elder bookings' });
-        bookings = await Booking.find({ elder: elderId }).sort({ appointmentDate: 1 });
+        const user = await require("../models/user").findById(req.user.id);
+        const linked =
+          (user.elderIds &&
+            user.elderIds.map(String).includes(String(elderId))) ||
+          (user.elderId && String(user.elderId) === String(elderId));
+        if (!linked)
+          return res
+            .status(403)
+            .json({ message: "Not authorized to view this elder bookings" });
+        bookings = await Booking.find({ elder: elderId }).sort({
+          appointmentDate: 1,
+        });
       } else {
         // otherwise return bookings created by the family user
-        bookings = await Booking.find({ user: req.user.id }).sort({ appointmentDate: 1 });
+        bookings = await Booking.find({ user: req.user.id }).sort({
+          appointmentDate: 1,
+        });
       }
     } else {
       // other roles -> return bookings created by them
-      bookings = await Booking.find({ user: req.user.id }).sort({ appointmentDate: 1 });
+      bookings = await Booking.find({ user: req.user.id }).sort({
+        appointmentDate: 1,
+      });
     }
 
-    res.status(200).json({ message: 'Bookings retrieved successfully', bookings });
+    res
+      .status(200)
+      .json({ message: "Bookings retrieved successfully", bookings });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
 // Get all bookings (admin/view purpose)
 exports.getAllBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find().populate("user", "name email").sort({ appointmentDate: 1 });
+    const bookings = await Booking.find()
+      .populate("user", "name email")
+      .sort({ appointmentDate: 1 });
 
     res.status(200).json({
       message: "All bookings retrieved successfully",
-      bookings
+      bookings,
     });
   } catch (error) {
     console.error(error);
@@ -145,7 +198,10 @@ exports.getAllBookings = async (req, res) => {
 // Get a single booking by ID
 exports.getBookingById = async (req, res) => {
   try {
-    const booking = await Booking.findById(req.params.id).populate("user", "name email");
+    const booking = await Booking.findById(req.params.id).populate(
+      "user",
+      "name email",
+    );
 
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
@@ -153,12 +209,14 @@ exports.getBookingById = async (req, res) => {
 
     // Only allow user to view their own booking
     if (booking.user._id.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Not authorized to view this booking" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to view this booking" });
     }
 
     res.status(200).json({
       message: "Booking retrieved successfully",
-      booking
+      booking,
     });
   } catch (error) {
     console.error(error);
@@ -177,22 +235,26 @@ exports.updateBooking = async (req, res) => {
 
     // Only allow user to update their own booking
     if (booking.user.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Not authorized to update this booking" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to update this booking" });
     }
 
     // Don't allow updating completed or cancelled bookings
     if (booking.status === "Completed" || booking.status === "Cancelled") {
-      return res.status(400).json({ message: `Cannot update ${booking.status} booking` });
+      return res
+        .status(400)
+        .json({ message: `Cannot update ${booking.status} booking` });
     }
 
     booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     res.status(200).json({
       message: "Booking updated successfully",
-      booking
+      booking,
     });
   } catch (error) {
     console.error(error);
@@ -211,11 +273,15 @@ exports.cancelBooking = async (req, res) => {
 
     // Only allow user to cancel their own booking
     if (booking.user.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Not authorized to cancel this booking" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to cancel this booking" });
     }
 
     if (booking.status === "Completed" || booking.status === "Cancelled") {
-      return res.status(400).json({ message: `Cannot cancel ${booking.status} booking` });
+      return res
+        .status(400)
+        .json({ message: `Cannot cancel ${booking.status} booking` });
     }
 
     booking.status = "Cancelled";
@@ -223,7 +289,7 @@ exports.cancelBooking = async (req, res) => {
 
     res.status(200).json({
       message: "Booking cancelled successfully",
-      booking
+      booking,
     });
   } catch (error) {
     console.error(error);
@@ -242,13 +308,15 @@ exports.deleteBooking = async (req, res) => {
 
     // Only allow user to delete their own booking
     if (booking.user.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Not authorized to delete this booking" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this booking" });
     }
 
     await Booking.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
-      message: "Booking deleted successfully"
+      message: "Booking deleted successfully",
     });
   } catch (error) {
     console.error(error);
@@ -261,20 +329,24 @@ exports.getPendingBookingsForProvider = async (req, res) => {
   try {
     const providerRoles = ["doctor", "companion", "nurse"];
     if (!providerRoles.includes(req.user.role)) {
-      return res.status(403).json({ message: "Only providers can access this" });
+      return res
+        .status(403)
+        .json({ message: "Only providers can access this" });
     }
 
     let query = {
-  confirmationStatus: "Waiting",
-  serviceType:
-    req.user.role === "doctor"
-      ? "Doctor"
-      : req.user.role === "nurse"
-      ? "Nurse"
-      : "Companion"
-};
+      confirmationStatus: "Waiting",
+      serviceType:
+        req.user.role === "doctor"
+          ? "Doctor"
+          : req.user.role === "nurse"
+            ? "Nurse"
+            : "Companion",
+    };
 
-    const bookings = await Booking.find(query).populate('elder', 'name username').sort({ appointmentDate: 1 });
+    const bookings = await Booking.find(query)
+      .populate("elder", "name username")
+      .sort({ appointmentDate: 1 });
     res.status(200).json({ bookings });
   } catch (error) {
     console.error(error);
@@ -292,7 +364,9 @@ exports.confirmBooking = async (req, res) => {
 
     const providerRoles = ["doctor", "companion", "nurse"];
     if (!providerRoles.includes(req.user.role)) {
-      return res.status(403).json({ message: "Only providers can confirm bookings" });
+      return res
+        .status(403)
+        .json({ message: "Only providers can confirm bookings" });
     }
 
     booking.confirmationStatus = "Confirmed";
@@ -302,24 +376,26 @@ exports.confirmBooking = async (req, res) => {
 
     // Emit socket event for booking confirmation
     try {
-      const io = req.app.get('io');
+      const io = req.app.get("io");
       if (io) {
-        io.emit('bookingConfirmed', {
+        io.emit("bookingConfirmed", {
           bookingId: booking._id,
           confirmedBy: req.user.id,
           elder: booking.elder,
           serviceType: booking.serviceType,
-          confirmedAt: booking.updatedAt || new Date()
+          confirmedAt: booking.updatedAt || new Date(),
         });
       }
     } catch (e) {
-      console.error('Socket emit error (bookingConfirmed):', e);
+      console.error("Socket emit error (bookingConfirmed):", e);
     }
 
     const { sendBookingConfirmedEmail } = require("../services/emailService");
     // Send confirmation email to family (would need booking creator's email)
-    
-    res.status(200).json({ message: "Booking confirmed successfully", booking });
+
+    res
+      .status(200)
+      .json({ message: "Booking confirmed successfully", booking });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -337,7 +413,9 @@ exports.rejectBooking = async (req, res) => {
 
     const providerRoles = ["doctor", "companion", "nurse"];
     if (!providerRoles.includes(req.user.role)) {
-      return res.status(403).json({ message: "Only providers can reject bookings" });
+      return res
+        .status(403)
+        .json({ message: "Only providers can reject bookings" });
     }
 
     booking.confirmationStatus = "Rejected";
@@ -346,21 +424,21 @@ exports.rejectBooking = async (req, res) => {
 
     // Emit socket event for booking rejection
     try {
-      const io = req.app.get('io');
+      const io = req.app.get("io");
       if (io) {
-        io.emit('bookingRejected', {
+        io.emit("bookingRejected", {
           bookingId: booking._id,
           elder: booking.elder,
           serviceType: booking.serviceType,
-          rejectedAt: booking.updatedAt || new Date()
+          rejectedAt: booking.updatedAt || new Date(),
         });
       }
     } catch (e) {
-      console.error('Socket emit error (bookingRejected):', e);
+      console.error("Socket emit error (bookingRejected):", e);
     }
 
     // Send rejection email to family
-    
+
     res.status(200).json({ message: "Booking rejected successfully", booking });
   } catch (error) {
     console.error(error);
@@ -368,146 +446,20 @@ exports.rejectBooking = async (req, res) => {
   }
 };
 
-
-
-
-// companion booking controller
-// exports.bookCompanion = async (req, res) => {
-//   try {
-//     const {
-//       companionId,
-//       elderName,
-//       elderAge,
-//       appointmentDate,
-//       timeSlot,
-//       address,
-//       notes
-//     } = req.body;
-
-//     const companion = await User.findOne({
-//       _id: companionId,
-//       role: "companion"
-//     });
-
-//     if (!companion) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Companion not found"
-//       });
-//     }
-
-//     const booking = new Booking({
-//       user: req.user.id,
-//       providerId: companion._id,
-//       elderName,
-//       elderAge,
-//       appointmentDate,
-//       timeSlot,
-//       address,
-//       notes,
-//       serviceType: "Companion",
-//       status: "Pending",
-//       confirmationStatus: "Waiting"
-//     });
-
-//     await booking.save();
-
-//     res.status(201).json({
-//       success: true,
-//       message: "Companion booking created successfully",
-//       booking
-//     });
-//   } catch (error) {
-//     console.error("Error booking companion:", error);
-//     res.status(500).json({
-//       success: false,
-//       message: "Server error while booking companion"
-//     });
-//   }
-// };
-
-// exports.bookCompanion = async (req, res) => {
-//   try {
-//     const {
-//       companionId,
-//       elderName,
-//       elderAge,
-//       appointmentDate,
-//       timeSlot,
-//       address,
-//       notes
-//     } = req.body;
-
-//     if (!companionId || !appointmentDate || !timeSlot) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Companion, appointment date, and time slot are required"
-//       });
-//     }
-
-//     const companion = await User.findOne({
-//       _id: companionId,
-//       role: "companion"
-//     });
-
-//     if (!companion) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Companion not found"
-//       });
-//     }
-
-//     const booking = new Booking({
-//       user: req.user.id,
-//       elder: req.user.id,
-//       elderName,
-//       serviceType: "Companion",
-//       appointmentDate,
-//       timeSlot,
-//       notes,
-//       status: "Pending",
-//       confirmationStatus: "Waiting"
-//     });
-
-//     if (elderAge !== undefined) booking.elderAge = elderAge;
-//     if (address !== undefined) booking.address = address;
-//     if (companionId !== undefined) booking.providerId = companion._id;
-
-//     await booking.save();
-
-//     res.status(201).json({
-//       success: true,
-//       message: "Companion booking created successfully",
-//       booking
-//     });
-//   } catch (error) {
-//     console.error("Error booking companion:", error);
-//     res.status(500).json({
-//       success: false,
-//       message: error.message || "Server error while booking companion"
-//     });
-//   }
-// };
-
 exports.bookCompanion = async (req, res) => {
   try {
-    const {
-      companionId,
-      elderName,
-      appointmentDate,
-      timeSlot,
-      notes
-    } = req.body;
+    const { companionId, elderName, appointmentDate, timeSlot, notes } =
+      req.body;
 
     const companion = await User.findOne({
       _id: companionId,
-      role: "companion"
+      role: "companion",
     });
 
     if (!companion) {
       return res.status(404).json({
         success: false,
-        message: "Companion not found"
+        message: "Companion not found",
       });
     }
 
@@ -520,7 +472,7 @@ exports.bookCompanion = async (req, res) => {
       timeSlot,
       notes,
       status: "Pending",
-      confirmationStatus: "Waiting"
+      confirmationStatus: "Waiting",
     });
 
     await booking.save();
@@ -528,66 +480,16 @@ exports.bookCompanion = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Companion booking created successfully",
-      booking
+      booking,
     });
   } catch (error) {
     console.error("Error booking companion:", error);
     res.status(500).json({
       success: false,
-      message: error.message || "Server error while booking companion"
+      message: error.message || "Server error while booking companion",
     });
   }
 };
-
-// exports.bookNurse = async (req, res) => {
-//   try {
-//     const {
-//       nurseId,
-//       elderName,
-//       elderAge,
-//       appointmentDate,
-//       timeSlot,
-//       address,
-//       careType,
-//       medicalNeeds,
-//       notes,
-//     } = req.body;
-
-//     if (!nurseId || !elderName || !appointmentDate || !timeSlot || !address || !careType || !medicalNeeds) {
-//       return res.status(400).json({ message: "Please fill all required nurse booking fields" });
-//     }
-
-//     const nurse = await User.findById(nurseId);
-//     if (!nurse || nurse.role !== "nurse") {
-//       return res.status(404).json({ message: "Nurse not found" });
-//     }
-
-//     const booking = await Booking.create({
-//       elderId: req.user._id,
-//       nurseId,
-//       nurseName: nurse.name,
-//       elderName,
-//       elderAge,
-//       serviceType: "Nurse",
-//       appointmentDate,
-//       timeSlot,
-//       address,
-//       careType,
-//       medicalNeeds,
-//       notes,
-//       status: "Pending",
-//     });
-
-//     res.status(201).json({
-//       success: true,
-//       message: "Nurse booking created successfully",
-//       booking,
-//     });
-//   } catch (error) {
-//     console.error("Book nurse error:", error);
-//     res.status(500).json({ message: "Server error while booking nurse" });
-//   }
-// };
 
 exports.bookNurse = async (req, res) => {
   try {
@@ -603,8 +505,18 @@ exports.bookNurse = async (req, res) => {
       notes,
     } = req.body;
 
-    if (!nurseId || !elderName || !appointmentDate || !timeSlot || !address || !careType || !medicalNeeds) {
-      return res.status(400).json({ message: "Please fill all required nurse booking fields" });
+    if (
+      !nurseId ||
+      !elderName ||
+      !appointmentDate ||
+      !timeSlot ||
+      !address ||
+      !careType ||
+      !medicalNeeds
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Please fill all required nurse booking fields" });
     }
 
     const nurse = await User.findById(nurseId);
@@ -625,7 +537,7 @@ exports.bookNurse = async (req, res) => {
       medicalNeeds,
       notes,
       status: "Pending",
-      confirmationStatus: "Waiting"
+      confirmationStatus: "Waiting",
     });
 
     res.status(201).json({

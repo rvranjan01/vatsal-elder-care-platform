@@ -19,10 +19,10 @@ function DoctorsList() {
       experience: "15 years",
       specialty: "General Physician",
       address: "Bengaluru",
-      bio: "Experienced general physician with elder care specialization."
+      bio: "Experienced general physician with elder care specialization.",
     },
     {
-      _id: "dummy2", 
+      _id: "dummy2",
       name: "Dr. Sneha Reddy",
       email: "sneha@example.com",
       phone: "9123456780",
@@ -31,8 +31,8 @@ function DoctorsList() {
       experience: "12 years",
       specialty: "Cardiologist",
       address: "Bengaluru",
-      bio: "Heart specialist with extensive geriatric experience."
-    }
+      bio: "Heart specialist with extensive geriatric experience.",
+    },
   ];
 
   useEffect(() => {
@@ -64,17 +64,24 @@ function DoctorsList() {
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Available Doctors</h2>
-      
+
       <div className="row">
         {doctors.map((doctor) => (
           <div key={doctor._id} className="col-md-6 col-lg-4 mb-4">
             <div className="card h-100 shadow-sm">
               <div className="card-body">
                 <h5 className="card-title">{doctor.name}</h5>
-                <p><strong>Specialty:</strong> {doctor.specialty || "General Medicine"}</p>
-                <p><strong>Experience:</strong> {doctor.experience || "N/A"}</p>
-                <p><strong>Location:</strong> {doctor.address || "N/A"}</p>
-                
+                <p>
+                  <strong>Specialty:</strong>{" "}
+                  {doctor.specialty || "General Medicine"}
+                </p>
+                <p>
+                  <strong>Experience:</strong> {doctor.experience || "N/A"}
+                </p>
+                <p>
+                  <strong>Location:</strong> {doctor.address || "N/A"}
+                </p>
+
                 <div className="d-flex gap-2 mt-3">
                   <Link
                     to={`/doctors/${doctor._id}`}
@@ -83,12 +90,12 @@ function DoctorsList() {
                   >
                     View Profile
                   </Link>
-                  
+
                   <button
                     className="btn btn-primary btn-sm"
                     onClick={() =>
                       navigate(`/doctors/${doctor._id}/book`, {
-                        state: { doctor }
+                        state: { doctor },
                       })
                     }
                   >

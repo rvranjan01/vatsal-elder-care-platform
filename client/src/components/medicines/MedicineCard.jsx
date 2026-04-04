@@ -1,5 +1,3 @@
-
-
 function MedicineCard({
   medicine,
   onViewHistory,
@@ -8,7 +6,7 @@ function MedicineCard({
   onTake,
   onSkip,
   onDelete,
-}){
+}) {
   const {
     _id,
     medicineName,
@@ -108,7 +106,9 @@ function MedicineCard({
 
               return (
                 <div className="col-md-4" key={slot}>
-                  <div className={`slot-card ${getSlotStatusClass(slotStatus)}`}>
+                  <div
+                    className={`slot-card ${getSlotStatusClass(slotStatus)}`}
+                  >
                     <div className="d-flex justify-content-between align-items-center mb-2">
                       <strong>{slot}</strong>
                       <span className="slot-status-text text-capitalize">
@@ -119,7 +119,9 @@ function MedicineCard({
                     <div className="d-flex gap-2 flex-wrap">
                       <button
                         className="btn btn-success btn-sm"
-                        disabled={slotStatus === "taken" || Number(currentStock) <= 0}
+                        disabled={
+                          slotStatus === "taken" || Number(currentStock) <= 0
+                        }
                         onClick={() => onTake(_id, slot)}
                       >
                         Take
@@ -162,8 +164,8 @@ function MedicineCard({
             Refill Stock
           </button>
           <button className="btn btn-delete" onClick={() => onDelete(medicine)}>
-    Delete
-  </button>
+            Delete
+          </button>
         </div>
       </div>
     </div>

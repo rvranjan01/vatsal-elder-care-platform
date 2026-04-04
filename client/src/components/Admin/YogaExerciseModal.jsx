@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import API from '../../services/api';
+import React, { useState, useEffect } from "react";
+import API from "../../services/api";
 
 const YogaExerciseModal = ({ exercise, onClose, onSave }) => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    duration: '',
-    difficulty: 'beginner',
-    category: 'stretching',
-    benefits: '',
-    instructions: ''
+    title: "",
+    description: "",
+    duration: "",
+    difficulty: "beginner",
+    category: "stretching",
+    benefits: "",
+    instructions: "",
   });
 
   useEffect(() => {
     if (exercise) {
       setFormData({
-        title: exercise.title || '',
-        description: exercise.description || '',
-        duration: exercise.duration || '',
-        difficulty: exercise.difficulty || 'beginner',
-        category: exercise.category || 'stretching',
-        benefits: exercise.benefits?.join(', ') || '',
-        instructions: exercise.instructions?.join(', ') || ''
+        title: exercise.title || "",
+        description: exercise.description || "",
+        duration: exercise.duration || "",
+        difficulty: exercise.difficulty || "beginner",
+        category: exercise.category || "stretching",
+        benefits: exercise.benefits?.join(", ") || "",
+        instructions: exercise.instructions?.join(", ") || "",
       });
     }
   }, [exercise]);
@@ -32,19 +32,23 @@ const YogaExerciseModal = ({ exercise, onClose, onSave }) => {
       if (exercise) {
         await API.put(`/admin/yoga-exercises/${exercise._id}`, formData);
       } else {
-        await API.post('/admin/yoga-exercises', formData);
+        await API.post("/admin/yoga-exercises", formData);
       }
       onSave();
       onClose();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to save exercise');
+      alert(err.response?.data?.message || "Failed to save exercise");
     }
   };
 
   return (
     <div className="ad-modal-backdrop" onClick={onClose}>
-      <div className="ad-modal" style={{ maxWidth: '600px' }} onClick={(e) => e.stopPropagation()}>
-        <h5>{exercise ? 'Edit Exercise' : 'Add New Exercise'}</h5>
+      <div
+        className="ad-modal"
+        style={{ maxWidth: "600px" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h5>{exercise ? "Edit Exercise" : "Add New Exercise"}</h5>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Title *</label>
@@ -52,18 +56,22 @@ const YogaExerciseModal = ({ exercise, onClose, onSave }) => {
               type="text"
               className="form-control"
               value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
               required
             />
           </div>
-          
+
           <div className="mb-3">
             <label className="form-label">Description *</label>
             <textarea
               className="form-control"
               rows="3"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               required
             />
           </div>
@@ -75,7 +83,9 @@ const YogaExerciseModal = ({ exercise, onClose, onSave }) => {
                 type="number"
                 className="form-control"
                 value={formData.duration}
-                onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, duration: e.target.value })
+                }
                 min="1"
                 max="60"
                 required
@@ -86,7 +96,9 @@ const YogaExerciseModal = ({ exercise, onClose, onSave }) => {
               <select
                 className="form-select"
                 value={formData.difficulty}
-                onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, difficulty: e.target.value })
+                }
               >
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
@@ -98,7 +110,9 @@ const YogaExerciseModal = ({ exercise, onClose, onSave }) => {
               <select
                 className="form-select"
                 value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, category: e.target.value })
+                }
               >
                 <option value="stretching">Stretching</option>
                 <option value="strength">Strength</option>
@@ -115,7 +129,9 @@ const YogaExerciseModal = ({ exercise, onClose, onSave }) => {
               type="text"
               className="form-control"
               value={formData.benefits}
-              onChange={(e) => setFormData({ ...formData, benefits: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, benefits: e.target.value })
+              }
               placeholder="improves flexibility, reduces stress, better posture"
             />
           </div>
@@ -126,14 +142,16 @@ const YogaExerciseModal = ({ exercise, onClose, onSave }) => {
               className="form-control"
               rows="3"
               value={formData.instructions}
-              onChange={(e) => setFormData({ ...formData, instructions: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, instructions: e.target.value })
+              }
               placeholder="Inhale deeply, Hold for 5 seconds, Exhale slowly"
             />
           </div>
 
           <div className="d-flex gap-2 mt-4">
             <button type="submit" className="btn btn-success flex-grow-1">
-              {exercise ? 'Update Exercise' : 'Add Exercise'}
+              {exercise ? "Update Exercise" : "Add Exercise"}
             </button>
             <button
               type="button"

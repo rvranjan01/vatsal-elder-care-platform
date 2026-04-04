@@ -21,52 +21,52 @@ function ElderDashboard() {
   const [companions, setCompanions] = useState([]);
   const [loadingCompanions, setLoadingCompanions] = useState(true);
 
-    const [doctors, setDoctors] = useState([]);
+  const [doctors, setDoctors] = useState([]);
   const [loadingDoctors, setLoadingDoctors] = useState(false);
 
   const [nurses, setNurses] = useState([]);
   const [loadingNurses, setLoadingNurses] = useState(false);
 
   const dummyCompanions = [
-  {
-    _id: "dummy1",
-    name: "Priya Sharma",
-    role: "Healthcare Aide",
-    availability: "✓ Available today"
-  },
-  {
-    _id: "dummy2",
-    name: "Rajesh Kumar",
-    role: "Outdoor Companion",
-    availability: "✓ Available today"
-  },
-  {
-    _id: "dummy3",
-    name: "Meena Devi",
-    role: "Activity Partner",
-    availability: "✓ Available today"
-  }
-];
+    {
+      _id: "dummy1",
+      name: "Priya Sharma",
+      role: "Healthcare Aide",
+      availability: "✓ Available today",
+    },
+    {
+      _id: "dummy2",
+      name: "Rajesh Kumar",
+      role: "Outdoor Companion",
+      availability: "✓ Available today",
+    },
+    {
+      _id: "dummy3",
+      name: "Meena Devi",
+      role: "Activity Partner",
+      availability: "✓ Available today",
+    },
+  ];
 
-const dummyDoctors = [
+  const dummyDoctors = [
     {
       _id: "doctor1",
       name: "Dr. Amit Verma",
       role: "General Physician",
-      availability: "✓ Available today"
+      availability: "✓ Available today",
     },
     {
       _id: "doctor2",
       name: "Dr. Sneha Reddy",
       role: "Cardiologist",
-      availability: "✓ Available today"
+      availability: "✓ Available today",
     },
     {
       _id: "doctor3",
       name: "Dr. Kiran Rao",
       role: "Orthopedic Specialist",
-      availability: "✓ Available today"
-    }
+      availability: "✓ Available today",
+    },
   ];
 
   const dummyNurses = [
@@ -74,161 +74,158 @@ const dummyDoctors = [
       _id: "nurse1",
       name: "Nurse Kavya",
       role: "Home Care Nurse",
-      availability: "✓ Available today"
+      availability: "✓ Available today",
     },
     {
       _id: "nurse2",
       name: "Nurse Deepa",
       role: "Medication Support Nurse",
-      availability: "✓ Available today"
+      availability: "✓ Available today",
     },
     {
       _id: "nurse3",
       name: "Nurse Arjun",
       role: "Elder Care Nurse",
-      availability: "✓ Available today"
-    }
+      availability: "✓ Available today",
+    },
   ];
 
-useEffect(() => {
-  fetchDashboardCompanions();
-  fetchDashboardDoctors();
-  fetchDashboardNurses();
-}, []);
+  useEffect(() => {
+    fetchDashboardCompanions();
+    fetchDashboardDoctors();
+    fetchDashboardNurses();
+  }, []);
 
-const fetchDashboardCompanions = async () => {
-  try {
-    const res = await API.get("/companions");
-    const backendCompanions = res.data.companions || [];
+  const fetchDashboardCompanions = async () => {
+    try {
+      const res = await API.get("/companions");
+      const backendCompanions = res.data.companions || [];
 
-    if (backendCompanions.length > 0) {
-      const formattedCompanions = backendCompanions.slice(0, 3).map((c) => ({
-        _id: c._id,
-        name: c.name || "Unknown",
-        role: c.specialty || c.specialization || "Companion",
-        availability: "✓ Available today"
+      if (backendCompanions.length > 0) {
+        const formattedCompanions = backendCompanions.slice(0, 3).map((c) => ({
+          _id: c._id,
+          name: c.name || "Unknown",
+          role: c.specialty || c.specialization || "Companion",
+          availability: "✓ Available today",
+        }));
+
+        setCompanions(formattedCompanions);
+      } else {
+        setCompanions(dummyCompanions);
+      }
+    } catch (error) {
+      console.error("Error fetching companions:", error);
+      setCompanions(dummyCompanions);
+    } finally {
+      setLoadingCompanions(false);
+    }
+  };
+
+  const fetchDashboardDoctors = async () => {
+    try {
+      setLoadingDoctors(true);
+
+      const res = await API.get("/doctors");
+
+      const formattedDoctors = (res.data.doctors || []).map((doctor) => ({
+        _id: doctor._id,
+        name: doctor.name,
+        role: doctor.specialty || "Doctor",
+        availability: doctor.isActive ? "✓ Available today" : "Not available",
       }));
 
-      setCompanions(formattedCompanions);
-    } else {
-      setCompanions(dummyCompanions);
+      setDoctors(formattedDoctors);
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+      setDoctors([]);
+    } finally {
+      setLoadingDoctors(false);
     }
-  } catch (error) {
-    console.error("Error fetching companions:", error);
-    setCompanions(dummyCompanions);
-  } finally {
-    setLoadingCompanions(false);
-  }
-};
+  };
 
+  const fetchDashboardNurses = async () => {
+    try {
+      setLoadingNurses(true);
 
-const fetchDashboardDoctors = async () => {
-  try {
-    setLoadingDoctors(true);
+      const res = await API.get("/nurses");
 
-    const res = await API.get("/doctors");
+      const formattedNurses = (res.data.nurses || []).map((nurse) => ({
+        _id: nurse._id,
+        name: nurse.name,
+        role: nurse.specialty || "Nurse",
+        availability: nurse.isActive ? "✓ Available today" : "Not available",
+      }));
 
-    const formattedDoctors = (res.data.doctors || []).map((doctor) => ({
-      _id: doctor._id,
-      name: doctor.name,
-      role: doctor.specialty || "Doctor",
-      availability: doctor.isActive ? "✓ Available today" : "Not available"
-    }));
+      setNurses(formattedNurses);
+    } catch (error) {
+      console.error("Error fetching nurses:", error);
+      setNurses([]);
+    } finally {
+      setLoadingNurses(false);
+    }
+  };
 
-    setDoctors(formattedDoctors);
-  } catch (error) {
-    console.error("Error fetching doctors:", error);
-    setDoctors([]);
-  } finally {
-    setLoadingDoctors(false);
-  }
-};
+  const getInitials = (name) => {
+    if (!name) return "NA";
 
+    return name
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
-const fetchDashboardNurses = async () => {
-  try {
-    setLoadingNurses(true);
+  const handleBookCompanion = (companion) => {
+    const isDummy = companion._id.startsWith("dummy");
 
-    const res = await API.get("/nurses");
+    if (isDummy) {
+      alert("Dummy companion is for demo only.");
+      return;
+    }
 
-    const formattedNurses = (res.data.nurses || []).map((nurse) => ({
-      _id: nurse._id,
-      name: nurse.name,
-      role: nurse.specialty || "Nurse",
-      availability: nurse.isActive ? "✓ Available today" : "Not available"
-    }));
+    navigate(`/companions/${companion._id}/book`, {
+      state: { companion },
+    });
+  };
 
-    setNurses(formattedNurses);
-  } catch (error) {
-    console.error("Error fetching nurses:", error);
-    setNurses([]);
-  } finally {
-    setLoadingNurses(false);
-  }
-};
+  const handleViewCompanionProfile = (companion) => {
+    navigate(`/companions/${companion._id}`, {
+      state: { companion },
+    });
+  };
 
-const getInitials = (name) => {
-  if (!name) return "NA";
-
-  return name
-    .split(" ")
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-};
-
-const handleBookCompanion = (companion) => {
-  const isDummy = companion._id.startsWith("dummy");
-
-  if (isDummy) {
-    alert("Dummy companion is for demo only.");
-    return;
-  }
-
-  navigate(`/companions/${companion._id}/book`, {
-    state: { companion }
-  });
-};
-
-const handleViewCompanionProfile = (companion) => {
-  navigate(`/companions/${companion._id}`, {
-    state: { companion }
-  });
-};
-
-
-const handleBookDoctor = (doctor) => {
+  const handleBookDoctor = (doctor) => {
     navigate(`/doctors/${doctor._id}/book`, {
-      state: { doctor }
+      state: { doctor },
     });
   };
 
   const handleViewDoctorProfile = (doctor) => {
     navigate(`/doctors/${doctor._id}`, {
-      state: { doctor }
+      state: { doctor },
     });
   };
 
   const handleBookNurse = (nurse) => {
     navigate(`/nurses/${nurse._id}/book`, {
-      state: { nurse }
+      state: { nurse },
     });
   };
 
   const handleViewNurseProfile = (nurse) => {
     navigate(`/nurses/${nurse._id}`, {
-      state: { nurse }
+      state: { nurse },
     });
   };
-  
+
   const [stats, setStats] = useState({
     healthScore: 85,
     doctorsConsulted: 0,
     medicinesTaken: 0,
     eventsBooked: 0,
     activeDays: 0,
-    yogaSessions: 0
+    yogaSessions: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -244,7 +241,7 @@ const handleBookDoctor = (doctor) => {
   const fetchAllData = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch health data
       const healthRes = await API.get("/health/list");
       setHealthData(healthRes.data || []);
@@ -259,34 +256,34 @@ const handleBookDoctor = (doctor) => {
 
       // Fetch games
       const [gameRes, bestScoresRes] = await Promise.all([
-  API.get("/games/games-list"),
-  API.get("/games/best-scores")
-]);
+        API.get("/games/games-list"),
+        API.get("/games/best-scores"),
+      ]);
 
-const gamesData = gameRes.data || [];
-const bestScoresData = bestScoresRes.data || [];
+      const gamesData = gameRes.data || [];
+      const bestScoresData = bestScoresRes.data || [];
 
-const bestScoreMap = {};
-bestScoresData.forEach((item) => {
-  bestScoreMap[item._id] = item.bestScore;
-});
+      const bestScoreMap = {};
+      bestScoresData.forEach((item) => {
+        bestScoreMap[item._id] = item.bestScore;
+      });
 
-const mergedGames = gamesData.map((game) => ({
-  ...game,
-  bestScore: bestScoreMap[game._id] || 0
-}));
+      const mergedGames = gamesData.map((game) => ({
+        ...game,
+        bestScore: bestScoreMap[game._id] || 0,
+      }));
 
-setGames(mergedGames);
+      setGames(mergedGames);
       // const gameRes = await API.get("/games/games-list");
       // setGames(gameRes.data || []);
-      
+
       // setGames(gamesData);  // Using static data for now
 
       // Fetch yoga activities
       // const yogaRes = await API.get("/yoga/list");
       // setYogaActivities(yogaRes.data || []);
-      const yogaRes = await API.get("/yoga/list");  // Add /api prefix
-      setYogaActivities(yogaRes.data || []);  // Matches new route response 
+      const yogaRes = await API.get("/yoga/list"); // Add /api prefix
+      setYogaActivities(yogaRes.data || []); // Matches new route response
       //Fetching yoga sessions for stats
       const sessionRes = await API.get("/yoga/my-sessions");
       const yogaSessions = sessionRes.data || [];
@@ -298,15 +295,22 @@ setGames(mergedGames);
       setBookings(bookingRes.data.bookings || []);
 
       // Calculate stats
-      calculateStats(healthRes.data, medicineRes.data, gameRes.data, yogaRes.data, bookingRes.data.bookings, yogaSessions);
+      calculateStats(
+        healthRes.data,
+        medicineRes.data,
+        gameRes.data,
+        yogaRes.data,
+        bookingRes.data.bookings,
+        yogaSessions,
+      );
 
       // Initialize chat with greeting
       setChatMessages([
         {
           id: 1,
           sender: "bot",
-          text: "Namaste! 🙏 How are you feeling today?"
-        }
+          text: "Namaste! 🙏 How are you feeling today?",
+        },
       ]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -318,11 +322,11 @@ setGames(mergedGames);
   const calculateStats = (health, meds, gms, yogaData, bkgs) => {
     setStats({
       healthScore: health.length > 0 ? 85 : 70,
-      doctorsConsulted: new Set(bkgs.map(b => b.doctorName)).size,
+      doctorsConsulted: new Set(bkgs.map((b) => b.doctorName)).size,
       medicinesTaken: meds.length || 0,
-      eventsBooked: bkgs.filter(b => b.status !== "Cancelled").length,
+      eventsBooked: bkgs.filter((b) => b.status !== "Cancelled").length,
       activeDays: health.length || 0,
-      yogaSessions: yogaData.length || 0
+      yogaSessions: yogaData.length || 0,
     });
   };
 
@@ -334,7 +338,7 @@ setGames(mergedGames);
     const userMsg = {
       id: chatMessages.length + 1,
       sender: "user",
-      text: newMessage
+      text: newMessage,
     };
     setChatMessages([...chatMessages, userMsg]);
     setNewMessage("");
@@ -344,9 +348,9 @@ setGames(mergedGames);
       const botMsg = {
         id: chatMessages.length + 2,
         sender: "bot",
-        text: "That's wonderful! Keep up the healthy lifestyle. 💪"
+        text: "That's wonderful! Keep up the healthy lifestyle. 💪",
       };
-      setChatMessages(prev => [...prev, botMsg]);
+      setChatMessages((prev) => [...prev, botMsg]);
     }, 500);
   };
 
@@ -356,15 +360,19 @@ setGames(mergedGames);
   };
 
   const getUpcomingBooking = () => {
-    const upcoming = bookings.filter(b => new Date(b.appointmentDate) > new Date());
-    return upcoming.sort((a, b) => new Date(a.appointmentDate) - new Date(b.appointmentDate))[0];
+    const upcoming = bookings.filter(
+      (b) => new Date(b.appointmentDate) > new Date(),
+    );
+    return upcoming.sort(
+      (a, b) => new Date(a.appointmentDate) - new Date(b.appointmentDate),
+    )[0];
   };
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
-      year: "numeric"
+      year: "numeric",
     });
   };
 
@@ -387,10 +395,14 @@ setGames(mergedGames);
             <h2>Welcome back, {userName}!</h2>
             {/* <p className="health-status">Your health is looking great today. You have 2 medicines pending and 1 event nearby.</p> */}
             <p className="health-status">
-  Your health is looking great today. You have{" "}
-  {medicineReminders.filter((item) => item.status === "pending").length} medicine
-  reminder(s) pending and {localEvents.length} event(s) nearby.
-</p>
+              Your health is looking great today. You have{" "}
+              {
+                medicineReminders.filter((item) => item.status === "pending")
+                  .length
+              }{" "}
+              medicine reminder(s) pending and {localEvents.length} event(s)
+              nearby.
+            </p>
           </div>
         </div>
       </div>
@@ -447,7 +459,10 @@ setGames(mergedGames);
                   <p className="metric-label">Blood Pressure</p>
                   <p className="metric-value">{latestHealth.bloodPressure}</p>
                   <div className="metric-bar">
-                    <div className="metric-progress" style={{ width: "70%" }}></div>
+                    <div
+                      className="metric-progress"
+                      style={{ width: "70%" }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -457,7 +472,10 @@ setGames(mergedGames);
                   <p className="metric-label">Blood Sugar</p>
                   <p className="metric-value">{latestHealth.sugarLevel}</p>
                   <div className="metric-bar">
-                    <div className="metric-progress" style={{ width: "68%" }}></div>
+                    <div
+                      className="metric-progress"
+                      style={{ width: "68%" }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -467,7 +485,10 @@ setGames(mergedGames);
                   <p className="metric-label">Weight</p>
                   <p className="metric-value">68 kg</p>
                   <div className="metric-bar">
-                    <div className="metric-progress" style={{ width: "72%" }}></div>
+                    <div
+                      className="metric-progress"
+                      style={{ width: "72%" }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -477,7 +498,10 @@ setGames(mergedGames);
                   <p className="metric-label">Heart Rate</p>
                   <p className="metric-value">72 bpm</p>
                   <div className="metric-bar">
-                    <div className="metric-progress" style={{ width: "75%" }}></div>
+                    <div
+                      className="metric-progress"
+                      style={{ width: "75%" }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -485,100 +509,113 @@ setGames(mergedGames);
           ) : (
             <p className="no-data">No health data recorded yet.</p>
           )}
-          <Link to="/health" className="view-more-btn">View Details →</Link>
+          <Link to="/health" className="view-more-btn">
+            View Details →
+          </Link>
         </div>
 
-{/* Medicine Reminders */}
-<div className="dashboard-section medicine-reminders">
-  <div className="section-header">
-    <h3>💊 Medicine Reminders</h3>
-    <span className="section-badge">
-      {medicineReminders.filter((item) => item.status === "pending").length} pending
-    </span>
-  </div>
-
-  {medicineReminders.length > 0 ? (
-    <div className="reminder-list">
-      {medicineReminders.slice(0, 4).map((reminder) => (
-        <div key={reminder._id} className="reminder-item">
-          <div className="reminder-icon">
-            {reminder.medicineType === "injection" ? "💉" : "💊"}
+        {/* Medicine Reminders */}
+        <div className="dashboard-section medicine-reminders">
+          <div className="section-header">
+            <h3>💊 Medicine Reminders</h3>
+            <span className="section-badge">
+              {
+                medicineReminders.filter((item) => item.status === "pending")
+                  .length
+              }{" "}
+              pending
+            </span>
           </div>
 
-          <div className="reminder-content">
-            <p className="reminder-name">{reminder.medicineName}</p>
-            <p className="reminder-time">
-              {reminder.slot} • {reminder.dosage}
-            </p>
-            <p className="reminder-stock">
-              Stock: {reminder.currentStock}/{reminder.initialStock}
-              {reminder.lowStock && (
-                <span className="low-stock-tag ms-2">Low stock</span>
-              )}
-            </p>
-          </div>
+          {medicineReminders.length > 0 ? (
+            <div className="reminder-list">
+              {medicineReminders.slice(0, 4).map((reminder) => (
+                <div key={reminder._id} className="reminder-item">
+                  <div className="reminder-icon">
+                    {reminder.medicineType === "injection" ? "💉" : "💊"}
+                  </div>
 
-          <span
-            className={`reminder-status-badge ${
-              reminder.status === "taken"
-                ? "taken"
-                : reminder.status === "skipped"
-                ? "skipped"
-                : reminder.status === "missed"
-                ? "missed"
-                : "pending"
-            }`}
-          >
-            {reminder.status}
-          </span>
+                  <div className="reminder-content">
+                    <p className="reminder-name">{reminder.medicineName}</p>
+                    <p className="reminder-time">
+                      {reminder.slot} • {reminder.dosage}
+                    </p>
+                    <p className="reminder-stock">
+                      Stock: {reminder.currentStock}/{reminder.initialStock}
+                      {reminder.lowStock && (
+                        <span className="low-stock-tag ms-2">Low stock</span>
+                      )}
+                    </p>
+                  </div>
+
+                  <span
+                    className={`reminder-status-badge ${
+                      reminder.status === "taken"
+                        ? "taken"
+                        : reminder.status === "skipped"
+                          ? "skipped"
+                          : reminder.status === "missed"
+                            ? "missed"
+                            : "pending"
+                    }`}
+                  >
+                    {reminder.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="no-data">No medicine reminders for today.</p>
+          )}
+
+          <Link to="/medicines" className="view-more-btn">
+            View All →
+          </Link>
         </div>
-      ))}
-    </div>
-  ) : (
-    <p className="no-data">No medicine reminders for today.</p>
-  )}
-
-  <Link to="/medicines" className="view-more-btn">View All →</Link>
-</div>
       </div>
 
       <div className="dashboard-grid">
         {/* Mind Games */}
-        
+
         <div className="dashboard-section mind-games">
-  <div className="section-header">
-    <h3>🎮 Mind Games</h3>
-    <span className="section-badge">{games.length} games</span>
-  </div>
-
-  {games.length > 0 ? (
-    <div className="games-list">
-      {games.slice(0, 3).map((game) => (
-        <div key={game._id} className="game-item">
-          <div className="game-icon">{game.icon || "🎯"}</div>
-
-          <div className="game-content">
-            <p className="game-name">{game.gameName}</p>
-            <p className="game-score">
-              {game.category || "Mind Game"} • Best: {game.bestScore || 0}
-            </p>
+          <div className="section-header">
+            <h3>🎮 Mind Games</h3>
+            <span className="section-badge">{games.length} games</span>
           </div>
 
-          <button
-            className="play-btn"
-            onClick={() => navigate(`/games/${game._id}/play`, { state: { game } })}
-          >
-            Play
-          </button>
-        </div>
-      ))}
-    </div>
-  ) : (
-    <p className="no-data">No games available.</p>
-  )}
+          {games.length > 0 ? (
+            <div className="games-list">
+              {games.slice(0, 3).map((game) => (
+                <div key={game._id} className="game-item">
+                  <div className="game-icon">{game.icon || "🎯"}</div>
 
-  <Link to="/games" className="view-more-btn">View All →</Link>
-</div>
+                  <div className="game-content">
+                    <p className="game-name">{game.gameName}</p>
+                    <p className="game-score">
+                      {game.category || "Mind Game"} • Best:{" "}
+                      {game.bestScore || 0}
+                    </p>
+                  </div>
+
+                  <button
+                    className="play-btn"
+                    onClick={() =>
+                      navigate(`/games/${game._id}/play`, { state: { game } })
+                    }
+                  >
+                    Play
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="no-data">No games available.</p>
+          )}
+
+          <Link to="/games" className="view-more-btn">
+            View All →
+          </Link>
+        </div>
 
         {/* Yoga & Breathing */}
         <div className="dashboard-section yoga-breathing">
@@ -590,7 +627,9 @@ setGames(mergedGames);
                   <div className="yoga-icon">🍃</div>
                   <div className="yoga-content">
                     <p className="yoga-name">{yoga.title}</p>
-                    <p className="yoga-level">{yoga.duration} • {yoga.benefits}</p>
+                    <p className="yoga-level">
+                      {yoga.duration} • {yoga.benefits}
+                    </p>
                   </div>
                   <button className="start-btn">Start</button>
                 </div>
@@ -599,99 +638,112 @@ setGames(mergedGames);
           ) : (
             <p className="no-data">No yoga activities available.</p>
           )}
-          <Link to="/yoga" className="view-more-btn">View All →</Link>
+          <Link to="/yoga" className="view-more-btn">
+            View All →
+          </Link>
         </div>
       </div>
 
       <div className="dashboard-grid">
         {/* Local Events */}
-        
 
         <div className="dashboard-section local-events">
-  <h3>📍 Local Events</h3>
-  <div className="events-list">
-    {localEvents.length > 0 ? (
-      localEvents.slice(0, 3).map((event) => (
-        <div key={event._id} className="event-item">
-          <div className="event-header">
-            <p className="event-name">{event.title}</p>
-            <span className={`event-tag ${
-              event.type === 'health' ? 'bg-danger text-white' :
-              event.type === 'social' ? 'bg-info text-white' :
-              event.type === 'creative' ? 'bg-warning text-dark' : 'bg-success text-white'
-            }`}>
-              {event.type}
-            </span>
+          <h3>📍 Local Events</h3>
+          <div className="events-list">
+            {localEvents.length > 0 ? (
+              localEvents.slice(0, 3).map((event) => (
+                <div key={event._id} className="event-item">
+                  <div className="event-header">
+                    <p className="event-name">{event.title}</p>
+                    <span
+                      className={`event-tag ${
+                        event.type === "health"
+                          ? "bg-danger text-white"
+                          : event.type === "social"
+                            ? "bg-info text-white"
+                            : event.type === "creative"
+                              ? "bg-warning text-dark"
+                              : "bg-success text-white"
+                      }`}
+                    >
+                      {event.type}
+                    </span>
+                  </div>
+                  <p className="event-time">
+                    📅 {new Date(event.date).toLocaleDateString()},{" "}
+                    {event.time || "TBD"}
+                  </p>
+                  <p className="event-location">📍 {event.location}</p>
+                </div>
+              ))
+            ) : (
+              // Your existing hardcoded events as fallback
+              <>
+                <div className="event-item"> {/* Morning Walk Group */} </div>
+                <div className="event-item"> {/* Bhajan Sandhya */} </div>
+                <div className="event-item"> {/* Senior Art Workshop */} </div>
+              </>
+            )}
           </div>
-          <p className="event-time">📅 {new Date(event.date).toLocaleDateString()}, {event.time || 'TBD'}</p>
-          <p className="event-location">📍 {event.location}</p>
+          <Link to="/events" className="view-more-btn">
+            View All →
+          </Link>
         </div>
-      ))
-    ) : (
-      // Your existing hardcoded events as fallback
-      <>
-        <div className="event-item"> {/* Morning Walk Group */} </div>
-        <div className="event-item"> {/* Bhajan Sandhya */} </div>
-        <div className="event-item"> {/* Senior Art Workshop */} </div>
-      </>
-    )}
-  </div>
-  <Link to="/events" className="view-more-btn">View All →</Link>
-</div>
 
         {/* Book a Companion */}
-      
+
         <div className="dashboard-section book-companion">
-  <h3>👥 Book a Companion</h3>
+          <h3>👥 Book a Companion</h3>
 
-  <div className="companions-list">
-    {loadingCompanions ? (
-      <p>Loading companions...</p>
-    ) : (
-      companions.map((companion) => {
-        const isDummy = companion._id.startsWith("dummy");
+          <div className="companions-list">
+            {loadingCompanions ? (
+              <p>Loading companions...</p>
+            ) : (
+              companions.map((companion) => {
+                const isDummy = companion._id.startsWith("dummy");
 
-        return (
-          <div className="companion-card" key={companion._id}>
-            <div className="companion-avatar">
-              {getInitials(companion.name)}
-            </div>
+                return (
+                  <div className="companion-card" key={companion._id}>
+                    <div className="companion-avatar">
+                      {getInitials(companion.name)}
+                    </div>
 
-            <div className="companion-info">
-              <p className="companion-name">{companion.name}</p>
-              <p className="companion-role">{companion.role}</p>
-              <p className="companion-availability">
-                {companion.availability}
-              </p>
-            </div>
+                    <div className="companion-info">
+                      <p className="companion-name">{companion.name}</p>
+                      <p className="companion-role">{companion.role}</p>
+                      <p className="companion-availability">
+                        {companion.availability}
+                      </p>
+                    </div>
 
-            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-              <button
-                className="book-btn"
-                onClick={() => handleViewCompanionProfile(companion)}
-              >
-                View
-              </button>
+                    <div
+                      style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
+                    >
+                      <button
+                        className="book-btn"
+                        onClick={() => handleViewCompanionProfile(companion)}
+                      >
+                        View
+                      </button>
 
-              <button
-                className="book-btn"
-                disabled={isDummy}
-                onClick={() => handleBookCompanion(companion)}
-              >
-                {isDummy ? "Demo Only" : "Book"}
-              </button>
-            </div>
+                      <button
+                        className="book-btn"
+                        disabled={isDummy}
+                        onClick={() => handleBookCompanion(companion)}
+                      >
+                        {isDummy ? "Demo Only" : "Book"}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
-          
-        );
-      })
-    )}
-  </div>
 
-  <Link to="/companions" className="view-more-btn">
-    View All →
-  </Link>
-</div>
+          <Link to="/companions" className="view-more-btn">
+            View All →
+          </Link>
+        </div>
       </div>
 
       <div className="dashboard-grid">
@@ -716,7 +768,9 @@ setGames(mergedGames);
                     </p>
                   </div>
 
-                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                  <div
+                    style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
+                  >
                     <button
                       className="book-btn"
                       onClick={() => handleViewDoctorProfile(doctor)}
@@ -762,7 +816,9 @@ setGames(mergedGames);
                     </p>
                   </div>
 
-                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                  <div
+                    style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
+                  >
                     <button
                       className="book-btn"
                       onClick={() => handleViewNurseProfile(nurse)}
@@ -795,9 +851,13 @@ setGames(mergedGames);
           <div className="chat-messages">
             {chatMessages.map((msg) => (
               <div key={msg.id} className={`chat-message ${msg.sender}`}>
-                {msg.sender === "bot" && <div className="chat-avatar bot">🤖</div>}
+                {msg.sender === "bot" && (
+                  <div className="chat-avatar bot">🤖</div>
+                )}
                 <div className="message-text">{msg.text}</div>
-                {msg.sender === "user" && <div className="chat-avatar user">👤</div>}
+                {msg.sender === "user" && (
+                  <div className="chat-avatar user">👤</div>
+                )}
               </div>
             ))}
           </div>
@@ -809,7 +869,9 @@ setGames(mergedGames);
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
             />
-            <button type="submit" className="chat-send-btn">📤</button>
+            <button type="submit" className="chat-send-btn">
+              📤
+            </button>
           </form>
         </div>
       </div>

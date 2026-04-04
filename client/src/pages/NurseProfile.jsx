@@ -9,7 +9,7 @@ function NurseProfile() {
     specialty: "",
     experience: "",
     certifications: "",
-    licenseNumber: ""
+    licenseNumber: "",
   });
 
   const [loading, setLoading] = useState(true);
@@ -30,7 +30,7 @@ function NurseProfile() {
         specialty: user.specialty || "",
         experience: user.experience || "",
         certifications: user.certifications || "",
-        licenseNumber: user.licenseNumber || ""
+        licenseNumber: user.licenseNumber || "",
       });
     } catch (err) {
       console.error("Error fetching profile", err);
@@ -42,7 +42,7 @@ function NurseProfile() {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 

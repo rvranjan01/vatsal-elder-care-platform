@@ -18,7 +18,7 @@ function CompanionList() {
       experience: "4 years",
       specialization: "Elder companionship, daily support",
       address: "Bengaluru",
-      bio: "Friendly and experienced companion for elder care and support."
+      bio: "Friendly and experienced companion for elder care and support.",
     },
     {
       _id: "dummy2",
@@ -30,8 +30,8 @@ function CompanionList() {
       experience: "3 years",
       specialization: "Mobility assistance, home visits",
       address: "Bengaluru",
-      bio: "Patient and dependable caregiver with home visit experience."
-    }
+      bio: "Patient and dependable caregiver with home visit experience.",
+    },
   ];
 
   useEffect(() => {
@@ -70,9 +70,16 @@ function CompanionList() {
             <div className="card h-100 shadow-sm">
               <div className="card-body">
                 <h5>{companion.name}</h5>
-                <p><strong>Experience:</strong> {companion.experience || "N/A"}</p>
-                <p><strong>Specialization:</strong> {companion.specialization || "General care"}</p>
-                <p><strong>Location:</strong> {companion.address || "N/A"}</p>
+                <p>
+                  <strong>Experience:</strong> {companion.experience || "N/A"}
+                </p>
+                <p>
+                  <strong>Specialization:</strong>{" "}
+                  {companion.specialization || "General care"}
+                </p>
+                <p>
+                  <strong>Location:</strong> {companion.address || "N/A"}
+                </p>
 
                 <div className="d-flex gap-2 mt-3">
                   <Link
@@ -87,7 +94,7 @@ function CompanionList() {
                     className="btn btn-primary btn-sm"
                     onClick={() =>
                       navigate(`/companions/${companion._id}/book`, {
-                        state: { companion }
+                        state: { companion },
                       })
                     }
                   >

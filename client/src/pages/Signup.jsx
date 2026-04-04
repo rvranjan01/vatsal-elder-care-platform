@@ -1,100 +1,3 @@
-// import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import API from "../services/api";
-
-// function Signup() {
-//   const [name, setName] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [role, setRole] = useState("elder"); // default role
-
-//   const navigate = useNavigate();
-
-//   const handleSignup = async (e) => {
-//     e.preventDefault();
-
-//     try {
-//       const res = await API.post("/auth/register", {
-//         name,
-//         email,
-//         password,
-//         role,
-//       });
-
-//       alert("Registration successful!");
-
-//       // After successful signup → redirect to login
-//       navigate("/");
-
-//     } catch (error) {
-//       alert(error.response?.data?.message || "Signup failed");
-//     }
-//   };
-
-//   return (
-//     <div className="row justify-content-center">
-//       <div className="col-md-6">
-//         <div className="card shadow">
-//           <div className="card-body">
-//             <h3 className="text-center mb-4">Signup</h3>
-
-//             <form onSubmit={handleSignup}>
-              
-//               <div className="mb-3">
-//                 <input
-//                   type="text"
-//                   className="form-control"
-//                   placeholder="Full Name"
-//                   onChange={(e) => setName(e.target.value)}
-//                   required
-//                 />
-//               </div>
-
-//               <div className="mb-3">
-//                 <input
-//                   type="email"
-//                   className="form-control"
-//                   placeholder="Email"
-//                   onChange={(e) => setEmail(e.target.value)}
-//                   required
-//                 />
-//               </div>
-
-//               <div className="mb-3">
-//                 <input
-//                   type="password"
-//                   className="form-control"
-//                   placeholder="Password"
-//                   onChange={(e) => setPassword(e.target.value)}
-//                   required
-//                 />
-//               </div>
-
-//               <div className="mb-3">
-//                 <select
-//                   className="form-control"
-//                   onChange={(e) => setRole(e.target.value)}
-//                 >
-//                   <option value="elder">Elder</option>
-//                   <option value="family">Family</option>
-//                 </select>
-//               </div>
-
-//               <button className="btn btn-success w-100">
-//                 Signup
-//               </button>
-
-//             </form>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Signup;
-
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
@@ -123,7 +26,7 @@ function Signup() {
         name,
         email,
         password,
-        role
+        role,
       };
 
       // Add role-specific fields
@@ -144,7 +47,9 @@ function Signup() {
 
       // For providers, show info about pending activation
       if (["doctor", "companion", "nurse"].includes(role)) {
-        alert(`Registration successful! Your account is pending admin activation. You will receive an email notification once approved.`);
+        alert(
+          `Registration successful! Your account is pending admin activation. You will receive an email notification once approved.`,
+        );
       } else {
         alert("Registration successful!");
       }
@@ -164,7 +69,6 @@ function Signup() {
             <h3 className="text-center mb-4">Signup</h3>
 
             <form onSubmit={handleSignup}>
-
               <input
                 type="text"
                 className="form-control mb-3"
@@ -200,7 +104,9 @@ function Signup() {
                 <option value="elder">Elder</option>
                 <option value="family">Family Member</option>
                 <option value="doctor">Doctor (Requires Admin Approval)</option>
-                <option value="companion">Companion/Caregiver (Requires Admin Approval)</option>
+                <option value="companion">
+                  Companion/Caregiver (Requires Admin Approval)
+                </option>
                 <option value="nurse">Nurse (Requires Admin Approval)</option>
               </select>
 
@@ -231,7 +137,9 @@ function Signup() {
               {/* Providers → info message */}
               {["doctor", "companion", "nurse"].includes(role) && (
                 <div className="alert alert-info small mb-3">
-                  Your account will be pending admin verification. Once approved, you'll be visible to families and elders in the system.
+                  Your account will be pending admin verification. Once
+                  approved, you'll be visible to families and elders in the
+                  system.
                 </div>
               )}
 
@@ -296,7 +204,6 @@ function Signup() {
               <button className="btn btn-success w-100" disabled={isLoading}>
                 {isLoading ? "Signing up..." : "Signup"}
               </button>
-
             </form>
           </div>
         </div>

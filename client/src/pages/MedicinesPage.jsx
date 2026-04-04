@@ -90,7 +90,9 @@ function MedicinesPage() {
       }
     } catch (error) {
       console.error("Error marking medicine as taken:", error);
-      alert(error?.response?.data?.message || "Failed to mark medicine as taken.");
+      alert(
+        error?.response?.data?.message || "Failed to mark medicine as taken.",
+      );
     }
   };
 
@@ -109,25 +111,25 @@ function MedicinesPage() {
   };
 
   const handleDeleteMedicine = async (medicine) => {
-  const confirmDelete = window.confirm(
-    `Are you sure you want to delete ${medicine.medicineName}?`
-  );
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete ${medicine.medicineName}?`,
+    );
 
-  if (!confirmDelete) return;
+    if (!confirmDelete) return;
 
-  try {
-    await API.delete(`/medicines/${medicine._id}`);
-    await fetchMedicines();
+    try {
+      await API.delete(`/medicines/${medicine._id}`);
+      await fetchMedicines();
 
-    if (selectedMedicine?._id === medicine._id) {
-      setSelectedMedicine(null);
-      setHistory([]);
+      if (selectedMedicine?._id === medicine._id) {
+        setSelectedMedicine(null);
+        setHistory([]);
+      }
+    } catch (error) {
+      console.error("Error deleting medicine:", error);
+      alert(error?.response?.data?.message || "Failed to delete medicine.");
     }
-  } catch (error) {
-    console.error("Error deleting medicine:", error);
-    alert(error?.response?.data?.message || "Failed to delete medicine.");
-  }
-};
+  };
 
   const handleOpenHistory = async (medicine) => {
     setSelectedMedicine(medicine);
@@ -147,7 +149,9 @@ function MedicinesPage() {
   const filteredMedicines = useMemo(() => {
     return medicines.filter((medicine) => {
       const matchesSearch =
-        medicine.medicineName?.toLowerCase().includes(filters.search.toLowerCase()) ||
+        medicine.medicineName
+          ?.toLowerCase()
+          .includes(filters.search.toLowerCase()) ||
         medicine.dosage?.toLowerCase().includes(filters.search.toLowerCase());
 
       const matchesType =
@@ -171,7 +175,7 @@ function MedicinesPage() {
     const paused = medicines.filter((m) => m.status === "paused").length;
     const completed = medicines.filter((m) => m.status === "completed").length;
     const lowStock = medicines.filter(
-      (m) => Number(m.currentStock) <= Number(m.lowStockThreshold || 5)
+      (m) => Number(m.currentStock) <= Number(m.lowStockThreshold || 5),
     ).length;
 
     return { total, active, paused, completed, lowStock };
@@ -241,17 +245,16 @@ function MedicinesPage() {
 
       <div className="row g-4 mt-1">
         <div className="col-lg-8">
-         
           <MedicineList
-  medicines={filteredMedicines}
-  loading={loading}
-  onViewHistory={handleOpenHistory}
-  onEdit={handleOpenEdit}
-  onRefill={handleOpenRefill}
-  onTake={handleTakeSlot}
-  onSkip={handleSkipSlot}
-  onDelete={handleDeleteMedicine}
-/>
+            medicines={filteredMedicines}
+            loading={loading}
+            onViewHistory={handleOpenHistory}
+            onEdit={handleOpenEdit}
+            onRefill={handleOpenRefill}
+            onTake={handleTakeSlot}
+            onSkip={handleSkipSlot}
+            onDelete={handleDeleteMedicine}
+          />
         </div>
 
         <div className="col-lg-4">

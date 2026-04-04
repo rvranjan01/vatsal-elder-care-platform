@@ -21,23 +21,17 @@ function Login() {
 
       if (res.data.user.role === "elder") {
         navigate("/elder-dashboard");
-      } 
-      else if (res.data.user.role === "admin") {
+      } else if (res.data.user.role === "admin") {
         navigate("/admin-dashboard");
-      }
-      else if (res.data.user.role === "doctor"){
+      } else if (res.data.user.role === "doctor") {
         navigate("/doctor-dashboard");
-      }
-      else if (res.data.user.role === "companion") {
-        navigate("/companion-dashboard")
-      }
-      else if (res.data.user.role === "nurse") {
-        navigate("/nurse-dashboard"); 
-      }
-      else if (res.data.user.role === "family") {
+      } else if (res.data.user.role === "companion") {
+        navigate("/companion-dashboard");
+      } else if (res.data.user.role === "nurse") {
+        navigate("/nurse-dashboard");
+      } else if (res.data.user.role === "family") {
         navigate("/family-dashboard");
-      }
-      else {
+      } else {
         navigate("/");
       }
     } catch (err) {
@@ -70,9 +64,7 @@ function Login() {
                 />
               </div>
 
-              <button className="btn btn-primary w-100">
-                Login
-              </button>
+              <button className="btn btn-primary w-100">Login</button>
             </form>
           </div>
         </div>
@@ -82,4 +74,3 @@ function Login() {
 }
 
 export default Login;
-

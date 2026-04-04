@@ -90,7 +90,11 @@ function EditMedicineForm({ show, medicine, onClose, onMedicineUpdated }) {
       <div className="medicine-modal-card">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h4 className="mb-0">Edit Medicine</h4>
-          <button type="button" className="btn-close" onClick={onClose}></button>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={onClose}
+          ></button>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -210,7 +214,10 @@ function EditMedicineForm({ show, medicine, onClose, onMedicineUpdated }) {
                       checked={formData.scheduleSlots.includes(slot)}
                       onChange={() => handleSlotChange(slot)}
                     />
-                    <label className="form-check-label" htmlFor={`edit-${slot}`}>
+                    <label
+                      className="form-check-label"
+                      htmlFor={`edit-${slot}`}
+                    >
                       {slot}
                     </label>
                   </div>
@@ -239,7 +246,11 @@ function EditMedicineForm({ show, medicine, onClose, onMedicineUpdated }) {
             >
               Cancel
             </button>
-            <button type="submit" className="btn btn-primary" disabled={submitting}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={submitting}
+            >
               {submitting ? "Updating..." : "Update Medicine"}
             </button>
           </div>

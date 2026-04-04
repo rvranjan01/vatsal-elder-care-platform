@@ -5,21 +5,21 @@ const gameSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true
+      required: true,
     },
     gameName: {
       type: String,
-      required: true
+      required: true,
     },
     score: {
       type: Number,
-      required: true
+      required: true,
     },
     remarks: {
-      type: String
-    }
+      type: String,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Game", gameSchema);

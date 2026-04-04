@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   getAllDoctors,
-  getDoctorById
+  getDoctorById,
 } = require("../controllers/doctorController");
 const authMiddleware = require("../middleware/authMiddleware");
 

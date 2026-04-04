@@ -7,7 +7,9 @@ const User = require("../models/user");
 const seedAdmin = async () => {
   try {
     // Connect to DB
-    await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/vatsal");
+    await mongoose.connect(
+      process.env.MONGODB_URI || "mongodb://localhost:27017/vatsal",
+    );
     console.log("Connected to MongoDB");
 
     // Check if admin already exists
@@ -27,7 +29,7 @@ const seedAdmin = async () => {
       password: hashedPassword,
       role: "admin",
       username: "admin",
-      isActive: true
+      isActive: true,
     });
 
     console.log("✅ Admin user created successfully!");

@@ -84,8 +84,7 @@ function MemoryMatchGame({ onFinish }) {
         }}
       >
         {cards.map((card, index) => {
-          const isOpen =
-            flipped.includes(index) || matched.includes(card.icon);
+          const isOpen = flipped.includes(index) || matched.includes(card.icon);
 
           return (
             <button

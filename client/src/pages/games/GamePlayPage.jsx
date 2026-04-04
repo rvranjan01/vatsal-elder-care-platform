@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import API from "../../services/api";
@@ -39,7 +38,7 @@ function GamePlayPage() {
       await API.post("/games/add", {
         gameId: game._id,
         gameName: game.gameName,
-        score: finalScore
+        score: finalScore,
       });
 
       setMessage(`Game finished. Score saved: ${finalScore}`);
@@ -91,9 +90,7 @@ function GamePlayPage() {
 
       <div className="card shadow-sm border-0">
         <div className="card-body">
-          <div className="p-3 mb-3">
-            {renderGameComponent()}
-          </div>
+          <div className="p-3 mb-3">{renderGameComponent()}</div>
 
           {message && <div className="alert alert-success">{message}</div>}
 

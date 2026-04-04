@@ -1,6 +1,5 @@
 import MedicineCard from "./MedicineCard";
 
-
 function MedicineList({
   medicines,
   loading,
@@ -37,25 +36,16 @@ function MedicineList({
   return (
     <div className="medicine-list-wrap">
       {medicines.map((medicine) => (
-        // <MedicineCard
-        //   key={medicine._id}
-        //   medicine={medicine}
-        //   onTakeSlot={onTakeSlot}
-        //   onSkipSlot={onSkipSlot}
-        //   onViewHistory={onViewHistory}
-        //   onEdit={onEdit}
-        //   onRefill={onRefill}
-        // />
         <MedicineCard
-  key={medicine._id}
-  medicine={medicine}
-  onViewHistory={onViewHistory}
-  onEdit={onEdit}
-  onRefill={onRefill}
-  onTake={onTake}
-  onSkip={onSkip}
-  onDelete={onDelete}
-/>
+          key={medicine._id}
+          medicine={medicine}
+          onViewHistory={onViewHistory}
+          onEdit={onEdit}
+          onRefill={onRefill}
+          onTake={onTake}
+          onSkip={onSkip}
+          onDelete={onDelete}
+        />
       ))}
     </div>
   );

@@ -1,7 +1,12 @@
 import React from "react";
 import GameCard from "./GameCard";
 
-function GameList({ games, limit, title, emptyMessage = "No games available." }) {
+function GameList({
+  games,
+  limit,
+  title,
+  emptyMessage = "No games available.",
+}) {
   const displayGames = limit ? games.slice(0, limit) : games;
 
   return (

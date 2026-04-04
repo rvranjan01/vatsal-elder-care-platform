@@ -67,7 +67,11 @@ function AddMedicineForm({ show, onClose, onMedicineAdded }) {
       <div className="medicine-modal-card">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h4 className="mb-0">Add Medicine</h4>
-          <button type="button" className="btn-close" onClick={onClose}></button>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={onClose}
+          ></button>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -195,10 +199,18 @@ function AddMedicineForm({ show, onClose, onMedicineAdded }) {
           </div>
 
           <div className="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" className="btn btn-outline-secondary" onClick={onClose}>
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={onClose}
+            >
               Cancel
             </button>
-            <button type="submit" className="btn btn-success" disabled={submitting}>
+            <button
+              type="submit"
+              className="btn btn-success"
+              disabled={submitting}
+            >
               {submitting ? "Saving..." : "Save Medicine"}
             </button>
           </div>

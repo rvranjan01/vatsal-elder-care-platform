@@ -32,7 +32,11 @@ function RefillMedicineModal({ show, medicine, onClose, onRefillDone }) {
       <div className="medicine-modal-card small-modal">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h4 className="mb-0">Refill Stock</h4>
-          <button type="button" className="btn-close" onClick={onClose}></button>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={onClose}
+          ></button>
         </div>
 
         <p className="text-muted">
@@ -52,10 +56,18 @@ function RefillMedicineModal({ show, medicine, onClose, onRefillDone }) {
           />
 
           <div className="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" className="btn btn-outline-secondary" onClick={onClose}>
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={onClose}
+            >
               Cancel
             </button>
-            <button type="submit" className="btn btn-success" disabled={loading}>
+            <button
+              type="submit"
+              className="btn btn-success"
+              disabled={loading}
+            >
               {loading ? "Updating..." : "Refill"}
             </button>
           </div>

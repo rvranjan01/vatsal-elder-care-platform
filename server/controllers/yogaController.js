@@ -9,19 +9,18 @@ exports.addYoga = async (req, res) => {
       title,
       description,
       duration,
-      benefits
+      benefits,
     });
 
     res.status(201).json({
       message: "Yoga exercise added successfully",
-      yoga
+      yoga,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
-
 
 exports.getYogaList = async (req, res) => {
   try {
@@ -36,10 +35,10 @@ exports.logYogaSession = async (req, res) => {
   try {
     const session = new YogaSession({
       ...req.body,
-      user: req.user.id  // From auth middleware
+      user: req.user.id, // From auth middleware
     });
     await session.save();
-    res.status(201).json({ session, message: 'Session logged successfully' });
+    res.status(201).json({ session, message: "Session logged successfully" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -48,11 +47,11 @@ exports.logYogaSession = async (req, res) => {
 exports.getMyYogaSessions = async (req, res) => {
   try {
     const sessions = await YogaSession.find({ user: req.user.id })
-      .populate('exerciseId', 'title')
+      .populate("exerciseId", "title")
       .sort({ date: -1 })
       .limit(50);
     res.json(sessions);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };

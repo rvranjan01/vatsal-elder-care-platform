@@ -31,9 +31,7 @@ function NurseDashboard() {
       const pendingRes = await API.get("/bookings/pending");
       const pending = pendingRes.data.bookings || [];
 
-      const waiting = pending.filter(
-        (b) => b.confirmationStatus === "Waiting"
-      );
+      const waiting = pending.filter((b) => b.confirmationStatus === "Waiting");
       setPendingBookings(waiting);
 
       const allRes = await API.get("/bookings/all");
@@ -43,9 +41,7 @@ function NurseDashboard() {
       setAllBookings(nurseBookings);
 
       const confirmed = nurseBookings.filter(
-        (b) =>
-          b.confirmationStatus === "Confirmed" &&
-          b.status === "Confirmed"
+        (b) => b.confirmationStatus === "Confirmed" && b.status === "Confirmed",
       );
       setConfirmedBookings(confirmed);
     } catch (err) {
@@ -132,17 +128,21 @@ function NurseDashboard() {
       {activeTab === "pending" && (
         <div className="row g-3">
           {pendingBookings.length === 0 ? (
-            <div className="alert alert-info">
-              No pending care requests.
-            </div>
+            <div className="alert alert-info">No pending care requests.</div>
           ) : (
             pendingBookings.map((b) => (
               <div key={b._id} className="col-md-6 col-lg-4">
                 <div className="card border-warning">
                   <div className="card-body">
-                    <p><strong>Elder:</strong> {b.elderName}</p>
-                    <p><strong>Service:</strong> {b.serviceType}</p>
-                    <p><strong>Date:</strong> {formatDate(b.appointmentDate)}</p>
+                    <p>
+                      <strong>Elder:</strong> {b.elderName}
+                    </p>
+                    <p>
+                      <strong>Service:</strong> {b.serviceType}
+                    </p>
+                    <p>
+                      <strong>Date:</strong> {formatDate(b.appointmentDate)}
+                    </p>
 
                     <button
                       className="btn btn-success btn-sm me-2"
@@ -168,17 +168,21 @@ function NurseDashboard() {
       {activeTab === "confirmed" && (
         <div className="row g-3">
           {confirmedBookings.length === 0 ? (
-            <div className="alert alert-info">
-              No accepted visits yet.
-            </div>
+            <div className="alert alert-info">No accepted visits yet.</div>
           ) : (
             confirmedBookings.map((b) => (
               <div key={b._id} className="col-md-6 col-lg-4">
                 <div className="card border-success">
                   <div className="card-body">
-                    <p><strong>Elder:</strong> {b.elderName}</p>
-                    <p><strong>Status:</strong> Accepted</p>
-                    <p><strong>Date:</strong> {formatDate(b.appointmentDate)}</p>
+                    <p>
+                      <strong>Elder:</strong> {b.elderName}
+                    </p>
+                    <p>
+                      <strong>Status:</strong> Accepted
+                    </p>
+                    <p>
+                      <strong>Date:</strong> {formatDate(b.appointmentDate)}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -213,8 +217,8 @@ function NurseDashboard() {
                         b.status === "Confirmed"
                           ? "bg-success"
                           : b.status === "Cancelled"
-                          ? "bg-danger"
-                          : "bg-warning text-dark"
+                            ? "bg-danger"
+                            : "bg-warning text-dark"
                       }`}
                     >
                       {b.status}
@@ -226,8 +230,8 @@ function NurseDashboard() {
                         b.confirmationStatus === "Confirmed"
                           ? "bg-success"
                           : b.confirmationStatus === "Rejected"
-                          ? "bg-danger"
-                          : "bg-secondary"
+                            ? "bg-danger"
+                            : "bg-secondary"
                       }`}
                     >
                       {b.confirmationStatus}

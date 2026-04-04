@@ -12,7 +12,9 @@ function GameDetail({ game }) {
     <div className="card shadow-sm border-0">
       <div className="card-body p-4">
         <div className="d-flex align-items-center gap-3 mb-3">
-          <div className={`game-icon-lg bg-${game.color || "primary"} text-white`}>
+          <div
+            className={`game-icon-lg bg-${game.color || "primary"} text-white`}
+          >
             {game.icon}
           </div>
           <div>
@@ -41,13 +43,17 @@ function GameDetail({ game }) {
         <div className="d-flex gap-2 flex-wrap">
           <button
             className="btn btn-primary"
-            onClick={() => navigate(`/games/${game._id}/play`, { state: { game } })}
+            onClick={() =>
+              navigate(`/games/${game._id}/play`, { state: { game } })
+            }
           >
             Play Now
           </button>
           <button
             className="btn btn-outline-dark"
-            onClick={() => navigate(`/games/${game._id}/scores`, { state: { game } })}
+            onClick={() =>
+              navigate(`/games/${game._id}/scores`, { state: { game } })
+            }
           >
             View Scores
           </button>

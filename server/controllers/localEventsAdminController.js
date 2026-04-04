@@ -1,4 +1,4 @@
-const LocalEvent = require('../models/localEvent');
+const LocalEvent = require("../models/localEvent");
 
 // Get all local events (admin)
 exports.getLocalEvents = async (req, res) => {
@@ -7,12 +7,12 @@ exports.getLocalEvents = async (req, res) => {
     res.status(200).json({
       success: true,
       count: events.length,
-      events
+      events,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Server error'
+      message: "Server error",
     });
   }
 };
@@ -21,19 +21,19 @@ exports.getLocalEvents = async (req, res) => {
 exports.createLocalEvent = async (req, res) => {
   try {
     const event = new LocalEvent({
-      ...req.body
+      ...req.body,
     });
-    
+
     const createdEvent = await event.save();
-    
+
     res.status(201).json({
       success: true,
-      event: createdEvent
+      event: createdEvent,
     });
   } catch (error) {
     res.status(400).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -41,30 +41,26 @@ exports.createLocalEvent = async (req, res) => {
 // Update local event (admin)
 exports.updateLocalEvent = async (req, res) => {
   try {
-    const event = await LocalEvent.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { 
-        new: true,
-        runValidators: true 
-      }
-    );
+    const event = await LocalEvent.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!event) {
       return res.status(404).json({
         success: false,
-        message: 'Event not found'
+        message: "Event not found",
       });
     }
 
     res.status(200).json({
       success: true,
-      event
+      event,
     });
   } catch (error) {
     res.status(400).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
@@ -77,18 +73,18 @@ exports.deleteLocalEvent = async (req, res) => {
     if (!event) {
       return res.status(404).json({
         success: false,
-        message: 'Event not found'
+        message: "Event not found",
       });
     }
 
     res.status(200).json({
       success: true,
-      message: 'Event deleted successfully'
+      message: "Event deleted successfully",
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Server error'
+      message: "Server error",
     });
   }
 };

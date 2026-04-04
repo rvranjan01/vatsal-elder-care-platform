@@ -25,14 +25,14 @@ import NursesList from "./pages/NursesList";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import Health from "./pages/Health";
 import Games from "./pages/Games";
-// ......... 
+// .........
 import GamesPage from "./pages/games/GamesPage";
 import GamePlayPage from "./pages/games/GamePlayPage";
 import GameScorePage from "./pages/games/GameScorePage";
 import GameDetailPage from "./pages/games/GameDetailPage";
 
 import MedicinesPage from "./pages/MedicinesPage";
-// .............. 
+// ..............
 import Yoga from "./pages/Yoga";
 import Events from "./pages/Events";
 import Booking from "./pages/Booking";
@@ -85,9 +85,7 @@ function App() {
 
 export default App;
 
-
-
-// Test 
+// Test
 // import Login from "./pages/Login";
 
 // function App() {

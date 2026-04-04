@@ -21,7 +21,7 @@ function ViewNurseProfile() {
       certifications: "GNM, Elder Care",
       licenseNumber: "NUR-2001",
       bio: "Compassionate home care nurse experienced in senior wellness and daily health support.",
-      address: "Bengaluru"
+      address: "Bengaluru",
     },
     nurse2: {
       _id: "nurse2",
@@ -32,7 +32,7 @@ function ViewNurseProfile() {
       certifications: "BSc Nursing, Medication Care",
       licenseNumber: "NUR-2002",
       bio: "Helps elders with medicine schedules, monitoring, and regular nursing support at home.",
-      address: "Bengaluru"
+      address: "Bengaluru",
     },
     nurse3: {
       _id: "nurse3",
@@ -43,8 +43,8 @@ function ViewNurseProfile() {
       certifications: "BSc Nursing, Senior Patient Care",
       licenseNumber: "NUR-2003",
       bio: "Experienced in elder care assistance, mobility support, and day-to-day health observation.",
-      address: "Bengaluru"
-    }
+      address: "Bengaluru",
+    },
   };
 
   useEffect(() => {
@@ -54,16 +54,16 @@ function ViewNurseProfile() {
   }, [id]);
 
   const fetchNurseProfile = async () => {
-  try {
-    const res = await API.get(`/users/${id}`);
-    setNurse(res.data);
-  } catch (err) {
-    console.error("Error fetching nurse profile:", err);
-    setNurse(null);
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      const res = await API.get(`/users/${id}`);
+      setNurse(res.data);
+    } catch (err) {
+      console.error("Error fetching nurse profile:", err);
+      setNurse(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return <div className="container mt-4">Loading nurse profile...</div>;
@@ -119,7 +119,7 @@ function ViewNurseProfile() {
             className="btn btn-primary"
             onClick={() =>
               navigate(`/nurses/${nurse._id}/book`, {
-                state: { nurse }
+                state: { nurse },
               })
             }
           >

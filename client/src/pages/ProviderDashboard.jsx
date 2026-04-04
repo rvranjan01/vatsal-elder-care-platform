@@ -22,22 +22,30 @@ function ProviderDashboard() {
   const fetchBookings = async () => {
     try {
       setLoading(true);
-      
+
       // Get pending bookings (awaiting provider confirmation)
       const pendingRes = await API.get("/bookings/pending");
-      const pending = Array.isArray(pendingRes.data.bookings) ? pendingRes.data.bookings : [];
-      
+      const pending = Array.isArray(pendingRes.data.bookings)
+        ? pendingRes.data.bookings
+        : [];
+
       // Filter: only show Pending Confirmation status
-      const waitingForConfirm = pending.filter(b => b.confirmationStatus === "Waiting");
+      const waitingForConfirm = pending.filter(
+        (b) => b.confirmationStatus === "Waiting",
+      );
       setPendingBookings(waitingForConfirm);
-      
+
       // Get all user's bookings and filter for confirmed ones
       const allBookingsRes = await API.get("/bookings/my-bookings");
-      const allBookings = Array.isArray(allBookingsRes.data.bookings) ? allBookingsRes.data.bookings : [];
-      
-      const confirmed = allBookings.filter(b => b.confirmationStatus === "Confirmed" && b.status === "Confirmed");
+      const allBookings = Array.isArray(allBookingsRes.data.bookings)
+        ? allBookingsRes.data.bookings
+        : [];
+
+      const confirmed = allBookings.filter(
+        (b) => b.confirmationStatus === "Confirmed" && b.status === "Confirmed",
+      );
       setConfirmedBookings(confirmed);
-      
+
       console.log("Pending for confirmation:", waitingForConfirm);
       console.log("Already confirmed:", confirmed);
     } catch (err) {
@@ -92,7 +100,11 @@ function ProviderDashboard() {
   const formatDate = (dateStr) => {
     if (!dateStr) return "N/A";
     const date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   };
 
   const formatTime = (timeStr) => {
@@ -115,7 +127,9 @@ function ProviderDashboard() {
           onClick={() => setActiveTab("pending")}
           role="tab"
         >
-          <span className="badge bg-warning text-dark me-2">{pendingBookings.length}</span>
+          <span className="badge bg-warning text-dark me-2">
+            {pendingBookings.length}
+          </span>
           Pending Confirmation
         </button>
         <button
@@ -123,7 +137,9 @@ function ProviderDashboard() {
           onClick={() => setActiveTab("confirmed")}
           role="tab"
         >
-          <span className="badge bg-success me-2">{confirmedBookings.length}</span>
+          <span className="badge bg-success me-2">
+            {confirmedBookings.length}
+          </span>
           Confirmed Bookings
         </button>
       </div>
@@ -132,7 +148,9 @@ function ProviderDashboard() {
       {activeTab === "pending" && (
         <div className="pd-tab-content">
           {pendingBookings.length === 0 ? (
-            <div className="alert alert-info">No pending bookings awaiting your confirmation.</div>
+            <div className="alert alert-info">
+              No pending bookings awaiting your confirmation.
+            </div>
           ) : (
             <div className="row g-3">
               {pendingBookings.map((booking) => (
@@ -140,24 +158,30 @@ function ProviderDashboard() {
                   <div className="card pd-booking-card border-warning">
                     <div className="card-header bg-warning text-dark">
                       <h6 className="mb-0">
-                        <i className="bi bi-exclamation-circle"></i> Awaiting Confirmation
+                        <i className="bi bi-exclamation-circle"></i> Awaiting
+                        Confirmation
                       </h6>
                     </div>
                     <div className="card-body">
                       <p className="mb-2">
-                        <strong>Family Member:</strong><br />
+                        <strong>Family Member:</strong>
+                        <br />
                         {booking.familyName || booking.familyId}
                       </p>
                       <p className="mb-2">
-                        <strong>Elder:</strong><br />
+                        <strong>Elder:</strong>
+                        <br />
                         {booking.elderName || booking.elderId}
                       </p>
                       <p className="mb-2">
                         <strong>Service Type:</strong>
-                        <span className="badge bg-secondary ms-2">{booking.serviceType}</span>
+                        <span className="badge bg-secondary ms-2">
+                          {booking.serviceType}
+                        </span>
                       </p>
                       <p className="mb-2">
-                        <strong>Date:</strong> {formatDate(booking.appointmentDate)}
+                        <strong>Date:</strong>{" "}
+                        {formatDate(booking.appointmentDate)}
                       </p>
                       {booking.timeSlot && (
                         <p className="mb-2">
@@ -166,12 +190,14 @@ function ProviderDashboard() {
                       )}
                       {booking.notes && (
                         <p className="mb-2">
-                          <strong>Notes:</strong><br />
+                          <strong>Notes:</strong>
+                          <br />
                           <small className="text-muted">{booking.notes}</small>
                         </p>
                       )}
                       <p className="mb-3">
-                        <strong>Created:</strong> {formatDate(booking.createdAt)}
+                        <strong>Created:</strong>{" "}
+                        {formatDate(booking.createdAt)}
                       </p>
 
                       <div className="d-flex gap-2">
@@ -214,19 +240,24 @@ function ProviderDashboard() {
                     </div>
                     <div className="card-body">
                       <p className="mb-2">
-                        <strong>Family Member:</strong><br />
+                        <strong>Family Member:</strong>
+                        <br />
                         {booking.familyName || booking.familyId}
                       </p>
                       <p className="mb-2">
-                        <strong>Elder:</strong><br />
+                        <strong>Elder:</strong>
+                        <br />
                         {booking.elderName || booking.elderId}
                       </p>
                       <p className="mb-2">
                         <strong>Service Type:</strong>
-                        <span className="badge bg-secondary ms-2">{booking.serviceType}</span>
+                        <span className="badge bg-secondary ms-2">
+                          {booking.serviceType}
+                        </span>
                       </p>
                       <p className="mb-2">
-                        <strong>Date:</strong> {formatDate(booking.appointmentDate)}
+                        <strong>Date:</strong>{" "}
+                        {formatDate(booking.appointmentDate)}
                       </p>
                       {booking.timeSlot && (
                         <p className="mb-2">
@@ -235,12 +266,14 @@ function ProviderDashboard() {
                       )}
                       {booking.notes && (
                         <p className="mb-2">
-                          <strong>Notes:</strong><br />
+                          <strong>Notes:</strong>
+                          <br />
                           <small className="text-muted">{booking.notes}</small>
                         </p>
                       )}
                       <p className="mb-0">
-                        <strong>Confirmed:</strong> {formatDate(booking.confirmedAt)}
+                        <strong>Confirmed:</strong>{" "}
+                        {formatDate(booking.confirmedAt)}
                       </p>
                     </div>
                   </div>
@@ -257,7 +290,10 @@ function ProviderDashboard() {
           <div className="pd-modal">
             <h5 className="modal-title mb-3">Confirm Booking</h5>
             <p className="text-muted small">
-              You are confirming this booking for <strong>{selectedBooking.elderName || selectedBooking.elderId}</strong>
+              You are confirming this booking for{" "}
+              <strong>
+                {selectedBooking.elderName || selectedBooking.elderId}
+              </strong>
             </p>
             <div className="mb-3">
               <label className="form-label">Add Notes (Optional)</label>
@@ -297,7 +333,10 @@ function ProviderDashboard() {
           <div className="pd-modal">
             <h5 className="modal-title mb-3">Decline Booking</h5>
             <p className="text-muted small">
-              You are declining this booking for <strong>{selectedBooking.elderName || selectedBooking.elderId}</strong>
+              You are declining this booking for{" "}
+              <strong>
+                {selectedBooking.elderName || selectedBooking.elderId}
+              </strong>
             </p>
             <div className="mb-3">
               <label className="form-label">Reason (Optional)</label>
@@ -310,7 +349,10 @@ function ProviderDashboard() {
               ></textarea>
             </div>
             <div className="d-flex gap-2">
-              <button className="btn btn-danger flex-grow-1" onClick={handleRejectBooking}>
+              <button
+                className="btn btn-danger flex-grow-1"
+                onClick={handleRejectBooking}
+              >
                 Decline Booking
               </button>
               <button

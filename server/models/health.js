@@ -5,21 +5,21 @@ const healthSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true
+      required: true,
     },
     bloodPressure: {
       type: String,
-      required: true
+      required: true,
     },
     sugarLevel: {
       type: String,
-      required: true
+      required: true,
     },
     notes: {
-      type: String
-    }
+      type: String,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Health", healthSchema);

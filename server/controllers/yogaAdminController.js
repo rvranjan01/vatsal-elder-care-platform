@@ -1,4 +1,4 @@
-const YogaExercise = require('../models/yogaExercise');
+const YogaExercise = require("../models/yogaExercise");
 
 exports.getYogaExercises = async (req, res) => {
   try {
@@ -13,8 +13,12 @@ exports.createYogaExercise = async (req, res) => {
   try {
     const exercise = new YogaExercise({
       ...req.body,
-      benefits: req.body.benefits ? req.body.benefits.split(',').map(b => b.trim()) : [],
-      instructions: req.body.instructions ? req.body.instructions.split(',').map(i => i.trim()) : []
+      benefits: req.body.benefits
+        ? req.body.benefits.split(",").map((b) => b.trim())
+        : [],
+      instructions: req.body.instructions
+        ? req.body.instructions.split(",").map((i) => i.trim())
+        : [],
     });
     await exercise.save();
     res.status(201).json({ exercise });
@@ -29,10 +33,14 @@ exports.updateYogaExercise = async (req, res) => {
       req.params.id,
       {
         ...req.body,
-        benefits: req.body.benefits ? req.body.benefits.split(',').map(b => b.trim()) : [],
-        instructions: req.body.instructions ? req.body.instructions.split(',').map(i => i.trim()) : []
+        benefits: req.body.benefits
+          ? req.body.benefits.split(",").map((b) => b.trim())
+          : [],
+        instructions: req.body.instructions
+          ? req.body.instructions.split(",").map((i) => i.trim())
+          : [],
       },
-      { new: true }
+      { new: true },
     );
     res.json({ exercise });
   } catch (error) {

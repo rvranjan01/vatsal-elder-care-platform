@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 
 function Navbar() {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    !!localStorage.getItem("token")
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const [userRole, setUserRole] = useState(localStorage.getItem("role"));
 
   useEffect(() => {
@@ -16,7 +14,7 @@ function Navbar() {
 
     // Listen for custom auth change event (fires immediately on same tab)
     window.addEventListener("authChange", handleAuthChange);
-    
+
     // Also listen for storage changes (for multi-tab scenarios)
     window.addEventListener("storage", handleAuthChange);
 
@@ -106,15 +104,18 @@ function Navbar() {
               </>
             )}
 
-            {isLoggedIn && (userRole === "doctor" || userRole === "companion" || userRole === "nurse") && (
-              <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/doctor-dashboard">
-                    My Bookings
-                  </Link>
-                </li>
-              </>
-            )}
+            {isLoggedIn &&
+              (userRole === "doctor" ||
+                userRole === "companion" ||
+                userRole === "nurse") && (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/doctor-dashboard">
+                      My Bookings
+                    </Link>
+                  </li>
+                </>
+              )}
 
             {!isLoggedIn ? (
               <>

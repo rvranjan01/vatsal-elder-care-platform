@@ -18,7 +18,8 @@ function MedicineDashboardCard({ medicines = [] }) {
               <div className="reminder-content">
                 <p className="reminder-name">{med.medicineName}</p>
                 <p className="reminder-time">
-                  {(med.scheduleSlots || []).join(", ")} • Stock: {med.currentStock}/{med.initialStock}
+                  {(med.scheduleSlots || []).join(", ")} • Stock:{" "}
+                  {med.currentStock}/{med.initialStock}
                 </p>
               </div>
             </div>
@@ -28,7 +29,9 @@ function MedicineDashboardCard({ medicines = [] }) {
         <p className="no-data">No medicines scheduled.</p>
       )}
 
-      <Link to="/medicines" className="view-more-btn">View All →</Link>
+      <Link to="/medicines" className="view-more-btn">
+        View All →
+      </Link>
     </div>
   );
 }

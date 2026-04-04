@@ -1,4 +1,3 @@
-
 const Medicine = require("../models/medicine");
 const MedicineLog = require("../models/medicineLog");
 
@@ -81,12 +80,18 @@ exports.createMedicine = async (req, res) => {
     }
 
     if (!Array.isArray(scheduleSlots) || !scheduleSlots.length) {
-      return res.status(400).json({ message: "At least one schedule slot is required." });
+      return res
+        .status(400)
+        .json({ message: "At least one schedule slot is required." });
     }
 
-    const invalidSlot = scheduleSlots.some((slot) => !SLOT_VALUES.includes(slot));
+    const invalidSlot = scheduleSlots.some(
+      (slot) => !SLOT_VALUES.includes(slot),
+    );
     if (invalidSlot) {
-      return res.status(400).json({ message: "Invalid schedule slot selected." });
+      return res
+        .status(400)
+        .json({ message: "Invalid schedule slot selected." });
     }
 
     const medicine = await Medicine.create({
@@ -120,7 +125,9 @@ exports.createMedicine = async (req, res) => {
     });
   } catch (error) {
     console.error("createMedicine error:", error);
-    return res.status(500).json({ message: "Server error while creating medicine." });
+    return res
+      .status(500)
+      .json({ message: "Server error while creating medicine." });
   }
 };
 
@@ -155,13 +162,15 @@ exports.getMedicines = async (req, res) => {
           status: computedStatus,
           todayStatus,
         };
-      })
+      }),
     );
 
     return res.status(200).json({ medicines: enrichedMedicines });
   } catch (error) {
     console.error("getMedicines error:", error);
-    return res.status(500).json({ message: "Server error while fetching medicines." });
+    return res
+      .status(500)
+      .json({ message: "Server error while fetching medicines." });
   }
 };
 
@@ -185,7 +194,9 @@ exports.getMedicineHistory = async (req, res) => {
     return res.status(200).json({ history });
   } catch (error) {
     console.error("getMedicineHistory error:", error);
-    return res.status(500).json({ message: "Server error while fetching history." });
+    return res
+      .status(500)
+      .json({ message: "Server error while fetching history." });
   }
 };
 
@@ -214,14 +225,23 @@ exports.updateMedicine = async (req, res) => {
       status,
     } = req.body;
 
-    if (scheduleSlots && (!Array.isArray(scheduleSlots) || !scheduleSlots.length)) {
-      return res.status(400).json({ message: "At least one schedule slot is required." });
+    if (
+      scheduleSlots &&
+      (!Array.isArray(scheduleSlots) || !scheduleSlots.length)
+    ) {
+      return res
+        .status(400)
+        .json({ message: "At least one schedule slot is required." });
     }
 
     if (scheduleSlots) {
-      const invalidSlot = scheduleSlots.some((slot) => !SLOT_VALUES.includes(slot));
+      const invalidSlot = scheduleSlots.some(
+        (slot) => !SLOT_VALUES.includes(slot),
+      );
       if (invalidSlot) {
-        return res.status(400).json({ message: "Invalid schedule slot selected." });
+        return res
+          .status(400)
+          .json({ message: "Invalid schedule slot selected." });
       }
     }
 
@@ -239,7 +259,10 @@ exports.updateMedicine = async (req, res) => {
         : medicine.lowStockThreshold;
     medicine.notes = notes ?? medicine.notes;
     medicine.status = status ?? medicine.status;
-    medicine.endDate = calculateEndDate(medicine.startDate, medicine.durationDays);
+    medicine.endDate = calculateEndDate(
+      medicine.startDate,
+      medicine.durationDays,
+    );
 
     await medicine.save();
 
@@ -258,7 +281,9 @@ exports.updateMedicine = async (req, res) => {
     });
   } catch (error) {
     console.error("updateMedicine error:", error);
-    return res.status(500).json({ message: "Server error while updating medicine." });
+    return res
+      .status(500)
+      .json({ message: "Server error while updating medicine." });
   }
 };
 
@@ -281,19 +306,27 @@ exports.takeMedicineSlot = async (req, res) => {
     }
 
     if (medicine.status !== "active") {
-      return res.status(400).json({ message: "Only active medicines can be taken." });
+      return res
+        .status(400)
+        .json({ message: "Only active medicines can be taken." });
     }
 
     if (!isMedicineDateActive(medicine)) {
-      return res.status(400).json({ message: "Medicine is not active for today's date." });
+      return res
+        .status(400)
+        .json({ message: "Medicine is not active for today's date." });
     }
 
     if (!medicine.scheduleSlots.includes(slot)) {
-      return res.status(400).json({ message: "This slot is not configured for the medicine." });
+      return res
+        .status(400)
+        .json({ message: "This slot is not configured for the medicine." });
     }
 
     if (medicine.currentStock <= 0) {
-      return res.status(400).json({ message: "No stock left for this medicine." });
+      return res
+        .status(400)
+        .json({ message: "No stock left for this medicine." });
     }
 
     const today = getDateOnlyString();
@@ -307,7 +340,9 @@ exports.takeMedicineSlot = async (req, res) => {
     });
 
     if (existingTaken) {
-      return res.status(400).json({ message: "This slot is already marked as taken today." });
+      return res
+        .status(400)
+        .json({ message: "This slot is already marked as taken today." });
     }
 
     medicine.currentStock = Math.max(0, medicine.currentStock - 1);
@@ -329,7 +364,9 @@ exports.takeMedicineSlot = async (req, res) => {
     });
   } catch (error) {
     console.error("takeMedicineSlot error:", error);
-    return res.status(500).json({ message: "Server error while taking medicine." });
+    return res
+      .status(500)
+      .json({ message: "Server error while taking medicine." });
   }
 };
 
@@ -352,7 +389,9 @@ exports.skipMedicineSlot = async (req, res) => {
     }
 
     if (!medicine.scheduleSlots.includes(slot)) {
-      return res.status(400).json({ message: "This slot is not configured for the medicine." });
+      return res
+        .status(400)
+        .json({ message: "This slot is not configured for the medicine." });
     }
 
     const today = getDateOnlyString();
@@ -366,7 +405,9 @@ exports.skipMedicineSlot = async (req, res) => {
     });
 
     if (existingTaken) {
-      return res.status(400).json({ message: "Already taken for this slot. Cannot skip now." });
+      return res
+        .status(400)
+        .json({ message: "Already taken for this slot. Cannot skip now." });
     }
 
     const existingSkipped = await MedicineLog.findOne({
@@ -378,7 +419,9 @@ exports.skipMedicineSlot = async (req, res) => {
     });
 
     if (existingSkipped) {
-      return res.status(400).json({ message: "This slot is already skipped today." });
+      return res
+        .status(400)
+        .json({ message: "This slot is already skipped today." });
     }
 
     await MedicineLog.create({
@@ -396,7 +439,9 @@ exports.skipMedicineSlot = async (req, res) => {
     });
   } catch (error) {
     console.error("skipMedicineSlot error:", error);
-    return res.status(500).json({ message: "Server error while skipping medicine." });
+    return res
+      .status(500)
+      .json({ message: "Server error while skipping medicine." });
   }
 };
 
@@ -410,7 +455,9 @@ exports.refillMedicineStock = async (req, res) => {
     const { refillQuantity } = req.body;
 
     if (!refillQuantity || Number(refillQuantity) <= 0) {
-      return res.status(400).json({ message: "Valid refill quantity is required." });
+      return res
+        .status(400)
+        .json({ message: "Valid refill quantity is required." });
     }
 
     const medicine = await getMedicineByIdForUser(req.params.id, userId);
@@ -443,7 +490,9 @@ exports.refillMedicineStock = async (req, res) => {
     });
   } catch (error) {
     console.error("refillMedicineStock error:", error);
-    return res.status(500).json({ message: "Server error while refilling stock." });
+    return res
+      .status(500)
+      .json({ message: "Server error while refilling stock." });
   }
 };
 
@@ -476,7 +525,9 @@ exports.deleteMedicine = async (req, res) => {
     return res.status(200).json({ message: "Medicine deleted successfully." });
   } catch (error) {
     console.error("deleteMedicine error:", error);
-    return res.status(500).json({ message: "Server error while deleting medicine." });
+    return res
+      .status(500)
+      .json({ message: "Server error while deleting medicine." });
   }
 };
 
@@ -513,7 +564,9 @@ exports.getUpcomingReminders = async (req, res) => {
           currentStock: medicine.currentStock,
           initialStock: medicine.initialStock,
           status: todayStatus[slot] || "pending",
-          lowStock: Number(medicine.currentStock) <= Number(medicine.lowStockThreshold || 5),
+          lowStock:
+            Number(medicine.currentStock) <=
+            Number(medicine.lowStockThreshold || 5),
         });
       }
     }
@@ -523,7 +576,9 @@ exports.getUpcomingReminders = async (req, res) => {
     });
   } catch (error) {
     console.error("getUpcomingReminders error:", error);
-    return res.status(500).json({ message: "Server error while fetching reminders." });
+    return res
+      .status(500)
+      .json({ message: "Server error while fetching reminders." });
   }
 };
 
@@ -577,6 +632,8 @@ exports.autoMarkMissedDoses = async (req, res) => {
     });
   } catch (error) {
     console.error("autoMarkMissedDoses error:", error);
-    return res.status(500).json({ message: "Server error while marking missed doses." });
+    return res
+      .status(500)
+      .json({ message: "Server error while marking missed doses." });
   }
 };

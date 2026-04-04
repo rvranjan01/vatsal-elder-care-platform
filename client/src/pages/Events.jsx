@@ -14,7 +14,8 @@ function Events() {
       time: "6:30 AM",
       location: "Outdoor Park",
       type: "health",
-      description: "Join a refreshing morning walk with other elders in the community."
+      description:
+        "Join a refreshing morning walk with other elders in the community.",
     },
     {
       _id: "event2",
@@ -23,7 +24,8 @@ function Events() {
       time: "5:00 PM",
       location: "Community Hall",
       type: "social",
-      description: "A peaceful evening of bhajans, prayer, and community bonding."
+      description:
+        "A peaceful evening of bhajans, prayer, and community bonding.",
     },
     {
       _id: "event3",
@@ -32,8 +34,9 @@ function Events() {
       time: "10:00 AM",
       location: "Cultural Center",
       type: "creative",
-      description: "Fun painting and art activities designed for senior citizens."
-    }
+      description:
+        "Fun painting and art activities designed for senior citizens.",
+    },
   ];
 
   useEffect(() => {
@@ -61,7 +64,7 @@ function Events() {
       return new Date(dateStr).toLocaleDateString("en-US", {
         year: "numeric",
         month: "short",
-        day: "numeric"
+        day: "numeric",
       });
     } catch {
       return dateStr;
@@ -73,59 +76,63 @@ function Events() {
   }
 
   return (
-  <div className="events-page">
-    <div className="container mt-4 mb-4">
-      <div className="events-header text-center">
-        <h1>📍 Local Events</h1>
-        <p>
-          Stay connected with nearby wellness, social, and creative activities
-          for elders.
-        </p>
-      </div>
+    <div className="events-page">
+      <div className="container mt-4 mb-4">
+        <div className="events-header text-center">
+          <h1>📍 Local Events</h1>
+          <p>
+            Stay connected with nearby wellness, social, and creative activities
+            for elders.
+          </p>
+        </div>
 
-      <div className="row g-4">
-        {displayEvents.map((event) => (
-          <div key={event._id} className="col-md-6 col-lg-4">
-            <div className={`card shadow-sm h-100 event-card ${event.type || ""}`}>
-              <div className="card-header d-flex justify-content-between align-items-center gap-2">
-                <h5 className="event-title">{event.title}</h5>
-                <span
-                  className={`badge event-type-badge ${
-                    event.type === "health"
-                      ? "bg-danger"
-                      : event.type === "social"
-                      ? "bg-info text-dark"
-                      : event.type === "creative"
-                      ? "bg-warning text-dark"
-                      : "bg-success"
-                  }`}
-                >
-                  {event.type}
-                </span>
-              </div>
-
-              <div className="card-body">
-                <div className="event-meta">
-                  <span className="event-meta-icon">📅</span>
-                  <p className="event-meta-text">{formatDate(event.date)} • {event.time || "TBD"}</p>
+        <div className="row g-4">
+          {displayEvents.map((event) => (
+            <div key={event._id} className="col-md-6 col-lg-4">
+              <div
+                className={`card shadow-sm h-100 event-card ${event.type || ""}`}
+              >
+                <div className="card-header d-flex justify-content-between align-items-center gap-2">
+                  <h5 className="event-title">{event.title}</h5>
+                  <span
+                    className={`badge event-type-badge ${
+                      event.type === "health"
+                        ? "bg-danger"
+                        : event.type === "social"
+                          ? "bg-info text-dark"
+                          : event.type === "creative"
+                            ? "bg-warning text-dark"
+                            : "bg-success"
+                    }`}
+                  >
+                    {event.type}
+                  </span>
                 </div>
 
-                <div className="event-meta">
-                  <span className="event-meta-icon">📍</span>
-                  <p className="event-meta-text">{event.location}</p>
-                </div>
+                <div className="card-body">
+                  <div className="event-meta">
+                    <span className="event-meta-icon">📅</span>
+                    <p className="event-meta-text">
+                      {formatDate(event.date)} • {event.time || "TBD"}
+                    </p>
+                  </div>
 
-                <div className="event-description">
-                  {event.description || "No description available."}
+                  <div className="event-meta">
+                    <span className="event-meta-icon">📍</span>
+                    <p className="event-meta-text">{event.location}</p>
+                  </div>
+
+                  <div className="event-description">
+                    {event.description || "No description available."}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default Events;

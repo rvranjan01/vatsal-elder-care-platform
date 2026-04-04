@@ -5,8 +5,8 @@ const transporter = nodemailer.createTransport({
   service: process.env.EMAIL_SERVICE || "gmail",
   auth: {
     user: process.env.EMAIL_USER || "your-email@gmail.com",
-    pass: process.env.EMAIL_PASSWORD || "your-app-password"
-  }
+    pass: process.env.EMAIL_PASSWORD || "your-app-password",
+  },
 });
 
 // Send provider activation notification
@@ -22,18 +22,26 @@ exports.sendProviderActivationEmail = async (providerEmail, providerName) => {
         <p>You can now log in at: <strong>https://vatsal.local/login</strong></p>
         <p>Your profile is now visible to families and elders in the system.</p>
         <p>Thank you for joining Vatsal!</p>
-      `
+      `,
     };
 
     await transporter.sendMail(mailOptions);
     console.log(`✓ Activation email sent to ${providerEmail}`);
   } catch (error) {
-    console.error(`Error sending activation email to ${providerEmail}:`, error.message);
+    console.error(
+      `Error sending activation email to ${providerEmail}:`,
+      error.message,
+    );
   }
 };
 
 // Send booking confirmation request to provider
-exports.sendBookingConfirmationEmail = async (providerEmail, providerName, elderName, appointmentDate) => {
+exports.sendBookingConfirmationEmail = async (
+  providerEmail,
+  providerName,
+  elderName,
+  appointmentDate,
+) => {
   try {
     const mailOptions = {
       from: process.env.EMAIL_USER || "noreply@vatsal.local",
@@ -49,18 +57,26 @@ exports.sendBookingConfirmationEmail = async (providerEmail, providerName, elder
         </ul>
         <p>Please log in to your dashboard to confirm or reject this booking.</p>
         <p><a href="https://vatsal.local/dashboard">View Dashboard</a></p>
-      `
+      `,
     };
 
     await transporter.sendMail(mailOptions);
     console.log(`✓ Booking confirmation request sent to ${providerEmail}`);
   } catch (error) {
-    console.error(`Error sending booking email to ${providerEmail}:`, error.message);
+    console.error(
+      `Error sending booking email to ${providerEmail}:`,
+      error.message,
+    );
   }
 };
 
 // Send booking confirmation to family
-exports.sendBookingConfirmedEmail = async (familyEmail, familyName, elderName, appointmentDate) => {
+exports.sendBookingConfirmedEmail = async (
+  familyEmail,
+  familyName,
+  elderName,
+  appointmentDate,
+) => {
   try {
     const mailOptions = {
       from: process.env.EMAIL_USER || "noreply@vatsal.local",
@@ -74,18 +90,26 @@ exports.sendBookingConfirmedEmail = async (familyEmail, familyName, elderName, a
           <li><strong>Date:</strong> ${new Date(appointmentDate).toLocaleString()}</li>
         </ul>
         <p>You can view details in your dashboard.</p>
-      `
+      `,
     };
 
     await transporter.sendMail(mailOptions);
     console.log(`✓ Booking confirmation sent to ${familyEmail}`);
   } catch (error) {
-    console.error(`Error sending confirmation email to ${familyEmail}:`, error.message);
+    console.error(
+      `Error sending confirmation email to ${familyEmail}:`,
+      error.message,
+    );
   }
 };
 
 // Send rejection notification
-exports.sendBookingRejectedEmail = async (familyEmail, familyName, elderName, reason = "") => {
+exports.sendBookingRejectedEmail = async (
+  familyEmail,
+  familyName,
+  elderName,
+  reason = "",
+) => {
   try {
     const mailOptions = {
       from: process.env.EMAIL_USER || "noreply@vatsal.local",
@@ -97,12 +121,15 @@ exports.sendBookingRejectedEmail = async (familyEmail, familyName, elderName, re
         <p>Unfortunately, your booking request for <strong>${elderName}</strong> has been declined.</p>
         ${reason ? `<p><strong>Reason:</strong> ${reason}</p>` : ""}
         <p>Please try booking another time or contact support.</p>
-      `
+      `,
     };
 
     await transporter.sendMail(mailOptions);
     console.log(`✓ Rejection notification sent to ${familyEmail}`);
   } catch (error) {
-    console.error(`Error sending rejection email to ${familyEmail}:`, error.message);
+    console.error(
+      `Error sending rejection email to ${familyEmail}:`,
+      error.message,
+    );
   }
 };

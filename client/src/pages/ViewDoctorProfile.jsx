@@ -21,7 +21,7 @@ function ViewDoctorProfile() {
       certifications: "MBBS, MD",
       licenseNumber: "DOC-1001",
       bio: "Experienced general physician focused on elderly care and regular health checkups.",
-      address: "Bengaluru"
+      address: "Bengaluru",
     },
     doctor2: {
       _id: "doctor2",
@@ -32,7 +32,7 @@ function ViewDoctorProfile() {
       certifications: "MBBS, DM Cardiology",
       licenseNumber: "DOC-1002",
       bio: "Specialist in heart health, blood pressure management, and preventive cardiac care.",
-      address: "Bengaluru"
+      address: "Bengaluru",
     },
     doctor3: {
       _id: "doctor3",
@@ -43,8 +43,8 @@ function ViewDoctorProfile() {
       certifications: "MBBS, MS Orthopedics",
       licenseNumber: "DOC-1003",
       bio: "Focused on joint pain, mobility issues, and bone health for senior citizens.",
-      address: "Bengaluru"
-    }
+      address: "Bengaluru",
+    },
   };
 
   useEffect(() => {
@@ -54,16 +54,16 @@ function ViewDoctorProfile() {
   }, [id]);
 
   const fetchDoctorProfile = async () => {
-  try {
-    const res = await API.get(`/doctors/${id}`);
-    setDoctor(res.data.doctor);
-  } catch (err) {
-    console.error("Error fetching doctor profile:", err);
-    setDoctor(null);
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      const res = await API.get(`/doctors/${id}`);
+      setDoctor(res.data.doctor);
+    } catch (err) {
+      console.error("Error fetching doctor profile:", err);
+      setDoctor(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return <div className="container mt-4">Loading doctor profile...</div>;
@@ -119,7 +119,7 @@ function ViewDoctorProfile() {
             className="btn btn-primary"
             onClick={() =>
               navigate(`/doctors/${doctor._id}/book`, {
-                state: { doctor }
+                state: { doctor },
               })
             }
           >

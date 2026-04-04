@@ -1,5 +1,3 @@
-
-
 const mongoose = require("mongoose");
 
 const medicineSchema = new mongoose.Schema(
@@ -77,7 +75,7 @@ const medicineSchema = new mongoose.Schema(
       default: null,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Medicine", medicineSchema);

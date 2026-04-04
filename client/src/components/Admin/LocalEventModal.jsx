@@ -1,27 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import API from '../../services/api';
+import React, { useState, useEffect } from "react";
+import API from "../../services/api";
 
 const LocalEventModal = ({ event, onClose, onSave }) => {
   const [formData, setFormData] = useState({
-    title: '',
-    date: '',
-    time: '',
-    location: '',
-    description: '',
-    type: 'health',
-    organizer: ''
+    title: "",
+    date: "",
+    time: "",
+    location: "",
+    description: "",
+    type: "health",
+    organizer: "",
   });
 
   useEffect(() => {
     if (event) {
       setFormData({
-        title: event.title || '',
-        date: event.date ? new Date(event.date).toISOString().split('T')[0] : '',
-        time: event.time || '',
-        location: event.location || '',
-        description: event.description || '',
-        type: event.type || 'health',
-        organizer: event.organizer || ''
+        title: event.title || "",
+        date: event.date
+          ? new Date(event.date).toISOString().split("T")[0]
+          : "",
+        time: event.time || "",
+        location: event.location || "",
+        description: event.description || "",
+        type: event.type || "health",
+        organizer: event.organizer || "",
       });
     }
   }, [event]);
@@ -32,19 +34,23 @@ const LocalEventModal = ({ event, onClose, onSave }) => {
       if (event) {
         await API.put(`/admin/local-events/${event._id}`, formData);
       } else {
-        await API.post('/admin/local-events', formData);
+        await API.post("/admin/local-events", formData);
       }
       onSave();
       onClose();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to save event');
+      alert(err.response?.data?.message || "Failed to save event");
     }
   };
 
   return (
     <div className="ad-modal-backdrop" onClick={onClose}>
-      <div className="ad-modal" style={{ maxWidth: '600px' }} onClick={(e) => e.stopPropagation()}>
-        <h5>{event ? 'Edit Event' : 'Add New Event'}</h5>
+      <div
+        className="ad-modal"
+        style={{ maxWidth: "600px" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h5>{event ? "Edit Event" : "Add New Event"}</h5>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Title *</label>
@@ -52,11 +58,13 @@ const LocalEventModal = ({ event, onClose, onSave }) => {
               type="text"
               className="form-control"
               value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
               required
             />
           </div>
-          
+
           <div className="row">
             <div className="col-md-6 mb-3">
               <label className="form-label">Date *</label>
@@ -64,7 +72,9 @@ const LocalEventModal = ({ event, onClose, onSave }) => {
                 type="date"
                 className="form-control"
                 value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
                 required
               />
             </div>
@@ -74,7 +84,9 @@ const LocalEventModal = ({ event, onClose, onSave }) => {
                 type="time"
                 className="form-control"
                 value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, time: e.target.value })
+                }
               />
             </div>
           </div>
@@ -85,7 +97,9 @@ const LocalEventModal = ({ event, onClose, onSave }) => {
               type="text"
               className="form-control"
               value={formData.location}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, location: e.target.value })
+              }
               placeholder="e.g. Bengaluru Community Center"
               required
             />
@@ -96,7 +110,9 @@ const LocalEventModal = ({ event, onClose, onSave }) => {
             <select
               className="form-select"
               value={formData.type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, type: e.target.value })
+              }
             >
               <option value="health">Health</option>
               <option value="social">Social</option>
@@ -111,7 +127,9 @@ const LocalEventModal = ({ event, onClose, onSave }) => {
               className="form-control"
               rows="3"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               placeholder="Event description..."
             />
           </div>
@@ -122,14 +140,16 @@ const LocalEventModal = ({ event, onClose, onSave }) => {
               type="text"
               className="form-control"
               value={formData.organizer}
-              onChange={(e) => setFormData({ ...formData, organizer: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, organizer: e.target.value })
+              }
               placeholder="e.g. Local NGO"
             />
           </div>
 
           <div className="d-flex gap-2 mt-4">
             <button type="submit" className="btn btn-success flex-grow-1">
-              {event ? 'Update Event' : 'Add Event'}
+              {event ? "Update Event" : "Add Event"}
             </button>
             <button
               type="button"

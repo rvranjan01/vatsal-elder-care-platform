@@ -9,7 +9,7 @@ function DoctorProfile() {
     specialty: "",
     experience: "",
     certifications: "",
-    licenseNumber: ""
+    licenseNumber: "",
   });
 
   const [loading, setLoading] = useState(true);
@@ -31,9 +31,8 @@ function DoctorProfile() {
         specialty: user.specialty || "",
         experience: user.experience || "",
         certifications: user.certifications || "",
-        licenseNumber: user.licenseNumber || ""
+        licenseNumber: user.licenseNumber || "",
       });
-
     } catch (err) {
       console.error("Error fetching profile", err);
     } finally {
@@ -45,7 +44,7 @@ function DoctorProfile() {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -67,7 +66,6 @@ function DoctorProfile() {
   return (
     <div className="container mt-4">
       <div className="card profile-card p-4">
-
         <h3 className="mb-3">👨‍⚕️ Doctor Profile</h3>
 
         {/* Name */}
@@ -82,11 +80,7 @@ function DoctorProfile() {
 
         {/* Email */}
         <label>Email</label>
-        <input
-          type="email"
-          value={formData.email}
-          disabled
-        />
+        <input type="email" value={formData.email} disabled />
 
         {/* Specialty */}
         <label>Specialty</label>
@@ -130,7 +124,6 @@ function DoctorProfile() {
 
         {/* Buttons */}
         <div className="mt-3">
-
           {!editMode ? (
             <button
               className="btn btn-primary"
@@ -140,10 +133,7 @@ function DoctorProfile() {
             </button>
           ) : (
             <>
-              <button
-                className="btn btn-success me-2"
-                onClick={handleSave}
-              >
+              <button className="btn btn-success me-2" onClick={handleSave}>
                 Save
               </button>
 
@@ -158,9 +148,7 @@ function DoctorProfile() {
               </button>
             </>
           )}
-
         </div>
-
       </div>
     </div>
   );

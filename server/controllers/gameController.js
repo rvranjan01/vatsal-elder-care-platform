@@ -1,9 +1,6 @@
-
-
 const mongoose = require("mongoose");
 const GameScore = require("../models/gameScore");
 const axios = require("axios");
-
 
 const gamesList = [
   {
@@ -13,7 +10,7 @@ const gamesList = [
     icon: "🧠",
     category: "Memory",
     difficulty: "Easy",
-    bestScore: 1200
+    bestScore: 1200,
   },
   {
     _id: "number-order",
@@ -22,7 +19,7 @@ const gamesList = [
     icon: "🔢",
     category: "Focus",
     difficulty: "Easy",
-    bestScore: 950
+    bestScore: 950,
   },
   {
     _id: "trivia-quiz",
@@ -31,7 +28,7 @@ const gamesList = [
     icon: "❓",
     category: "Quiz",
     difficulty: "Easy",
-    bestScore: 1000
+    bestScore: 1000,
   },
   {
     _id: "word-puzzle",
@@ -40,8 +37,8 @@ const gamesList = [
     icon: "🔤",
     category: "Language",
     difficulty: "Medium",
-    bestScore: 1100
-  }
+    bestScore: 1100,
+  },
 ];
 
 const getLoggedInUserId = (req) => {
@@ -85,7 +82,7 @@ exports.addGameScore = async (req, res) => {
 
     if (!gameId || !gameName || score === undefined || score === null) {
       return res.status(400).json({
-        message: "gameId, gameName and score are required"
+        message: "gameId, gameName and score are required",
       });
     }
 
@@ -94,12 +91,12 @@ exports.addGameScore = async (req, res) => {
       gameId,
       gameName,
       score,
-      playedAt: new Date()
+      playedAt: new Date(),
     });
 
     res.status(201).json({
       message: "Game score saved successfully",
-      gameScore: newScore
+      gameScore: newScore,
     });
   } catch (error) {
     console.error("Error saving game score:", error);
@@ -135,7 +132,7 @@ exports.getGameScoresByGameId = async (req, res) => {
 
     const scores = await GameScore.find({
       userId,
-      gameId
+      gameId,
     }).sort({ score: -1, playedAt: -1 });
 
     res.status(200).json(scores);
@@ -157,19 +154,19 @@ exports.getMyBestScores = async (req, res) => {
 
     const bestScores = await GameScore.aggregate([
       {
-        $match: { userId: objectUserId }
+        $match: { userId: objectUserId },
       },
       {
         $group: {
           _id: "$gameId",
           gameName: { $first: "$gameName" },
           bestScore: { $max: "$score" },
-          lastPlayedAt: { $max: "$playedAt" }
-        }
+          lastPlayedAt: { $max: "$playedAt" },
+        },
       },
       {
-        $sort: { gameName: 1 }
-      }
+        $sort: { gameName: 1 },
+      },
     ]);
 
     res.status(200).json(bestScores);
@@ -182,7 +179,7 @@ exports.getMyBestScores = async (req, res) => {
 exports.getTriviaQuestions = async (req, res) => {
   try {
     const response = await axios.get(
-      "https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple"
+      "https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple",
     );
 
     res.status(200).json(response.data.results || []);
@@ -193,28 +190,28 @@ exports.getTriviaQuestions = async (req, res) => {
       {
         question: "What color is the sky on a clear day?",
         correct_answer: "Blue",
-        incorrect_answers: ["Green", "Red", "Yellow"]
+        incorrect_answers: ["Green", "Red", "Yellow"],
       },
       {
         question: "How many days are there in a week?",
         correct_answer: "7",
-        incorrect_answers: ["5", "6", "8"]
+        incorrect_answers: ["5", "6", "8"],
       },
       {
         question: "Which animal says meow?",
         correct_answer: "Cat",
-        incorrect_answers: ["Dog", "Cow", "Goat"]
+        incorrect_answers: ["Dog", "Cow", "Goat"],
       },
       {
         question: "Which meal is usually eaten in the morning?",
         correct_answer: "Breakfast",
-        incorrect_answers: ["Dinner", "Supper", "Snack"]
+        incorrect_answers: ["Dinner", "Supper", "Snack"],
       },
       {
         question: "What do we use to see?",
         correct_answer: "Eyes",
-        incorrect_answers: ["Hands", "Feet", "Ears"]
-      }
+        incorrect_answers: ["Hands", "Feet", "Ears"],
+      },
     ];
 
     res.status(200).json(fallbackQuestions);

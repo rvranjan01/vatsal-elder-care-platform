@@ -25,7 +25,9 @@ function MedicineHistory({ selectedMedicine, history, loading }) {
                   <div className="history-item" key={item._id}>
                     <div className="d-flex justify-content-between gap-2">
                       <div>
-                        <strong className="text-capitalize">{item.action}</strong>
+                        <strong className="text-capitalize">
+                          {item.action}
+                        </strong>
                         <div className="small text-muted">
                           Slot: {item.slot || "N/A"}
                         </div>
