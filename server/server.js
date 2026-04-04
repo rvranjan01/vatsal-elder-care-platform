@@ -38,7 +38,8 @@ const protectedRoutes = require("./routes/protectedRoutes");
 const healthRoutes = require("./routes/healthRoutes");
 const medicineRoutes = require("./routes/medicineRoutes");
 const gameRoutes = require("./routes/gameRoutes");
-const chatbotRoutes = require("./routes/chatbotRoutes");
+// const chatbotRoutes = require("./routes/chatbotRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 const yogaRoutes = require("./routes/yogaRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const adminRoutes = require("./routes/adminRoutes");
@@ -69,7 +70,8 @@ app.use("/api/yoga", yogaRoutes);
 app.use("/api/companions", companionRoutes);
 
 // Chatbot routes
-app.use("/api/chatbot", chatbotRoutes);
+// app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/chat", chatRoutes);
 
 // Game routes
 app.use("/api/games", gameRoutes);

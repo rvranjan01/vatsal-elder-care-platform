@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import API from "../services/api";
 // import gamesData from "../components/games/gamesData";
+import ChatLauncher from "../components/chat/ChatLauncher";
+import ChatOffcanvas from "../components/chat/ChatOffcanvas";
 import "./ElderDashboard.css";
 
 function ElderDashboard() {
@@ -16,6 +18,10 @@ function ElderDashboard() {
   const [localEvents, setLocalEvents] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [chatMessages, setChatMessages] = useState([]);
+
+  // ............
+  const [showChat, setShowChat] = useState(false);
+  // ...........
   const [newMessage, setNewMessage] = useState("");
 
   const [companions, setCompanions] = useState([]);
@@ -845,7 +851,7 @@ function ElderDashboard() {
       </div>
 
       {/* Chat Companion */}
-      <div className="dashboard-section chat-companion">
+      {/* <div className="dashboard-section chat-companion">
         <h3>💬 Chat Companion</h3>
         <div className="chat-box">
           <div className="chat-messages">
@@ -874,7 +880,23 @@ function ElderDashboard() {
             </button>
           </form>
         </div>
-      </div>
+      </div> */}
+      {/* <ChatLauncher onOpen={() => setShowChat(true)} /> */}
+      {/* <ChatLauncher
+        onOpen={() => setShowChat(true)}
+        className={showChat ? "chat-launcher hidden" : "chat-launcher"}
+      />
+      <ChatOffcanvas
+        show={showChat}
+        onClose={() => setShowChat(false)}
+        userName={userName}
+      /> */}
+      <ChatLauncher onClick={() => setShowChat(true)} />
+      <ChatOffcanvas
+        isOpen={showChat}
+        onClose={() => setShowChat(false)}
+        userName={userName}
+      />
     </div>
   );
 }
