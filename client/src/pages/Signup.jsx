@@ -146,13 +146,29 @@ function Signup() {
               {/* Provider fields */}
               {role === "doctor" && (
                 <>
-                  <input
+                  {/* <input
                     type="text"
                     className="form-control mb-3"
                     placeholder="Specialty (e.g., Geriatrics)"
                     value={specialty}
                     onChange={(e) => setSpecialty(e.target.value)}
-                  />
+                  /> */}
+
+                  <select
+                    className="form-control mb-3"
+                    value={specialty}
+                    onChange={(e) => setSpecialty(e.target.value)}
+                    required
+                  >
+                    <option value="General">General</option>
+                    <option value="Cardiologist">Cardiologist</option>
+                    <option value="Orthopedist">Orthopedist</option>
+                    <option value="Neurologist">Neurologist</option>
+                    <option value="Dermatologist">Dermatologist</option>
+                    <option value="Pediatrician">Pediatrician</option>
+                    <option value="Psychiatrist">Psychiatrist</option>
+                    <option value="Dentist">Dentist</option>
+                  </select>
                   <input
                     type="text"
                     className="form-control mb-3"
