@@ -29,7 +29,6 @@ app.use(express.json());
 // Parse URL-encoded data (forms, etc.)
 app.use(express.urlencoded({ extended: true }));
 
-
 // ===============================
 // ROUTES
 // ===============================
@@ -50,6 +49,7 @@ const doctorRoutes = require("./routes/doctorRoutes");
 const nurseRoutes = require("./routes/nurseRoutes");
 const localEventRoutes = require("./routes/localEvents");
 const publicEventRoutes = require("./routes/publicEvents");
+const familyRoutes = require("./routes/familyRoutes");
 
 // Public routes
 app.use("/api", publicEventRoutes);
@@ -92,6 +92,9 @@ app.use("/api/admin", yogaAdminRoutes); // Admin-only yoga management routes
 //userRoutes
 app.use("/api/users", userRoutes);
 
+//family routes
+app.use("/api/family", familyRoutes);
+
 // Protected routes
 app.use("/api/protected", protectedRoutes);
 
@@ -105,28 +108,27 @@ app.get("/", (req, res) => {
   res.send("Vatsal Backend Running 🚀");
 });
 
-
 // ===============================
 // SERVER START (with Socket.io)
 // ===============================
-const http = require('http');
+const http = require("http");
 const server = http.createServer(app);
 
-const { Server } = require('socket.io');
+const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
-  }
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  },
 });
 
 // Expose io via app locals
-app.set('io', io);
+app.set("io", io);
 
-io.on('connection', (socket) => {
-  console.log('Socket connected:', socket.id);
-  socket.on('disconnect', () => {
-    console.log('Socket disconnected:', socket.id);
+io.on("connection", (socket) => {
+  console.log("Socket connected:", socket.id);
+  socket.on("disconnect", () => {
+    console.log("Socket disconnected:", socket.id);
   });
 });
 

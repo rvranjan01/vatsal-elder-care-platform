@@ -1,4 +1,390 @@
-/* Custom styles for Health page */
+/* Health Page - Elder-Friendly Design */
+
 .health-page {
-  /* add custom layout or spacing if needed */
+  padding: 20px 0;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.health-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.health-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.health-header h1 {
+  font-size: 2.5rem; /* Large heading */
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.health-header p {
+  font-size: 1.2rem; /* Larger subtitle */
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Health metrics cards */
+.health-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px; /* More gap */
+  margin-bottom: 40px;
+}
+
+.health-card {
+  background: white;
+  border-radius: 16px; /* Larger border radius */
+  padding: 25px; /* More padding */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e0e0e0; /* Thicker border */
+  transition: all 0.3s ease;
+}
+
+.health-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  border-color: #007bff;
+}
+
+.health-card-icon {
+  width: 60px; /* Larger icon */
+  height: 60px; /* Larger icon */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px; /* Larger icon */
+  margin-bottom: 15px;
+}
+
+.health-card-icon.heart {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  color: white;
+}
+
+.health-card-icon.blood {
+  background: linear-gradient(135deg, #ff9a8b, #ff6b6b);
+  color: white;
+}
+
+.health-card-icon.weight {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.health-card-icon.temperature {
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+  color: white;
+}
+
+.health-card h3 {
+  font-size: 1.4rem; /* Larger card title */
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.health-card .value {
+  font-size: 2.5rem; /* Large value display */
+  font-weight: 700;
+  color: #007bff;
+  margin-bottom: 8px;
+}
+
+.health-card .unit {
+  font-size: 1rem;
+  color: #666;
+  font-weight: 600;
+}
+
+.health-card .status {
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.health-card .status.normal {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.health-card .status.warning {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.health-card .status.danger {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Health records section */
+.health-records {
+  background: white;
+  border-radius: 16px;
+  padding: 30px; /* More padding */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e0e0e0;
+  margin-bottom: 30px;
+}
+
+.health-records h2 {
+  font-size: 1.8rem; /* Larger section heading */
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 25px;
+  border-bottom: 3px solid #007bff;
+  padding-bottom: 10px;
+}
+
+.records-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.records-table th {
+  background: #f8f9fa;
+  padding: 15px 12px; /* More padding */
+  text-align: left;
+  font-weight: 700;
+  font-size: 1rem; /* Larger header text */
+  color: #333;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.records-table td {
+  padding: 15px 12px; /* More padding */
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 0.95rem; /* Larger cell text */
+  vertical-align: middle;
+}
+
+.records-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+/* Health form */
+.health-form {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e0e0e0;
+}
+
+.health-form h3 {
+  font-size: 1.5rem; /* Larger form heading */
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px; /* More margin */
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 1rem; /* Larger label */
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px; /* More padding */
+  border: 2px solid #e0e0e0; /* Thicker border */
+  border-radius: 10px;
+  font-size: 1rem; /* Larger input text */
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Buttons */
+.btn-health {
+  padding: 12px 24px; /* More padding */
+  font-size: 1rem; /* Larger button text */
+  font-weight: 600;
+  border-radius: 10px;
+  border: 2px solid; /* Thicker border */
+  min-height: 44px; /* Minimum touch target */
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-health-primary {
+  background: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.btn-health-primary:hover {
+  background: #0056b3;
+  border-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.3);
+}
+
+.btn-health-secondary {
+  background: #f8f9fa;
+  border-color: #dee2e6;
+  color: #333;
+}
+
+.btn-health-secondary:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Health tips section */
+.health-tips {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 16px;
+  padding: 30px;
+  margin-top: 30px;
+}
+
+.health-tips h3 {
+  font-size: 1.6rem; /* Larger tips heading */
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.health-tips .tip {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px; /* More padding */
+  border-radius: 12px;
+  margin-bottom: 15px;
+  border-left: 4px solid rgba(255, 255, 255, 0.5);
+}
+
+.health-tips .tip h4 {
+  font-size: 1.2rem; /* Larger tip title */
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.health-tips .tip p {
+  font-size: 1rem; /* Larger tip text */
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .health-container {
+    padding: 0 15px;
+  }
+
+  .health-header h1 {
+    font-size: 2rem;
+  }
+
+  .health-header p {
+    font-size: 1.1rem;
+  }
+
+  .health-metrics {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .health-card {
+    padding: 20px;
+  }
+
+  .health-card .value {
+    font-size: 2rem;
+  }
+
+  .health-records,
+  .health-form {
+    padding: 20px;
+  }
+
+  .records-table th,
+  .records-table td {
+    padding: 10px 8px;
+    font-size: 0.9rem;
+  }
+
+  .health-tips {
+    padding: 20px;
+  }
+
+  .health-tips .tip {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .health-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .health-header p {
+    font-size: 1rem;
+  }
+
+  .health-card {
+    padding: 16px;
+  }
+
+  .health-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .health-card .value {
+    font-size: 1.8rem;
+  }
+
+  .health-records,
+  .health-form {
+    padding: 16px;
+  }
+
+  .health-records h2,
+  .health-form h3 {
+    font-size: 1.3rem;
+  }
+
+  .btn-health {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
 }

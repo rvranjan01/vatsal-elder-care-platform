@@ -21,8 +21,8 @@ router.get("/games-list/:gameId", protect, authorize("elder"), getGameById);
 // Elder submits game score
 router.post("/add", protect, authorize("elder"), addGameScore);
 
-// Elder views own full game history
-router.get("/list", protect, authorize("elder"), getGameHistory);
+// Elder and family view game history
+router.get("/list", protect, authorize("elder", "family"), getGameHistory);
 
 // Elder views own scores for one specific game
 router.get("/list/:gameId", protect, authorize("elder"), getGameScoresByGameId);

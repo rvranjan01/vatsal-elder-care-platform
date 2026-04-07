@@ -17,6 +17,7 @@ exports.createBooking = async (req, res) => {
       medicalHistory,
       currentMedications,
       notes,
+      providerId,
     } = req.body;
 
     // Determine the elder for whom the booking is created
@@ -43,20 +44,20 @@ exports.createBooking = async (req, res) => {
     // Basic validation based on service type
 
     if (serviceType === "Doctor") {
-      // Only these fields are truly required; others can be empty
-      if (
-        !doctorName ||
-        !consultationType ||
-        !appointmentDate ||
-        !timeSlot ||
-        !reason
-      ) {
-        return res
-          .status(400)
-          .json({
-            message:
-              "Please provide all required fields for doctor appointment",
-          });
+      // If providerId is provided, doctor details will be set automatically
+      if (providerId) {
+        // Validation will happen when provider is looked up
+      } else {
+        // Manual doctor booking - require doctorName
+        if (!doctorName) {
+          return res.status(400).json({ message: "Doctor name is required" });
+        }
+      }
+
+      if (!consultationType || !appointmentDate || !timeSlot || !reason) {
+        return res.status(400).json({
+          message: "Please provide all required fields for doctor appointment",
+        });
       }
 
       // Still require future date
@@ -65,19 +66,11 @@ exports.createBooking = async (req, res) => {
           .status(400)
           .json({ message: "Appointment date must be in the future" });
       }
-
-      // You can also normalize empty optional fields here if you like:
-      // specialty = specialty || "";
-      // medicalHistory = medicalHistory || "";
-      // currentMedications = currentMedications || "";
-      // notes = notes || "";
     } else if (serviceType === "Companion") {
       if (!appointmentDate || !timeSlot)
-        return res
-          .status(400)
-          .json({
-            message: "Please provide date and time for companion booking",
-          });
+        return res.status(400).json({
+          message: "Please provide date and time for companion booking",
+        });
       if (new Date(appointmentDate) < new Date())
         return res
           .status(400)
@@ -85,6 +78,40 @@ exports.createBooking = async (req, res) => {
     } else if (serviceType === "Event") {
       if (!appointmentDate)
         return res.status(400).json({ message: "Event date is required" });
+    }
+
+    // Handle provider assignment
+    let companionName, nurseName, assignedProvider;
+    if (providerId) {
+      const provider = await User.findById(providerId);
+      if (!provider) {
+        return res.status(404).json({ message: "Provider not found" });
+      }
+
+      // Verify provider role matches service type
+      if (serviceType === "Companion" && provider.role !== "companion") {
+        return res
+          .status(400)
+          .json({ message: "Invalid provider for companion booking" });
+      }
+      if (serviceType === "Nurse" && provider.role !== "nurse") {
+        return res
+          .status(400)
+          .json({ message: "Invalid provider for nurse booking" });
+      }
+      if (serviceType === "Doctor" && provider.role !== "doctor") {
+        return res
+          .status(400)
+          .json({ message: "Invalid provider for doctor booking" });
+      }
+
+      assignedProvider = providerId;
+      if (serviceType === "Companion") companionName = provider.name;
+      if (serviceType === "Nurse") nurseName = provider.name;
+      if (serviceType === "Doctor") {
+        doctorName = provider.name;
+        specialty = specialty || provider.specialty || "General";
+      }
     }
 
     console.log("Creating booking with user:", req.user?.id);
@@ -97,6 +124,9 @@ exports.createBooking = async (req, res) => {
       doctorName,
       specialty,
       consultationType,
+      companionName,
+      nurseName,
+      assignedProvider,
       appointmentDate,
       timeSlot,
       reason,
@@ -342,6 +372,11 @@ exports.getPendingBookingsForProvider = async (req, res) => {
           : req.user.role === "nurse"
             ? "Nurse"
             : "Companion",
+      $or: [
+        { assignedProvider: req.user.id },
+        { assignedProvider: { $exists: false } },
+        { assignedProvider: null },
+      ],
     };
 
     const bookings = await Booking.find(query)

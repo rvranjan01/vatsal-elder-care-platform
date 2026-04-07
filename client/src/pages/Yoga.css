@@ -1,72 +1,114 @@
-/* Yoga Page Styles */
+/* Yoga Page - Elder-Friendly Design */
+
 .yoga-page {
-  padding: 20px 0;
+  padding: 30px 0; /* More padding */
+  background: #f8f9fa;
+  min-height: 100vh;
 }
 
 .yoga-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 40px 20px;
-  border-radius: 10px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  padding: 50px 30px; /* More padding */
+  border-radius: 16px; /* Larger border radius */
+  margin-bottom: 40px; /* More margin */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  text-align: center;
 }
 
 .yoga-header h1 {
   font-weight: 700;
-  font-size: 2.5rem;
+  font-size: 2.8rem; /* Larger heading */
+  margin-bottom: 15px;
 }
 
 .yoga-header p {
-  font-size: 1.1rem;
+  font-size: 1.3rem; /* Larger subtitle */
   opacity: 0.95;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 .yoga-description {
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 1.1rem; /* Larger description text */
+  line-height: 1.7; /* Better line height */
   color: #333;
   background-color: #f8f9fa;
-  padding: 15px;
-  border-left: 4px solid #17a2b8;
-  border-radius: 5px;
+  padding: 20px; /* More padding */
+  border-left: 5px solid #17a2b8; /* Thicker border */
+  border-radius: 12px; /* Larger border radius */
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .list-group-item.active {
   border-color: #28a745 !important;
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
 }
 
 .list-group-item {
-  border-radius: 8px;
-  margin-bottom: 5px;
+  border-radius: 12px; /* Larger border radius */
+  margin-bottom: 8px; /* More margin */
   transition: all 0.3s ease;
+  border: 2px solid #e0e0e0; /* Thicker border */
+  padding: 15px 20px; /* More padding */
+  font-size: 1rem; /* Larger list item text */
 }
 
 .list-group-item:hover {
   background-color: #e8f5e9;
-  transform: translateX(5px);
+  transform: translateX(8px); /* More pronounced hover */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .card {
-  border-radius: 10px;
+  border-radius: 16px; /* Larger border radius */
   transition: all 0.3s ease;
+  border: 2px solid #e0e0e0; /* Thicker border */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .card:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-4px);
 }
 
 .card-header {
-  border-radius: 10px 10px 0 0 !important;
-  font-weight: 600;
+  border-radius: 16px 16px 0 0 !important;
+  font-weight: 700; /* Bolder */
+  font-size: 1.2rem; /* Larger header text */
+  padding: 20px; /* More padding */
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-bottom: 2px solid #dee2e6;
 }
 
 .card-body {
-  padding: 20px;
+  padding: 25px; /* More padding */
 }
 
 .table {
   margin-bottom: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #e0e0e0;
+}
+
+.table th {
+  background: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 700;
+  font-size: 1rem; /* Larger header text */
+  padding: 15px 12px; /* More padding */
+  color: #333;
+}
+
+.table td {
+  padding: 15px 12px; /* More padding */
+  font-size: 0.95rem; /* Larger cell text */
+  vertical-align: middle;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .table tbody tr {
@@ -83,58 +125,252 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
   font-weight: 600;
-  padding: 10px 25px;
+  padding: 14px 28px; /* More padding */
+  font-size: 1rem; /* Larger button text */
+  border-radius: 12px; /* Larger border radius */
+  min-height: 48px; /* Minimum touch target */
   transition: all 0.3s ease;
 }
 
 .btn-success:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-success:focus {
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+}
+
+.form-control {
+  padding: 12px 16px; /* More padding */
+  border: 2px solid #e0e0e0; /* Thicker border */
+  border-radius: 10px; /* Larger border radius */
+  font-size: 1rem; /* Larger input text */
+  transition: all 0.3s ease;
 }
 
 .form-control:focus {
   border-color: #667eea;
-  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 1rem; /* Larger label text */
 }
 
 /* Stats and progress */
+.progress {
+  height: 24px; /* Taller progress bar */
+  border-radius: 12px;
+  border: 2px solid #e0e0e0;
+  background: #f8f9fa;
+}
+
+.progress-bar {
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
 .spinner-border {
   color: #667eea;
+  width: 3rem; /* Larger spinner */
+  height: 3rem;
+}
+
+/* Yoga pose cards */
+.yoga-pose-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.yoga-pose-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.yoga-pose-card h4 {
+  font-size: 1.3rem; /* Larger pose title */
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.yoga-pose-card p {
+  font-size: 1rem; /* Larger description */
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.yoga-pose-card .duration {
+  font-weight: 600;
+  color: #007bff;
+  font-size: 1rem;
+}
+
+/* Session status indicators */
+.session-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.session-status.completed {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.session-status.in-progress {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.session-status.upcoming {
+  background: #e7f3ff;
+  color: #0c63e4;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .yoga-page {
+    padding: 20px 0;
+  }
+
+  .yoga-header {
+    padding: 30px 20px;
+    margin-bottom: 30px;
+  }
+
   .yoga-header h1 {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
+  }
+
+  .yoga-header p {
+    font-size: 1.1rem;
   }
 
   .row.g-4 > .col-lg-4,
   .row.g-4 > .col-lg-8 {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
 
   .table {
     font-size: 0.9rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 12px 8px;
+  }
+
+  .card-body {
+    padding: 20px;
+  }
+
+  .list-group-item {
+    padding: 12px 16px;
+    font-size: 0.95rem;
+  }
+
+  .yoga-description {
+    padding: 16px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .yoga-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .yoga-header p {
+    font-size: 1rem;
+  }
+
+  .yoga-header {
+    padding: 25px 16px;
+  }
+
+  .card-body {
+    padding: 16px;
+  }
+
+  .card-header {
+    padding: 16px;
+    font-size: 1.1rem;
+  }
+
+  .btn-success {
+    padding: 12px 20px;
+    font-size: 0.95rem;
+  }
+
+  .list-group-item {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  .yoga-description {
+    padding: 14px;
+    font-size: 0.95rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px 6px;
+    font-size: 0.85rem;
   }
 }
 
 /* Accessibility improvements */
 .card:focus-within {
   border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.25);
 }
 
 /* Typography */
-h5, h6 {
-  font-weight: 600;
-  margin-bottom: 10px;
+h5,
+h6 {
+  font-weight: 700; /* Bolder */
+  margin-bottom: 12px; /* More margin */
+  font-size: 1.1rem; /* Larger headings */
 }
 
 ul {
-  padding-left: 20px;
+  padding-left: 25px; /* More padding */
 }
 
 ul li {
-  margin-bottom: 8px;
-  line-height: 1.6;
+  margin-bottom: 10px; /* More margin */
+  line-height: 1.7; /* Better line height */
+  font-size: 1rem; /* Larger list text */
+}
+
+/* Additional elder-friendly elements */
+.alert {
+  padding: 16px 20px; /* More padding */
+  border-radius: 12px;
+  border: 2px solid; /* Thicker border */
+  font-size: 1rem; /* Larger alert text */
+  font-weight: 600;
+}
+
+.badge {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 20px;
 }

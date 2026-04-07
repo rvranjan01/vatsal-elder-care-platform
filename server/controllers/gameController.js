@@ -107,12 +107,27 @@ exports.addGameScore = async (req, res) => {
 exports.getGameHistory = async (req, res) => {
   try {
     const userId = getLoggedInUserId(req);
+    const { elderId } = req.query;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized user" });
     }
 
-    const scores = await GameScore.find({ userId }).sort({ playedAt: -1 });
+    let query = {};
+    if (elderId) {
+      query.userId = elderId;
+    } else {
+      // For family members, get game history for all their linked elders
+      const User = require("../models/user");
+      const user = await User.findById(userId);
+      if (user.role === "family" && user.elderIds && user.elderIds.length > 0) {
+        query.userId = { $in: user.elderIds };
+      } else {
+        query.userId = userId;
+      }
+    }
+
+    const scores = await GameScore.find(query).sort({ playedAt: -1 });
 
     res.status(200).json(scores);
   } catch (error) {

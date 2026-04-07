@@ -42,6 +42,16 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       enum: ["In-person", "Video Call", "Home Visit"],
     },
+    companionName: {
+      type: String,
+    },
+    nurseName: {
+      type: String,
+    },
+    assignedProvider: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     appointmentDate: {
       type: Date,
     },

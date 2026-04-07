@@ -1,54 +1,122 @@
+/* Family Dashboard - Elder-Friendly Design */
+
 .family-dashboard h2 {
   font-weight: 700;
+  font-size: 2rem; /* Larger main heading */
+  color: #333;
+  margin-bottom: 20px;
 }
 
 .family-dashboard .card-title {
-  font-size: 1rem;
+  font-size: 1.3rem; /* Larger card titles */
   font-weight: 700;
+  color: #333;
+  margin-bottom: 15px;
 }
 
 .family-dashboard .table-responsive {
-  max-height: 360px;
+  max-height: 400px; /* Taller table */
   overflow: auto;
+  border-radius: 12px;
+  border: 2px solid #e0e0e0; /* Thicker border */
 }
 
 .family-dashboard .badge {
-  font-size: 0.8rem;
+  font-size: 1rem; /* Larger badge text */
+  padding: 8px 14px; /* Larger badges */
+  border-radius: 20px;
+  font-weight: 600;
 }
 
+/* Table styling */
+.family-dashboard .table {
+  font-size: 1rem; /* Larger table text */
+  margin-bottom: 0;
+}
+
+.family-dashboard .table th {
+  background: #f8f9fa;
+  border-bottom: 2px solid #dee2e6; /* Thicker header border */
+  font-weight: 700;
+  font-size: 1.1rem; /* Larger header text */
+  padding: 15px 12px; /* More padding */
+  color: #333;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.family-dashboard .table td {
+  padding: 15px 12px; /* More padding */
+  vertical-align: middle;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.family-dashboard .table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+/* Action buttons in table */
+.family-dashboard .btn {
+  padding: 8px 16px; /* Larger buttons */
+  font-size: 0.95rem; /* Larger button text */
+  font-weight: 600;
+  border-radius: 8px;
+  margin: 0 2px;
+  min-width: 80px; /* Minimum button width */
+}
+
+.family-dashboard .btn-sm {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+/* Modal styling */
 .fd-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.6); /* Darker overlay */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1050;
+  padding: 20px;
 }
 
 .fd-modal-card {
   background: white;
-  padding: 18px;
-  border-radius: 8px;
-  width: 420px;
-  max-width: 95%;
-  box-shadow: 0 6px 30px rgba(0,0,0,0.2);
+  padding: 30px; /* More padding */
+  border-radius: 16px;
+  width: 100%;
+  max-width: 450px; /* Larger modal */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
   max-height: 90vh;
   overflow-y: auto;
+  border: 2px solid #e0e0e0; /* Thicker border */
 }
 
+.fd-modal-card h5 {
+  font-size: 1.4rem; /* Larger modal title */
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Provider list */
 .fd-provider-list {
-  max-height: 200px;
+  max-height: 250px; /* Taller list */
   overflow-y: auto;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  border: 2px solid #e0e0e0; /* Thicker border */
+  border-radius: 12px;
+  background: #f8f9fa;
 }
 
 .fd-provider-item {
-  padding: 10px 12px;
+  padding: 15px 16px; /* More padding */
   cursor: pointer;
-  border-bottom: 1px solid #eee;
-  transition: background 0.2s;
+  border-bottom: 1px solid #dee2e6;
+  transition: all 0.3s ease;
+  font-size: 1rem; /* Larger item text */
 }
 
 .fd-provider-item:last-child {
@@ -56,15 +124,434 @@
 }
 
 .fd-provider-item:hover {
-  background-color: #f0f8ff;
+  background-color: #e9ecef;
+  transform: translateX(5px);
 }
 
+.fd-provider-item.selected {
+  background-color: #d1ecf1;
+  border-left: 4px solid #17a2b8;
+}
+
+/* Form elements */
+.fd-modal-card input,
+.fd-modal-card select,
+.fd-modal-card textarea {
+  width: 100%;
+  padding: 12px 15px; /* More padding */
+  border: 2px solid #e0e0e0; /* Thicker borders */
+  border-radius: 10px;
+  font-size: 1rem; /* Larger input text */
+  margin-bottom: 15px; /* More spacing */
+  transition: all 0.3s ease;
+}
+
+.fd-modal-card input:focus,
+.fd-modal-card select:focus,
+.fd-modal-card textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.fd-modal-card textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Labels */
+.fd-modal-card label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem; /* Larger labels */
+}
+
+/* Modal buttons */
+.fd-modal-card .btn {
+  padding: 12px 24px; /* Larger buttons */
+  font-size: 1rem; /* Larger button text */
+  font-weight: 600;
+  border-radius: 10px;
+  margin: 0 5px;
+  min-width: 100px; /* Minimum button width */
+}
+
+.fd-modal-card .btn-primary {
+  background: #007bff;
+  border-color: #007bff;
+}
+
+.fd-modal-card .btn-secondary {
+  background: #6c757d;
+  border-color: #6c757d;
+}
+
+/* Status indicators */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* ========== NEW FEATURES STYLING ========== */
+
+.family-dashboard .card {
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.family-dashboard .card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.family-dashboard .card-header {
+  border-bottom: 2px solid #dee2e6;
+  padding: 16px;
+  font-weight: 700;
+}
+
+.family-dashboard .card-header.bg-primary {
+  background-color: #0d6efd !important;
+  color: white;
+  border-bottom: none;
+}
+
+.family-dashboard .card-header.bg-info {
+  background-color: #0dcaf0 !important;
+  color: white;
+  border-bottom: none;
+}
+
+.family-dashboard .card-header.bg-success {
+  background-color: #198754 !important;
+  color: white;
+  border-bottom: none;
+}
+
+.family-dashboard .card-header.bg-danger {
+  background-color: #dc3545 !important;
+  color: white;
+  border-bottom: none;
+}
+
+.family-dashboard .card-header.bg-warning {
+  background-color: #ffc107 !important;
+  color: #333;
+  border-bottom: none;
+}
+
+/* Timeline styling */
+.family-dashboard .timeline {
+  position: relative;
+}
+
+.family-dashboard .timeline::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #dee2e6;
+}
+
+.family-dashboard .timeline > div {
+  position: relative;
+  padding-left: 50px;
+}
+
+.family-dashboard .timeline > div::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border: 3px solid #0d6efd;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Alert boxes */
+.family-dashboard .alert {
+  border-radius: 10px;
+  border-width: 2px;
+  margin-bottom: 15px;
+}
+
+.family-dashboard .alert-warning {
+  background-color: #fff3cd;
+  border-color: #ffecb5;
+  color: #664d03;
+}
+
+.family-dashboard .alert-info {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;
+}
+
+.family-dashboard .alert-success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.family-dashboard .alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+/* List Group styling */
+.family-dashboard .list-group-item {
+  border: 1px solid #dee2e6;
+  padding: 12px 0;
+}
+
+.family-dashboard .list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* Badge styling */
+.family-dashboard .badge {
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Form controls */
+.family-dashboard .form-control,
+.family-dashboard .form-select {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.family-dashboard .form-control:focus,
+.family-dashboard .form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Button group */
+.family-dashboard .btn-group {
+  gap: 8px;
+}
+
+.family-dashboard .btn-group .btn {
+  flex: 1;
+  min-height: 40px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Modal buttons */
+.family-dashboard .modal-content {
+  border-radius: 12px;
+  border: 1px solid #dee2e6;
+}
+
+.family-dashboard .modal-header {
+  border-bottom: 2px solid #dee2e6;
+  background-color: #f8f9fa;
+}
+
+.family-dashboard .modal-header .modal-title {
+  font-weight: 700;
+  color: #333;
+}
+
+.family-dashboard .modal-body {
+  padding: 20px;
+}
+
+.family-dashboard .modal-footer {
+  border-top: 2px solid #dee2e6;
+  background-color: #f8f9fa;
+}
+
+/* Spinner */
+.family-dashboard .spinner-border {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Text utilities */
+.family-dashboard .fw-bold {
+  font-weight: 700;
+}
+
+.family-dashboard .text-muted {
+  color: #6c757d;
+}
+
+/* Icons */
+.family-dashboard .bi {
+  margin-right: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .family-dashboard h2 {
+    font-size: 1.5rem;
+  }
+
+  .family-dashboard .card-title {
+    font-size: 1.1rem;
+  }
+
+  .family-dashboard .btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  .family-dashboard .btn-group .btn {
+    flex: 1 1 auto;
+    min-width: 80px;
+  }
+
+  .family-dashboard .table {
+    font-size: 0.9rem;
+  }
+
+  .family-dashboard .table th,
+  .family-dashboard .table td {
+    padding: 10px 8px;
+  }
+}
+
+.status-indicator.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-indicator.completed {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.status-indicator.cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Dashboard cards */
+.family-dashboard .card {
+  border-radius: 16px;
+  border: 2px solid #e0e0e0; /* Thicker borders */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 25px;
+}
+
+.family-dashboard .card-body {
+  padding: 25px; /* More padding */
+}
+
+/* Stats cards */
+.stats-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 16px;
+  padding: 25px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.stats-card .stat-number {
+  font-size: 2.5rem; /* Larger numbers */
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.stats-card .stat-label {
+  font-size: 1.1rem; /* Larger labels */
+  opacity: 0.9;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .family-dashboard .table-responsive {
-    max-height: 240px;
+    max-height: 300px;
   }
-  
+
   .fd-modal-card {
     width: 95%;
+    padding: 20px;
+  }
+
+  .family-dashboard h2 {
+    font-size: 1.6rem;
+  }
+
+  .family-dashboard .card-title {
+    font-size: 1.1rem;
+  }
+
+  .family-dashboard .badge {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+
+  .family-dashboard .table th,
+  .family-dashboard .table td {
+    padding: 10px 8px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .family-dashboard .table-responsive {
+    max-height: 250px;
+  }
+
+  .fd-modal-card {
+    width: 100%;
+    margin: 10px;
+    padding: 15px;
+  }
+
+  .fd-modal-card h5 {
+    font-size: 1.2rem;
+  }
+
+  .fd-provider-list {
+    max-height: 200px;
+  }
+
+  .fd-provider-item {
+    padding: 12px 14px;
+    font-size: 0.95rem;
+  }
+
+  .family-dashboard .card-body {
+    padding: 15px;
+  }
+
+  .stats-card {
+    padding: 15px;
+  }
+
+  .stats-card .stat-number {
+    font-size: 2rem;
+  }
+
+  .stats-card .stat-label {
+    font-size: 1rem;
+  }
+
+  .family-dashboard h2 {
+    font-size: 1.4rem;
   }
 }

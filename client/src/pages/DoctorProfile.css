@@ -1,13 +1,403 @@
-.profile-card {
-  max-width: 500px;
-  margin: auto;
-  border-radius: 12px;
+/* Doctor Profile - Elder-Friendly Design */
+
+.doctor-profile-page {
+  padding: 30px 0; /* More padding */
+  background: #f8f9fa;
+  min-height: 100vh;
 }
 
-.profile-card input {
+.doctor-profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.profile-card {
+  max-width: 600px; /* Wider card */
+  margin: auto;
+  border-radius: 16px; /* Larger border radius */
+  border: 2px solid #e0e0e0; /* Thicker border */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  background: white;
+  overflow: hidden;
+}
+
+.profile-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 30px 25px; /* More padding */
+  text-align: center;
+}
+
+.profile-header h2 {
+  font-size: 2rem; /* Larger heading */
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.profile-header p {
+  font-size: 1.1rem; /* Larger subtitle */
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+.profile-avatar {
+  width: 100px; /* Larger avatar */
+  height: 100px; /* Larger avatar */
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px; /* Larger icon */
+  margin: 0 auto 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.profile-body {
+  padding: 30px; /* More padding */
+}
+
+.profile-section {
+  margin-bottom: 30px; /* More margin */
+}
+
+.profile-section h3 {
+  font-size: 1.4rem; /* Larger section heading */
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+
+.form-group {
+  margin-bottom: 20px; /* More margin */
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 1rem; /* Larger label */
+}
+
+.profile-card input,
+.profile-card select,
+.profile-card textarea {
   width: 100%;
-  margin-bottom: 12px;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  margin-bottom: 0;
+  padding: 12px 16px; /* More padding */
+  border-radius: 10px; /* Larger border radius */
+  border: 2px solid #e0e0e0; /* Thicker border */
+  font-size: 1rem; /* Larger input text */
+  transition: all 0.3s ease;
+  background: #fff;
+}
+
+.profile-card input:focus,
+.profile-card select:focus,
+.profile-card textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.profile-card textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+}
+
+.profile-specialties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* More gap */
+  margin-top: 10px;
+}
+
+.specialty-tag {
+  background: #e9ecef;
+  color: #495057;
+  padding: 8px 14px; /* More padding */
+  border-radius: 20px;
+  font-size: 0.9rem; /* Larger tag text */
+  font-weight: 600;
+  border: 1px solid #dee2e6;
+}
+
+.specialty-input-container {
+  display: flex;
+  gap: 10px; /* More gap */
+  margin-top: 10px;
+}
+
+.specialty-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.add-specialty-btn {
+  padding: 10px 16px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 44px; /* Minimum touch target */
+  transition: all 0.3s ease;
+}
+
+.add-specialty-btn:hover {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.remove-specialty {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px; /* Larger button */
+  height: 28px; /* Larger button */
+  font-size: 14px; /* Larger icon */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  transition: all 0.3s ease;
+}
+
+.remove-specialty:hover {
+  background: #c82333;
+  transform: scale(1.1);
+}
+
+.profile-actions {
+  display: flex;
+  gap: 15px; /* More gap */
+  justify-content: center;
+  margin-top: 30px; /* More margin */
+  padding-top: 20px;
+  border-top: 2px solid #e0e0e0;
+  flex-wrap: wrap;
+}
+
+.btn-profile {
+  padding: 12px 24px; /* More padding */
+  font-size: 1rem; /* Larger button text */
+  font-weight: 600;
+  border-radius: 10px;
+  border: 2px solid; /* Thicker border */
+  min-height: 48px; /* Minimum touch target */
+  min-width: 120px; /* Minimum button width */
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-profile-primary {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+}
+
+.btn-profile-primary:hover {
+  background: #5a67d8;
+  border-color: #5a67d8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+}
+
+.btn-profile-secondary {
+  background: #f8f9fa;
+  border-color: #dee2e6;
+  color: #6c757d;
+}
+
+.btn-profile-secondary:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+  color: #495057;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.btn-profile-danger {
+  background: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+.btn-profile-danger:hover {
+  background: #c82333;
+  border-color: #c82333;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(220, 53, 69, 0.3);
+}
+
+/* Experience/Schedule sections */
+.experience-item,
+.schedule-item {
+  background: #f8f9fa;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px; /* More padding */
+  margin-bottom: 15px;
+}
+
+.experience-item h4,
+.schedule-item h4 {
+  font-size: 1.1rem; /* Larger item heading */
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.experience-item p,
+.schedule-item p {
+  font-size: 1rem; /* Larger item text */
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+/* Loading and error states */
+.profile-loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.1rem; /* Larger loading text */
+  color: #666;
+}
+
+.profile-error {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 16px 20px; /* More padding */
+  border-radius: 10px;
+  border: 2px solid #f5c6cb;
+  margin-bottom: 20px;
+  font-size: 1rem; /* Larger error text */
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .doctor-profile-page {
+    padding: 20px 0;
+  }
+
+  .doctor-profile-container {
+    padding: 0 15px;
+  }
+
+  .profile-card {
+    max-width: 100%;
+  }
+
+  .profile-header {
+    padding: 25px 20px;
+  }
+
+  .profile-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .profile-header p {
+    font-size: 1rem;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+
+  .profile-body {
+    padding: 20px;
+  }
+
+  .profile-section {
+    margin-bottom: 25px;
+  }
+
+  .profile-section h3 {
+    font-size: 1.2rem;
+  }
+
+  .profile-actions {
+    gap: 10px;
+  }
+
+  .btn-profile {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    min-width: 100px;
+  }
+
+  .specialty-input-container {
+    flex-direction: column;
+  }
+
+  .add-specialty-btn {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .doctor-profile-page {
+    padding: 15px 0;
+  }
+
+  .profile-header {
+    padding: 20px 16px;
+  }
+
+  .profile-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .profile-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 28px;
+  }
+
+  .profile-body {
+    padding: 16px;
+  }
+
+  .profile-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+
+  .btn-profile {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    min-width: 90px;
+  }
+
+  .experience-item,
+  .schedule-item {
+    padding: 16px;
+  }
+
+  .specialty-tag {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
 }

@@ -1,7 +1,13 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
+import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -38,13 +44,19 @@ import Events from "./pages/Events";
 import Booking from "./pages/Booking";
 import Chatbot from "./pages/Chatbot";
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+
+  // Pages where navbar and footer should NOT be shown
+  const hideNavFooterRoutes = ["/", "/login", "/signup"];
+  const showNavFooter = !hideNavFooterRoutes.includes(location.pathname);
+
   return (
-    <Router>
-      <Navbar />
-      <div className="container mt-4">
+    <>
+      {showNavFooter && <Navbar />}
+      <div className={showNavFooter ? "container mt-4" : ""}>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
@@ -78,7 +90,15 @@ function App() {
           <Route path="/chatbot" element={<Chatbot />} />
         </Routes>
       </div>
-      <Footer />
+      {showNavFooter && <Footer />}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

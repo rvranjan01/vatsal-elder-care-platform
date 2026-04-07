@@ -46,7 +46,24 @@ exports.logYogaSession = async (req, res) => {
 
 exports.getMyYogaSessions = async (req, res) => {
   try {
-    const sessions = await YogaSession.find({ user: req.user.id })
+    const userId = req.user.id;
+    const { elderId } = req.query;
+
+    let query = {};
+    if (elderId) {
+      query.user = elderId;
+    } else {
+      // For family members, get yoga sessions for all their linked elders
+      const User = require("../models/user");
+      const user = await User.findById(userId);
+      if (user.role === "family" && user.elderIds && user.elderIds.length > 0) {
+        query.user = { $in: user.elderIds };
+      } else {
+        query.user = userId;
+      }
+    }
+
+    const sessions = await YogaSession.find(query)
       .populate("exerciseId", "title")
       .sort({ date: -1 })
       .limit(50);

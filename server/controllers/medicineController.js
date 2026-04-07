@@ -138,10 +138,25 @@ exports.getMedicines = async (req, res) => {
       return res.status(401).json({ message: "User not found in token." });
     }
 
-    const medicines = await Medicine.find({
-      user: userId,
-      isDeleted: false,
-    }).sort({ createdAt: -1 });
+    const { elderId } = req.query;
+    let query = { isDeleted: false };
+
+    // If elderId is provided, get medicines for that elder
+    // If no elderId, get medicines for current user (for elders) or their linked elders (for family)
+    if (elderId) {
+      query.user = elderId;
+    } else {
+      // For family members, get medicines for all their linked elders
+      const User = require("../models/user");
+      const user = await User.findById(userId);
+      if (user.role === "family" && user.elderIds && user.elderIds.length > 0) {
+        query.user = { $in: user.elderIds };
+      } else {
+        query.user = userId;
+      }
+    }
+
+    const medicines = await Medicine.find(query).sort({ createdAt: -1 });
 
     const today = getDateOnlyString();
 
