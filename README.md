@@ -46,8 +46,9 @@ This system allows elders to track their health data, play cognitive games, use 
 - Mongoose ODM
 
 ---
-```
+
 ## 📂 Project Structure
+```
 Vatsal/
 │
 ├── client/ # React Frontend
