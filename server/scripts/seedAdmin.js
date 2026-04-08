@@ -7,16 +7,15 @@ const User = require("../models/user");
 const seedAdmin = async () => {
   try {
     // Connect to DB
-    await mongoose.connect(
-      process.env.MONGODB_URI || "mongodb://localhost:27017/vatsal",
-    );
+    const uri = process.env.MONGODB_URI || process.env.MONGO_URI || "mongodb://localhost:27017/vatsal";
+    await mongoose.connect(uri);
     console.log("Connected to MongoDB");
 
     // Check if admin already exists
     const existingAdmin = await User.findOne({ role: "admin" });
     if (existingAdmin) {
-      console.log("Admin user already exists:", existingAdmin.email);
-      process.exit(0);
+      console.log("✅ Admin user already exists:", existingAdmin.email);
+      return; // Don't exit; just return so server continues
     }
 
     // Create admin user
@@ -35,18 +34,16 @@ const seedAdmin = async () => {
     console.log("✅ Admin user created successfully!");
     console.log(`Email: ${admin.email}`);
     console.log("Password: admin123 (please change via profile settings)");
-    console.log("\nAdmin ID:", admin._id);
+    console.log("Admin ID:", admin._id);
 
-    process.exit(0);
   } catch (error) {
     console.error("Error seeding admin:", error.message);
-    process.exit(1);
   }
 };
 
-// Run only if executed directly
+// Allow both: direct execution and module usage
 if (require.main === module) {
-  seedAdmin();
+  seedAdmin().then(() => process.exit(0)).catch(() => process.exit(1));
 }
 
 module.exports = seedAdmin;

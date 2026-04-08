@@ -17,6 +17,22 @@ const connectDB = require("./config/db");
 connectDB();
 
 // ===============================
+// AUTO-SEED ADMIN ON STARTUP
+// ===============================
+const seedAdmin = require("./scripts/seedAdmin");
+
+const startSeeding = async () => {
+  try {
+    await seedAdmin();
+    console.log("Admin seeding completed (or admin already exists)");
+  } catch (error) {
+    console.error("Seeding error (non-fatal):", error.message);
+  }
+};
+
+startSeeding();
+
+// ===============================
 // MIDDLEWARES
 // ===============================
 

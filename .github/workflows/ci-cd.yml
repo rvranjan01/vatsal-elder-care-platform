@@ -1,0 +1,38 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]  # Trigger on pushes to main branch
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'  # Match your project's Node version
+
+    - name: Install backend dependencies
+      run: cd server && npm ci
+
+    - name: Install frontend dependencies
+      run: cd client && npm ci
+
+    - name: Run backend tests (if any)
+      run: cd server && npm test  # Currently just echoes; add real tests later
+
+    - name: Run frontend tests
+      run: cd client && npm test -- --watchAll=false  # Runs tests headless
+
+    - name: Build frontend
+      run: cd client && npm run build
+
+    - name: Build backend (if needed)
+      run: cd server && npm run build  # No build script; skips if not present
