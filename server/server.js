@@ -37,7 +37,16 @@ startSeeding();
 // ===============================
 
 // Enable CORS (frontend → backend communication)
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://vatsal-mu.vercel.app",
+      "http://localhost:3000",
+      "http://localhost:5000",
+    ],
+    credentials: true,
+  }),
+);
 
 // Parse incoming JSON data
 app.use(express.json());
@@ -133,8 +142,13 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: [
+      "https://vatsal-mu.vercel.app",
+      "http://localhost:3000",
+      "http://localhost:5000",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   },
 });
 
