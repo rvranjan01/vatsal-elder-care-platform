@@ -1,5 +1,5 @@
 const Conversation = require("../models/conversation");
-const ChatMessage = require("../models/ChatMessage");
+const ChatMessage = require("../models/chatMessage");
 const { generateAIReply } = require("../services/aiChatService");
 
 exports.getChatHistory = async (req, res) => {
