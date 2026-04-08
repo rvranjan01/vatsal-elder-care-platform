@@ -1,5 +1,4 @@
-
-const Conversation = require("../models/Conversation");
+const Conversation = require("../models/conversation");
 const ChatMessage = require("../models/ChatMessage");
 const { generateAIReply } = require("../services/aiChatService");
 
