@@ -7,7 +7,10 @@ const User = require("../models/user");
 const seedAdmin = async () => {
   try {
     // Connect to DB
-    const uri = process.env.MONGODB_URI || process.env.MONGO_URI || "mongodb://localhost:27017/vatsal";
+    const uri =
+      process.env.MONGODB_URI ||
+      process.env.MONGO_URI ||
+      "mongodb://localhost:27017/vatsal";
     await mongoose.connect(uri);
     console.log("Connected to MongoDB");
 
@@ -35,7 +38,6 @@ const seedAdmin = async () => {
     console.log(`Email: ${admin.email}`);
     console.log("Password: admin123 (please change via profile settings)");
     console.log("Admin ID:", admin._id);
-
   } catch (error) {
     console.error("Error seeding admin:", error.message);
   }
@@ -43,7 +45,9 @@ const seedAdmin = async () => {
 
 // Allow both: direct execution and module usage
 if (require.main === module) {
-  seedAdmin().then(() => process.exit(0)).catch(() => process.exit(1));
+  seedAdmin()
+    .then(() => process.exit(0))
+    .catch(() => process.exit(1));
 }
 
 module.exports = seedAdmin;
