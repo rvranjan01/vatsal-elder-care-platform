@@ -125,7 +125,7 @@ http://localhost:3000
 ### 👨‍💻 Author
 
 Ranjan Kumar Verma
-Saurav Gupta
+
 
 ### 📌 Note
 

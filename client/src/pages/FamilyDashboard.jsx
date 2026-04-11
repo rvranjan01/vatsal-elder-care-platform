@@ -55,6 +55,7 @@ function FamilyDashboard() {
   const [bookingForm, setBookingForm] = useState({
     appointmentDate: "",
     timeSlot: "",
+    consultationType: "In-person",
     notes: "",
     providerId: "",
   });
@@ -542,7 +543,8 @@ function FamilyDashboard() {
   const openDoctorModal = async () => {
     setBookingForm({
       appointmentDate: "",
-      timeSlot: "",
+      timeSlot: "09:00 AM",
+      consultationType: "In-person",
       notes: "",
       providerId: "",
     });
@@ -637,16 +639,65 @@ function FamilyDashboard() {
   };
 
   const submitBooking = async (serviceType) => {
+    if (!selectedElder) {
+      alert("Please select an elder before booking.");
+      return;
+    }
+
+    if (!bookingForm.appointmentDate) {
+      alert("Please choose an appointment date.");
+      return;
+    }
+
+    if (!bookingForm.timeSlot) {
+      alert("Please choose a time slot.");
+      return;
+    }
+
+    if (serviceType === "Doctor") {
+      if (!bookingForm.providerId) {
+        alert("Please select a doctor.");
+        return;
+      }
+      if (!bookingForm.consultationType) {
+        alert("Please select a consultation type.");
+        return;
+      }
+      if (!bookingForm.notes.trim()) {
+        alert("Please enter a reason for the visit.");
+        return;
+      }
+    }
+
     try {
       const payload = {
         elderId: selectedElder,
+        elderName: selectedElderDetails?.name,
         serviceType,
         appointmentDate: bookingForm.appointmentDate,
         timeSlot: bookingForm.timeSlot,
+        consultationType: bookingForm.consultationType,
         notes: bookingForm.notes,
         reason: bookingForm.notes,
-        providerId: bookingForm.providerId,
       };
+
+      if (serviceType === "Doctor") {
+        const selectedDoctor = providers.doctor.find(
+          (doc) => doc._id === bookingForm.providerId,
+        );
+        if (selectedDoctor) {
+          payload.doctorName = selectedDoctor.name;
+          payload.specialty = selectedDoctor.specialty || "General";
+          // Avoid sending providerId for doctor bookings when we already
+          // resolve the selected doctor here, working around backend
+          // providerId handling issues in booking creation.
+        } else {
+          payload.providerId = bookingForm.providerId;
+        }
+      } else {
+        payload.providerId = bookingForm.providerId;
+      }
+
       await API.post("/bookings/create", payload);
       await fetchAllData(selectedElder);
       setShowCompanionModal(false);
@@ -755,7 +806,7 @@ function FamilyDashboard() {
         {/* Elder Details Card */}
         {selectedElderDetails && (
           <div className="row mb-4">
-            <div className="col-lg-4">
+            <div className="row-lg-4">
               <div className="card shadow-sm border-primary">
                 <div className="card-header bg-primary text-white">
                   <h5 className="mb-0">
@@ -808,7 +859,7 @@ function FamilyDashboard() {
             )}
 
             {/* Quick Stats */}
-            <div className="col-lg-4">
+            <div className="row-lg-4">
               <div className="row g-3">
                 <div className="col-12">
                   <StatsCard
@@ -860,7 +911,7 @@ function FamilyDashboard() {
               className="btn-group w-100 d-flex flex-wrap gap-2"
               role="group"
             >
-              <button
+              {/* <button
                 className="btn btn-outline-success"
                 onClick={() => setShowMessageModal(true)}
               >
@@ -895,7 +946,7 @@ function FamilyDashboard() {
                 onClick={() => openNurseModal()}
               >
                 <i className="bi bi-heart-pulse me-1"></i>Book Nurse
-              </button>
+              </button> */}
               <button
                 className="btn btn-outline-info"
                 onClick={() => openEventModal()}
@@ -907,7 +958,7 @@ function FamilyDashboard() {
         </div>
 
         <div className="row mb-4">
-          <div className="col-lg-4">
+          <div className="row-lg-4">
             <ProviderSection
               title="Available Companions"
               providers={providers.companion}
@@ -918,7 +969,7 @@ function FamilyDashboard() {
               }
             />
           </div>
-          <div className="col-lg-4">
+          <div className="row-lg-4">
             <ProviderSection
               title="Available Doctors"
               providers={providers.doctor}
@@ -927,7 +978,7 @@ function FamilyDashboard() {
               onBook={(provider) => handleProviderBooking("Doctor", provider)}
             />
           </div>
-          <div className="col-lg-4">
+          <div className="row-lg-4">
             <ProviderSection
               title="Available Nurses"
               providers={providers.nurse}
@@ -1034,7 +1085,7 @@ function FamilyDashboard() {
         {/* Three Column Layout */}
         <div className="row mb-4">
           {/* Medicines */}
-          <div className="col-lg-4 mb-4">
+          <div className="row-lg-4 mb-4">
             <div className="card shadow-sm h-100">
               <div className="card-header bg-light">
                 <h5 className="card-title mb-0">
@@ -1074,7 +1125,7 @@ function FamilyDashboard() {
           </div>
 
           {/* Bookings */}
-          <div className="col-lg-4 mb-4">
+          <div className="row-lg-4 mb-4">
             <div className="card shadow-sm h-100">
               <div className="card-header bg-light">
                 <h5 className="card-title mb-0">
@@ -1122,7 +1173,7 @@ function FamilyDashboard() {
           </div>
 
           {/* care Notes */}
-          <div className="col-lg-4 mb-4">
+          {/* <div className="col-lg-4 mb-4">
             <div className="card shadow-sm h-100">
               <div className="card-header bg-light">
                 <h5 className="card-title mb-0">
@@ -1159,13 +1210,13 @@ function FamilyDashboard() {
                 )}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Activity Timeline & Documents */}
         <div className="row mb-4">
           {/* Activity Log */}
-          <div className="col-lg-6 mb-4">
+          <div className="row-lg-6 mb-4">
             <div className="card shadow-sm">
               <div className="card-header bg-light">
                 <h5 className="card-title mb-0">
@@ -1213,7 +1264,7 @@ function FamilyDashboard() {
           </div>
 
           {/* Documents */}
-          <div className="col-lg-6 mb-4">
+          {/* <div className="col-lg-6 mb-4">
             <div className="card shadow-sm">
               <div className="card-header bg-light">
                 <h5 className="card-title mb-0">
@@ -1255,11 +1306,11 @@ function FamilyDashboard() {
                 )}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Messages */}
-        <div className="row mb-4">
+        {/* <div className="row mb-4">
           <div className="col-12">
             <div className="card shadow-sm">
               <div className="card-header bg-light">
@@ -1295,7 +1346,7 @@ function FamilyDashboard() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       {/* ========== MODALS ========== */}
 
@@ -1764,10 +1815,9 @@ function FamilyDashboard() {
                       />
                     </div>
                     <div className="mb-3">
-                      <label className="form-label fw-bold">Time:</label>
-                      <input
-                        type="time"
-                        className="form-control"
+                      <label className="form-label fw-bold">Time Slot:</label>
+                      <select
+                        className="form-select"
                         value={bookingForm.timeSlot}
                         onChange={(e) =>
                           setBookingForm((prev) => ({
@@ -1775,7 +1825,15 @@ function FamilyDashboard() {
                             timeSlot: e.target.value,
                           }))
                         }
-                      />
+                      >
+                        <option value="">Select time slot</option>
+                        <option value="09:00 AM">09:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="02:00 PM">02:00 PM</option>
+                        <option value="03:00 PM">03:00 PM</option>
+                        <option value="04:00 PM">04:00 PM</option>
+                      </select>
                     </div>
                     <div className="mb-3">
                       <label className="form-label fw-bold">Notes:</label>
@@ -1909,13 +1967,33 @@ function FamilyDashboard() {
                             appointmentDate: e.target.value,
                           }))
                         }
+                        required
                       />
                     </div>
                     <div className="mb-3">
+                      <label className="form-label fw-bold">
+                        Consultation Type:
+                      </label>
+                      <select
+                        className="form-select"
+                        value={bookingForm.consultationType}
+                        onChange={(e) =>
+                          setBookingForm((prev) => ({
+                            ...prev,
+                            consultationType: e.target.value,
+                          }))
+                        }
+                        required
+                      >
+                        <option value="In-person">In-person</option>
+                        <option value="Video Call">Video Call</option>
+                        <option value="Home Visit">Home Visit</option>
+                      </select>
+                    </div>
+                    <div className="mb-3">
                       <label className="form-label fw-bold">Time Slot:</label>
-                      <input
-                        type="time"
-                        className="form-control"
+                      <select
+                        className="form-select"
                         value={bookingForm.timeSlot}
                         onChange={(e) =>
                           setBookingForm((prev) => ({
@@ -1923,7 +2001,16 @@ function FamilyDashboard() {
                             timeSlot: e.target.value,
                           }))
                         }
-                      />
+                        required
+                      >
+                        <option value="">Select time slot</option>
+                        <option value="09:00 AM">09:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="02:00 PM">02:00 PM</option>
+                        <option value="03:00 PM">03:00 PM</option>
+                        <option value="04:00 PM">04:00 PM</option>
+                      </select>
                     </div>
                     <div className="mb-3">
                       <label className="form-label fw-bold">
@@ -1940,6 +2027,7 @@ function FamilyDashboard() {
                             notes: e.target.value,
                           }))
                         }
+                        required
                       ></textarea>
                     </div>
                   </>
@@ -2064,9 +2152,8 @@ function FamilyDashboard() {
                     </div>
                     <div className="mb-3">
                       <label className="form-label fw-bold">Time Slot:</label>
-                      <input
-                        type="time"
-                        className="form-control"
+                      <select
+                        className="form-select"
                         value={bookingForm.timeSlot}
                         onChange={(e) =>
                           setBookingForm((prev) => ({
@@ -2074,7 +2161,15 @@ function FamilyDashboard() {
                             timeSlot: e.target.value,
                           }))
                         }
-                      />
+                      >
+                        <option value="">Select time slot</option>
+                        <option value="09:00 AM">09:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="02:00 PM">02:00 PM</option>
+                        <option value="03:00 PM">03:00 PM</option>
+                        <option value="04:00 PM">04:00 PM</option>
+                      </select>
                     </div>
                     <div className="mb-3">
                       <label className="form-label fw-bold">

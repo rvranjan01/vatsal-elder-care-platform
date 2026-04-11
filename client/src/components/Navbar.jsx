@@ -135,12 +135,12 @@ function Navbar() {
                   View Health
                 </Link>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Link className="nav-link" to="/booking" onClick={closeMenu}>
                   <i className="fas fa-calendar"></i>
                   Doctor Booking
                 </Link>
-              </li>
+              </li> */}
               <li className="nav-item">
                 <Link className="nav-link" to="/chatbot" onClick={closeMenu}>
                   <i className="fas fa-comments"></i>

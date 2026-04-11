@@ -10,27 +10,33 @@ import Footer from "./components/Footer";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+
 import AdminDashboard from "./pages/AdminDashboard";
+
 import ElderDashboard from "./pages/ElderDashboard";
+
 import FamilyDashboard from "./pages/FamilyDashboard";
+
 import DoctorDashboard from "./pages/DoctorDashboard";
-import CompanionDashboard from "./pages/CompanionDashboard";
-import NurseDashboard from "./pages/NurseDashboard";
 import DoctorProfile from "./pages/DoctorProfile";
-import CompanionList from "./pages/CompanionList";
-import CompanionProfile from "./pages/CompanionProfile";
-import CompanionBooking from "./pages/CompanionBooking";
-import ViewCompanionProfile from "./pages/ViewCompanionProfile";
 import ViewDoctorProfile from "./pages/ViewDoctorProfile";
 import DoctorsList from "./pages/DoctorsList";
 import DoctorBooking from "./pages/DoctorBooking";
 
+import CompanionDashboard from "./pages/CompanionDashboard";
+import CompanionList from "./pages/CompanionList";
+import CompanionBooking from "./pages/CompanionBooking";
+import ViewCompanionProfile from "./pages/ViewCompanionProfile";
+
+import NurseDashboard from "./pages/NurseDashboard";
 import ViewNurseProfile from "./pages/ViewNurseProfile";
 import NurseBooking from "./pages/NurseBooking";
 import NursesList from "./pages/NursesList";
-import ProviderDashboard from "./pages/ProviderDashboard";
+
+// import ProviderDashboard from "./pages/ProviderDashboard";
+
 import Health from "./pages/Health";
-import Games from "./pages/Games";
+
 // .........
 import GamesPage from "./pages/games/GamesPage";
 import GamePlayPage from "./pages/games/GamePlayPage";
@@ -42,7 +48,6 @@ import MedicinesPage from "./pages/MedicinesPage";
 import Yoga from "./pages/Yoga";
 import Events from "./pages/Events";
 import Booking from "./pages/Booking";
-import Chatbot from "./pages/Chatbot";
 
 function AppContent() {
   const location = useLocation();
@@ -69,17 +74,15 @@ function AppContent() {
           <Route path="/companions" element={<CompanionList />} />
           <Route path="/doctors" element={<DoctorsList />} />
           <Route path="/nurses" element={<NursesList />} />
-          {/* <Route path="/companions/:id" element={<CompanionProfile />} /> */}
           <Route path="/companions/:id" element={<ViewCompanionProfile />} />
           <Route path="/companions/:id/book" element={<CompanionBooking />} />
           <Route path="/doctors/:id" element={<ViewDoctorProfile />} />
           <Route path="/doctors/:id/book" element={<DoctorBooking />} />
           <Route path="/nurses/:id" element={<ViewNurseProfile />} />
           <Route path="/nurses/:id/book" element={<NurseBooking />} />
-          <Route path="/provider-dashboard" element={<ProviderDashboard />} />
+          {/* <Route path="/provider-dashboard" element={<ProviderDashboard />} /> */}
           <Route path="/health" element={<Health />} />
           <Route path="/medicines" element={<MedicinesPage />} />
-          {/* <Route path="/games" element={<Games />} /> */}
           <Route path="/games" element={<GamesPage />} />
           <Route path="/games/:gameId" element={<GameDetailPage />} />
           <Route path="/games/:gameId/play" element={<GamePlayPage />} />
@@ -87,7 +90,7 @@ function AppContent() {
           <Route path="/yoga" element={<Yoga />} />
           <Route path="/events" element={<Events />} />
           <Route path="/booking" element={<Booking />} />
-          <Route path="/chatbot" element={<Chatbot />} />
+          
         </Routes>
       </div>
       {showNavFooter && <Footer />}
