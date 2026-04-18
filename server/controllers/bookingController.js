@@ -135,6 +135,28 @@ exports.createBooking = async (req, res) => {
       notes,
     });
 
+    // 📧 SEND EMAIL TO PROVIDER (Doctor/Nurse/Companion)
+try {
+  const {
+    sendBookingConfirmationEmail,
+  } = require("../services/emailService");
+
+  if (assignedProvider) {
+    const provider = await User.findById(assignedProvider);
+
+    if (provider?.email) {
+      await sendBookingConfirmationEmail(
+        provider.email,
+        provider.name,
+        elderName || "Elder",
+        appointmentDate
+      );
+    }
+  }
+} catch (err) {
+  console.error("Email error (booking request):", err.message);
+}
+
     // Emit socket event for new booking
     try {
       const io = req.app.get("io");
@@ -409,6 +431,24 @@ exports.confirmBooking = async (req, res) => {
     booking.status = "Confirmed";
     await booking.save();
 
+    // 📧 SEND CONFIRMATION EMAIL TO USER/FAMILY
+try {
+  const { sendBookingConfirmedEmail } = require("../services/emailService");
+
+  const user = await User.findById(booking.user);
+
+  if (user?.email) {
+    await sendBookingConfirmedEmail(
+      user.email,
+      user.name,
+      booking.elderName || "Elder",
+      booking.appointmentDate
+    );
+  }
+} catch (err) {
+  console.error("Email error (confirmation):", err.message);
+}
+
     // Emit socket event for booking confirmation
     try {
       const io = req.app.get("io");
@@ -456,6 +496,24 @@ exports.rejectBooking = async (req, res) => {
     booking.confirmationStatus = "Rejected";
     booking.status = "Cancelled";
     await booking.save();
+
+    // 📧 SEND REJECTION EMAIL
+try {
+  const { sendBookingRejectedEmail } = require("../services/emailService");
+
+  const user = await User.findById(booking.user);
+
+  if (user?.email) {
+    await sendBookingRejectedEmail(
+      user.email,
+      user.name,
+      booking.elderName || "Elder",
+      reason || ""
+    );
+  }
+} catch (err) {
+  console.error("Email error (rejection):", err.message);
+}
 
     // Emit socket event for booking rejection
     try {

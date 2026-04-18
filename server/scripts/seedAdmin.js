@@ -36,7 +36,7 @@ const seedAdmin = async () => {
 
     console.log("✅ Admin user created successfully!");
     console.log(`Email: ${admin.email}`);
-    console.log("Password: admin123 (please change via profile settings)");
+    // console.log("Password: admin123 (please change via profile settings)");
     console.log("Admin ID:", admin._id);
   } catch (error) {
     console.error("Error seeding admin:", error.message);

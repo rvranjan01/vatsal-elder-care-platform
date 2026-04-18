@@ -140,7 +140,8 @@
   display: flex;
   align-items: center;
   gap: 10px; /* More gap */
-  color: rgba(255, 255, 255, 0.9);
+  /* color: rgba(255, 255, 255, 0.9); */
+  /* color: #ffffff !important; */
   text-decoration: none;
   padding: 12px 18px; /* More padding */
   border-radius: 8px;
@@ -150,10 +151,14 @@
   white-space: nowrap;
   min-height: 48px; /* Minimum touch target */
 }
+.modern-navbar .nav-link {
+  color: #ffffff;
+}
 
 .nav-link i {
   font-size: 1.1rem; /* Larger icons */
   transition: all 0.3s ease;
+  color: #ffffff;
 }
 
 .nav-link:hover {

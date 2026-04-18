@@ -1,51 +1,4 @@
-
-
-// const { InferenceClient } = require("@huggingface/inference");
-
-// const client = new InferenceClient(process.env.HF_TOKEN);
-
-// const getLanguageInstruction = (language) => {
-//   if (language === "hi") return "Reply in Hindi.";
-//   if (language === "kn") return "Reply in Kannada.";
-//   return "Reply in English.";
-// };
-
-// const buildSystemPrompt = (userName, language) => `
-// You are a warm, caring AI companion for an elderly user named ${userName || "Friend"}.
-// You act like a kind companion, a supportive nurse, and a parent-like doctor.
-// ${getLanguageInstruction(language)}
-
-// Rules:
-// - Speak simply and gently.
-// - Keep replies short, warm, and practical.
-// - Never suggest changing medicine dosage.
-// - If symptoms are serious, tell the user to contact a doctor or emergency help immediately.
-// - Be emotionally supportive if the user feels lonely, sad, or anxious.
-// `.trim();
-
-// exports.generateAIReply = async ({ userName, history, language = "en" }) => {
-//   try {
-//     const response = await client.chatCompletion({
-//       model: "meta-llama/Llama-3.1-8B-Instruct",
-//       messages: [
-//         { role: "system", content: buildSystemPrompt(userName, language) },
-//         ...history,
-//       ],
-//       max_tokens: 220,
-//       temperature: 0.7,
-//     });
-
-//     return (
-//       response?.choices?.[0]?.message?.content?.trim() ||
-//       "I am here with you. Please tell me how you are feeling."
-//     );
-//   } catch (error) {
-//     console.error("Hugging Face AI error:", error);
-//     return "I am having a little trouble replying right now. Please try again in a moment.";
-//   }
-// };
-
-
+// aiChatService.js - Service to generate AI replies for the chat interface using Hugging Face Inference API.
 const { InferenceClient } = require("@huggingface/inference");
 
 const client = new InferenceClient(process.env.HF_TOKEN);
@@ -60,25 +13,25 @@ Do not translate the user's name.
 `;
   }
 
-  if (language === "kn") {
-    return `
-Reply ONLY in Kannada.
-Use only Kannada script.
-Do not use English words unless absolutely necessary.
-Do not translate the user's name.
-`;
-  }
+//   if (language === "kn") {
+//     return `
+// Reply ONLY in Kannada.
+// Use only Kannada script.
+// Do not use English words unless absolutely necessary.
+// Do not translate the user's name.
+// `;
+//   }
 
   return `
 Reply ONLY in English.
 Use simple Indian English.
-Do not use Hindi or Kannada words.
+Do not use Hindi words.
 `;
 };
 
 const buildSystemPrompt = (userName, language) => `
 You are a warm, caring AI companion for an elderly user named ${userName || "Friend"}.
-You act like a kind companion, a supportive nurse, and a parent-like doctor.
+You act like a kind companion, a supportive nurse, and a doctor.
 
 ${getLanguageInstruction(language)}
 

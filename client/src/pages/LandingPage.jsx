@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import "../styles/LandingPage.css";
 
 function LandingPage() {
@@ -150,7 +150,7 @@ function LandingPage() {
         <div className="container">
           <div className="hero-content">
             <h1 className="hero-title">
-              Compassionate <span className="highlight">Elder Care</span> at
+              Compassionate <span>Elder Care</span> at
               Your Fingertips
             </h1>
             <p className="hero-subtitle">
@@ -188,9 +188,11 @@ function LandingPage() {
             </div>
             <svg viewBox="0 0 500 500" className="hero-svg">
               <circle cx="250" cy="250" r="200" fill="#f0f3ff" />
-              <circle cx="250" cy="150" r="80" fill="#e8eeff" />
+              {/* <circle cx="250" cy="150" r="80" fill="#e8eeff" />
               <circle cx="350" cy="300" r="60" fill="#e8eeff" />
-              <circle cx="150" cy="300" r="60" fill="#e8eeff" />
+              <circle cx="150" cy="300" r="60" fill="#e8eeff" /> */}
+              <image href="elder.png" x="100" y="100" width="300" height="300" />
+              
             </svg>
           </div>
         </div>
@@ -229,9 +231,9 @@ function LandingPage() {
                   </div>
                   <h5 className="service-title">{service.title}</h5>
                   <p className="service-description">{service.description}</p>
-                  <a href="#" className="service-link">
+                  {/* <a href="#" className="service-link">
                     Learn More <i className="fas fa-long-arrow-alt-right"></i>
-                  </a>
+                  </a> */}
                 </div>
               </div>
             ))}

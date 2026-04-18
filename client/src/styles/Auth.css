@@ -313,7 +313,11 @@
 /* Responsive Design */
 @media (max-width: 480px) {
   .auth-page {
-    padding: 15px;
+    /* padding: 15px; */
+    flex-direction: column;        /* ✅ stack properly */
+    align-items: center;
+    justify-content: flex-start;   /* ✅ start from top */
+    padding-top: 20px;
   }
 
   .auth-container {
@@ -343,11 +347,15 @@
   }
 
   .back-to-home {
-    position: relative;
-    top: auto;
-    left: auto;
-    margin-bottom: 20px;
-    display: inline-block;
+    /* position: relative; */
+    position: static;
+    display: block;
+    width: fit-content;
+    /* top: auto;
+    left: auto; */
+    margin: 0 auto 20px;
+    text-align: center;
+    /* display: inline-block; */
   }
 }
 

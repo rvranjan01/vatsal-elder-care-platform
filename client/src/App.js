@@ -33,7 +33,6 @@ import ViewNurseProfile from "./pages/ViewNurseProfile";
 import NurseBooking from "./pages/NurseBooking";
 import NursesList from "./pages/NursesList";
 
-// import ProviderDashboard from "./pages/ProviderDashboard";
 
 import Health from "./pages/Health";
 
