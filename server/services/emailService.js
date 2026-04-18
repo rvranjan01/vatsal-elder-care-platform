@@ -133,3 +133,41 @@ exports.sendBookingRejectedEmail = async (
     );
   }
 };
+
+exports.sendMedicineReminderEmail = async (
+  recipientEmail,
+  recipientName,
+  elderName,
+  medicineName,
+  dosage,
+  slot,
+  dueTime,
+) => {
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER || "noreply@vatsal.local",
+      to: recipientEmail,
+      subject: "Medicine Reminder - Vatsal",
+      html: `
+        <h3>Medicine Reminder</h3>
+        <p>Dear ${recipientName},</p>
+        <p>This is a reminder for <strong>${elderName}</strong> to take their medicine:</p>
+        <ul>
+          <li><strong>Medicine:</strong> ${medicineName}</li>
+          <li><strong>Dosage:</strong> ${dosage}</li>
+          <li><strong>Slot:</strong> ${slot}</li>
+          ${dueTime ? `<li><strong>Time:</strong> ${dueTime}</li>` : ""}
+        </ul>
+        <p>Please mark it as taken in your Vatsal dashboard when done.</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`✓ Medicine reminder sent to ${recipientEmail}`);
+  } catch (error) {
+    console.error(
+      `Error sending medicine reminder to ${recipientEmail}:`,
+      error.message,
+    );
+  }
+};

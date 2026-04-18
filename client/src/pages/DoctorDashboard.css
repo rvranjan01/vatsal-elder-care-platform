@@ -1,14 +1,15 @@
 /* Doctor Dashboard - Elder-Friendly Design */
+/* Scoped to Doctor Dashboard component only */
 
 /* Container */
-.container {
+.container.mt-4 {
   max-width: 1200px;
   margin: auto;
   padding: 0 20px;
 }
 
-/* Heading */
-h3 {
+/* Heading - SCOPED to dashboard only */
+.container.mt-4 h3 {
   font-weight: 700;
   margin-bottom: 25px;
   font-size: 1.5rem; /* Larger headings */
@@ -48,6 +49,44 @@ h3 {
   box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
 }
 
+/* Bootstrap Tabs Styling - SCOPED to dashboard nav only */
+.container.mt-4 .nav {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.container.mt-4 .nav-tabs {
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.container.mt-4 .nav-link {
+  padding: 12px 20px;
+  border: 2px solid transparent;
+  border-radius: 25px 25px 0 0;
+  background: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  text-decoration: none;
+}
+
+.container.mt-4 .nav-link:hover {
+  background: #e9ecef;
+  transform: translateY(-2px);
+}
+
+.container.mt-4 .nav-link.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+  border-bottom-color: #007bff;
+}
+
 /* Card */
 .card {
   border-radius: 16px;
@@ -56,6 +95,7 @@ h3 {
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   margin-bottom: 20px;
+  padding: 20px;
 }
 
 .card:hover {
@@ -63,8 +103,38 @@ h3 {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* Buttons */
-button {
+.card p {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.card p b {
+  font-weight: 700;
+  color: #222;
+}
+
+.card p:last-child {
+  margin-bottom: 0;
+}
+
+/* Confirmed Cards Styling */
+.card {
+  position: relative;
+}
+
+.card-confirmed {
+  border-left: 5px solid #28a745;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9f6 100%);
+}
+
+.card-confirmed:hover {
+  box-shadow: 0 10px 30px rgba(40, 167, 69, 0.2);
+}
+
+/* Buttons - SCOPED to dashboard only */
+.container.mt-4 button {
   padding: 10px 18px; /* Larger buttons */
   border: 2px solid #e0e0e0; /* Thicker borders */
   border-radius: 10px; /* More rounded */
@@ -74,33 +144,38 @@ button {
   font-size: 1rem; /* Larger text */
   font-weight: 600;
   min-width: 80px; /* Minimum width */
+  background: #f8f9fa;
+  color: #333;
 }
 
-button:hover {
+.container.mt-4 button:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Accept Button */
-button:nth-child(1) {
+/* Card Button Styling */
+.card button {
+  margin-bottom: 10px;
+}
+
+.card button:nth-of-type(1) {
   background: #28a745;
   color: white;
   border-color: #28a745;
 }
 
-button:nth-child(1):hover {
+.card button:nth-of-type(1):hover {
   background: #218838;
   border-color: #1e7e34;
 }
 
-/* Reject Button */
-button:nth-child(2) {
+.card button:nth-of-type(2) {
   background: #dc3545;
   color: white;
   border-color: #dc3545;
 }
 
-button:nth-child(2):hover {
+.card button:nth-of-type(2):hover {
   background: #c82333;
   border-color: #bd2130;
 }
@@ -120,8 +195,8 @@ button:nth-child(2):hover {
   padding: 20px;
 }
 
-/* Modal Box */
-.modal > div {
+/* Modal Content Box */
+.modal-content {
   background: white;
   padding: 30px; /* More padding */
   border-radius: 16px;
@@ -130,8 +205,79 @@ button:nth-child(2):hover {
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
 
-/* Textarea */
-textarea {
+.modal-content h5 {
+  margin: 0 0 20px 0;
+  font-size: 1.3rem;
+  color: #333;
+  font-weight: 700;
+}
+
+.modal-content textarea {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 120px;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.modal-content textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Modal Buttons */
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-buttons button {
+  flex: 1;
+  padding: 12px 18px;
+  border: 2px solid;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.modal-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.modal-buttons button:first-child {
+  background: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+.modal-buttons button:first-child:hover {
+  background: #218838;
+  border-color: #1e7e34;
+}
+
+.modal-buttons button:last-child {
+  background: #6c757d;
+  color: white;
+  border-color: #6c757d;
+}
+
+.modal-buttons button:last-child:hover {
+  background: #5a6268;
+  border-color: #545b62;
+}
+
+/* Textarea - SCOPED to dashboard only */
+.container.mt-4 textarea {
   width: 100%;
   padding: 15px; /* More padding */
   border: 2px solid #e0e0e0; /* Thicker border */
@@ -141,17 +287,18 @@ textarea {
   resize: vertical;
   min-height: 120px; /* Minimum height */
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
-textarea:focus {
+.container.mt-4 textarea:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 
-/* Form elements */
-input,
-select {
+/* Form elements - SCOPED to dashboard only */
+.container.mt-4 input,
+.container.mt-4 select {
   width: 100%;
   padding: 12px 15px; /* More padding */
   border: 2px solid #e0e0e0; /* Thicker borders */
@@ -161,15 +308,15 @@ select {
   margin-bottom: 15px; /* More spacing */
 }
 
-input:focus,
-select:focus {
+.container.mt-4 input:focus,
+.container.mt-4 select:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 
-/* Labels */
-label {
+/* Labels - SCOPED to dashboard only */
+.container.mt-4 label {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
@@ -205,11 +352,11 @@ label {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .container {
+  .container.mt-4 {
     padding: 0 15px;
   }
 
-  h3 {
+  .container.mt-4 h3 {
     font-size: 1.3rem;
   }
 
@@ -223,12 +370,12 @@ label {
     min-width: 100px;
   }
 
-  .modal > div {
+  .modal-content {
     padding: 20px;
     max-width: 350px;
   }
 
-  textarea {
+  .modal-content textarea {
     min-height: 100px;
   }
 }
@@ -243,17 +390,25 @@ label {
     margin-bottom: 8px;
   }
 
-  .modal > div {
+  .modal-content {
     padding: 15px;
     margin: 10px;
     max-width: none;
   }
 
-  h3 {
+  .modal-buttons {
+    flex-direction: column;
+  }
+
+  .modal-buttons button {
+    width: 100%;
+  }
+
+  .container.mt-4 h3 {
     font-size: 1.2rem;
   }
 
-  button {
+  .container.mt-4 button {
     padding: 8px 14px;
     font-size: 0.9rem;
     margin-right: 5px;
@@ -265,27 +420,30 @@ label {
   color: #0d6efd;
   font-weight: 500;
 }
-.table {
+
+/* Table - SCOPED to dashboard only */
+.container.mt-4 .table {
   border-radius: 10px;
   overflow: hidden;
 }
 
-.table th,
-.table td {
+.container.mt-4 .table th,
+.container.mt-4 .table td {
   vertical-align: middle;
   text-align: center;
 }
 
-.badge {
+/* Badges - SCOPED to dashboard only */
+.container.mt-4 .badge {
   padding: 6px 10px;
   font-size: 12px;
 }
 
-.nav-tabs .nav-link {
+.container.mt-4 .nav-tabs .nav-link {
   cursor: pointer;
 }
 
-.nav-tabs .nav-link.active {
+.container.mt-4 .nav-tabs .nav-link.active {
   font-weight: 600;
   border-bottom: 3px solid #0d6efd;
 }

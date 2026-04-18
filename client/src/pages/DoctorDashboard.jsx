@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import API from "../services/api";
 import "./DoctorDashboard.css";
+import "./ProviderDashboard.css";
 import DoctorProfile from "./DoctorProfile";
 
 function DoctorDashboard() {
@@ -42,6 +43,12 @@ function DoctorDashboard() {
 
       const doctorOnly = all.filter((b) => b.serviceType === "Doctor");
       setAllBookings(doctorOnly);
+
+      // Filter confirmed bookings from doctor bookings
+      const confirmed = doctorOnly.filter(
+        (b) => b.confirmationStatus === "Confirmed",
+      );
+      setConfirmedBookings(confirmed);
       // setAllBookings(all);
     } catch (err) {
       console.error(err);
@@ -155,16 +162,29 @@ function DoctorDashboard() {
       {/* Confirmed */}
       {activeTab === "confirmed" && (
         <div>
-          {confirmedBookings.map((b) => (
-            <div key={b._id} className="card p-3 mb-2">
-              <p>
-                <b>Patient:</b> {b.elderName}
-              </p>
-              <p>
-                <b>Status:</b> Confirmed
-              </p>
-            </div>
-          ))}
+          {confirmedBookings.length === 0 ? (
+            <p>No confirmed bookings</p>
+          ) : (
+            confirmedBookings.map((b) => (
+              <div key={b._id} className="card card-confirmed p-3 mb-2">
+                <p>
+                  <b>Patient:</b> {b.elderName}
+                </p>
+                <p>
+                  <b>Service:</b> {b.serviceType}
+                </p>
+                <p>
+                  <b>Date:</b> {b.appointmentDate}
+                </p>
+                <p>
+                  <b>Status:</b>{" "}
+                  <span style={{ color: "#28a745", fontWeight: "700" }}>
+                    ✓ Confirmed
+                  </span>
+                </p>
+              </div>
+            ))
+          )}
         </div>
       )}
 
@@ -173,24 +193,36 @@ function DoctorDashboard() {
       {/* Confirm Modal */}
       {showConfirmModal && (
         <div className="modal">
-          <h5>Confirm Booking</h5>
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Add notes..."
-          />
-          <button onClick={handleConfirm}>Confirm</button>
-          <button onClick={() => setShowConfirmModal(false)}>Cancel</button>
+          <div className="modal-content">
+            <h5>Confirm Booking</h5>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Add notes..."
+            />
+            <div className="modal-buttons">
+              <button onClick={handleConfirm}>Confirm</button>
+              <button onClick={() => setShowConfirmModal(false)}>Cancel</button>
+            </div>
+          </div>
         </div>
       )}
 
       {/* Reject Modal */}
       {showRejectModal && (
         <div className="modal">
-          <h5>Reject Booking</h5>
-          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
-          <button onClick={handleReject}>Reject</button>
-          <button onClick={() => setShowRejectModal(false)}>Cancel</button>
+          <div className="modal-content">
+            <h5>Reject Booking</h5>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Add reason for rejection..."
+            />
+            <div className="modal-buttons">
+              <button onClick={handleReject}>Reject</button>
+              <button onClick={() => setShowRejectModal(false)}>Cancel</button>
+            </div>
+          </div>
         </div>
       )}
 

@@ -6,6 +6,9 @@ const cors = require("cors");
 const http = require("http");
 const { Server } = require("socket.io");
 require("dotenv").config();
+const cron = require("node-cron");
+const User = require("./models/user");
+const { sendMedicineRemindersForUser } = require("./controllers/medicineController");
 
 // ===============================
 // APP INITIALIZATION
@@ -174,6 +177,21 @@ app.use((err, req, res, next) => {
     success: false,
     message: err.message || "Internal Server Error",
   });
+});
+
+cron.schedule("0 8,14,20 * * *", async () => {
+  try {
+    const users = await User.find({
+      isDeleted: false,
+      email: { $exists: true, $ne: "" },
+    });
+
+    for (const user of users) {
+      await sendMedicineRemindersForUser(user._id, user.email, user.name);
+    }
+  } catch (error) {
+    console.error("Medicine reminder cron failed:", error);
+  }
 });
 
 // ===============================

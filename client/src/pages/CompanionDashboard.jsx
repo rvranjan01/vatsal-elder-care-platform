@@ -36,7 +36,6 @@ function CompanionDashboard() {
 
       const allRes = await API.get("/bookings/all");
       const all = allRes.data.bookings || [];
-      setAllBookings(all);
 
       const companionBookings = all.filter(
         (b) =>
@@ -44,7 +43,12 @@ function CompanionDashboard() {
       );
 
       setAllBookings(companionBookings);
-      // setConfirmedBookings(confirmed);
+
+      // Filter confirmed bookings from companion bookings
+      const confirmed = companionBookings.filter(
+        (b) => b.confirmationStatus === "Confirmed",
+      );
+      setConfirmedBookings(confirmed);
     } catch (err) {
       console.error("Error fetching bookings:", err);
     } finally {

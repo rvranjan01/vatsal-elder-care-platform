@@ -141,12 +141,12 @@ function Navbar() {
                   Doctor Booking
                 </Link>
               </li> */}
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Link className="nav-link" to="/chatbot" onClick={closeMenu}>
                   <i className="fas fa-comments"></i>
                   Support
                 </Link>
-              </li>
+              </li> */}
             </>
           )}
 
@@ -155,7 +155,7 @@ function Navbar() {
               userRole === "companion" ||
               userRole === "nurse") && (
               <>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link
                     className="nav-link"
                     to="/doctor-dashboard"
@@ -164,7 +164,7 @@ function Navbar() {
                     <i className="fas fa-stethoscope"></i>
                     My Bookings
                   </Link>
-                </li>
+                </li> */}
               </>
             )}
 

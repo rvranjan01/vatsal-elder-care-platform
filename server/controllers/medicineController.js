@@ -1,6 +1,9 @@
 const Medicine = require("../models/medicine");
 const MedicineLog = require("../models/medicineLog");
 
+const User = require("../models/user");
+const { sendMedicineReminderEmail } = require("../services/emailService");
+
 const SLOT_VALUES = ["Morning", "Afternoon", "Night"];
 
 const getUserIdFromReq = (req) => {
@@ -53,6 +56,99 @@ const getMedicineByIdForUser = async (medicineId, userId) => {
     user: userId,
     isDeleted: false,
   });
+};
+
+// const getPendingMedicineReminders = async (userId) => {
+//   const today = getDateOnlyString();
+//   const medicines = await Medicine.find({
+//     user: userId,
+//     isDeleted: false,
+//     status: "active",
+//   });
+
+//   const reminders = [];
+
+//   for (const medicine of medicines) {
+//     if (!isMedicineDateActive(medicine)) continue;
+
+//     const todayStatus = await getTodayStatusMap(medicine._id, today);
+
+//     for (const slot of medicine.scheduleSlots) {
+//       if (todayStatus[slot]) continue;
+
+//       reminders.push({
+//         email: medicine.userEmail, // or use elder/family email
+//         name: medicine.userName,
+//         medicineName: medicine.medicineName,
+//         dosage: medicine.dosage,
+//         slot,
+//         dueTime: slot,
+//       });
+//     }
+//   }
+
+//   return reminders;
+// };
+
+const getPendingMedicineReminders = async (userId) => {
+  const today = getDateOnlyString();
+  const user = await User.findById(userId);
+  if (!user) return [];
+
+  const targetUserIds = [userId];
+  if (user.role === "family" && user.elderIds && user.elderIds.length) {
+    targetUserIds.push(...user.elderIds);
+  }
+
+  const medicines = await Medicine.find({
+    user: { $in: targetUserIds },
+    isDeleted: false,
+    status: "active",
+  });
+
+  const reminders = [];
+
+  for (const medicine of medicines) {
+    if (!isMedicineDateActive(medicine)) continue;
+
+    const todayStatus = await getTodayStatusMap(medicine._id, today);
+    const elder = await User.findById(medicine.user);
+
+    for (const slot of medicine.scheduleSlots) {
+      if (todayStatus[slot]) continue;
+
+      reminders.push({
+        elderName: elder?.name || "Elder",
+        medicineName: medicine.medicineName,
+        dosage: medicine.dosage,
+        slot,
+        dueTime: slot,
+      });
+    }
+  }
+
+  return reminders;
+};
+
+exports.sendMedicineRemindersForUser = async (userId, email, name) => {
+  if (!email) return;
+
+  const reminders = await getPendingMedicineReminders(userId);
+  if (!reminders.length) return;
+
+  await Promise.all(
+    reminders.map((reminder) =>
+      sendMedicineReminderEmail(
+        email,
+        name || "User",
+        reminder.elderName,
+        reminder.medicineName,
+        reminder.dosage,
+        reminder.slot,
+        reminder.dueTime,
+      ),
+    ),
+  );
 };
 
 exports.createMedicine = async (req, res) => {
@@ -652,3 +748,31 @@ exports.autoMarkMissedDoses = async (req, res) => {
       .json({ message: "Server error while marking missed doses." });
   }
 };
+
+// exports.sendMedicineReminders = async (req, res) => {
+//   try {
+//     const userId = getUserIdFromReq(req);
+//     if (!userId) return res.status(401).json({ message: "User not found." });
+
+//     const user = await User.findById(userId);
+//     const reminders = await getPendingMedicineReminders(userId);
+
+//     await Promise.all(
+//       reminders.map((reminder) =>
+//         sendMedicineReminderEmail(
+//           user.email,
+//           user.name || "User",
+//           reminder.medicineName,
+//           reminder.dosage,
+//           reminder.slot,
+//           reminder.dueTime,
+//         ),
+//       ),
+//     );
+
+//     return res.status(200).json({ message: "Medicine reminders sent." });
+//   } catch (error) {
+//     console.error("sendMedicineReminders error:", error);
+//     return res.status(500).json({ message: "Failed to send reminders." });
+//   }
+// };

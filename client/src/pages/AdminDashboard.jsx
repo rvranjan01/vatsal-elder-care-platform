@@ -67,6 +67,8 @@ function AdminDashboard() {
         doctor: [],
         companion: [],
         nurse: [],
+        elder: [],
+        family: [],
       };
 
       signups.forEach((user) => {
@@ -160,7 +162,9 @@ function AdminDashboard() {
           <span className="badge bg-warning text-dark me-2">
             {(signupsByRole.doctor?.length || 0) +
               (signupsByRole.companion?.length || 0) +
-              (signupsByRole.nurse?.length || 0)}
+              (signupsByRole.nurse?.length || 0) +
+              (signupsByRole.elder?.length || 0) +
+              (signupsByRole.family?.length || 0)}
           </span>
           All Signups
         </button>
@@ -414,6 +418,86 @@ function AdminDashboard() {
                   </thead>
                   <tbody>
                     {signupsByRole.nurse?.map((user) => (
+                      <tr key={user._id}>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>
+                          <span
+                            className={`badge ${user.isActive ? "bg-success" : "bg-warning text-dark"}`}
+                          >
+                            {user.isActive ? "Active" : "Pending"}
+                          </span>
+                        </td>
+                        <td>{formatDate(user.createdAt)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* Elders Section */}
+          <div className="mb-4">
+            <h6 className="text-info mb-3">
+              <i className="bi bi-person-heart"></i> Elders (
+              {signupsByRole.elder?.length || 0})
+            </h6>
+            {signupsByRole.elder?.length === 0 ? (
+              <p className="text-muted">No elder signups yet.</p>
+            ) : (
+              <div className="table-responsive">
+                <table className="table table-sm table-hover">
+                  <thead className="table-light">
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Status</th>
+                      <th>Signup Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {signupsByRole.elder?.map((user) => (
+                      <tr key={user._id}>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>
+                          <span
+                            className={`badge ${user.isActive ? "bg-success" : "bg-warning text-dark"}`}
+                          >
+                            {user.isActive ? "Active" : "Pending"}
+                          </span>
+                        </td>
+                        <td>{formatDate(user.createdAt)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* Family Members Section */}
+          <div className="mb-4">
+            <h6 className="text-warning mb-3">
+              <i className="bi bi-people-fill"></i> Family Members (
+              {signupsByRole.family?.length || 0})
+            </h6>
+            {signupsByRole.family?.length === 0 ? (
+              <p className="text-muted">No family member signups yet.</p>
+            ) : (
+              <div className="table-responsive">
+                <table className="table table-sm table-hover">
+                  <thead className="table-light">
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Status</th>
+                      <th>Signup Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {signupsByRole.family?.map((user) => (
                       <tr key={user._id}>
                         <td>{user.name}</td>
                         <td>{user.email}</td>

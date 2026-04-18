@@ -159,6 +159,7 @@
   font-size: 1.1rem; /* Larger icons */
   transition: all 0.3s ease;
   color: #ffffff;
+  margin: 2px;
 }
 
 .nav-link:hover {

@@ -12,6 +12,7 @@ const {
   deleteMedicine,
   getUpcomingReminders,
   autoMarkMissedDoses,
+  // sendMedicineReminders,
 } = require("../controllers/medicineController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -30,5 +31,7 @@ router.patch("/:id/refill", refillMedicineStock);
 router.patch("/mark-missed/today", autoMarkMissedDoses);
 
 router.delete("/:id", deleteMedicine);
+
+// router.post("/reminders/send", sendMedicineReminders);
 
 module.exports = router;

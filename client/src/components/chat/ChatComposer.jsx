@@ -1,7 +1,7 @@
 import React from "react";
 import ChatInput from "./ChatInput";
 import VoiceControls from "./VoiceControls";
-import QuickActions from "./QuickActions";
+// import QuickActions from "./QuickActions";
 
 const ChatComposer = ({
   input,
@@ -16,7 +16,7 @@ const ChatComposer = ({
 }) => {
   return (
     <div className="elder-chat-composer">
-      <QuickActions onSelect={onQuickAction} />
+      {/* <QuickActions onSelect={onQuickAction} /> */}
 
       <VoiceControls
         listening={listening}
