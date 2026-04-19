@@ -216,6 +216,23 @@ function Yoga() {
     }
   };
 
+  // Helper function to extract YouTube video ID from URL
+  const getYouTubeVideoId = (url) => {
+    if (!url) return null;
+    // Match patterns: https://youtu.be/VIDEO_ID or https://www.youtube.com/watch?v=VIDEO_ID
+    const patterns = [
+      /youtu\.be\/([a-zA-Z0-9_-]+)/,
+      /youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/,
+      /youtube\.com\/embed\/([a-zA-Z0-9_-]+)/,
+    ];
+
+    for (let pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) return match[1];
+    }
+    return null;
+  };
+
   // Admin: add new yoga pose to backend
   const handleAddPose = async (e) => {
     e.preventDefault();
@@ -382,27 +399,93 @@ function Yoga() {
         <div className="col-lg-8">
           {selectedExercise && (
             <>
-              {/* Exercise Details */}
-              <div className="card shadow-sm mb-4">
+              {/* Exercise Details - Split Layout */}
+              <div className="card shadow-sm mb-4 yoga-details-card">
                 <div className="card-header bg-info text-white">
                   <h5 className="mb-0">{selectedExercise.title}</h5>
                 </div>
                 <div className="card-body">
-                  <div className="mb-3">
-                    <h6 className="text-secondary">⏱️ Duration:</h6>
-                    <p>{selectedExercise.duration}</p>
+                  <div className="yoga-details-container">
+                    {/* Left Side - Video */}
+                    <div className="yoga-video-section">
+                      {selectedExercise.videoUrl ? (
+                        <div className="yoga-video-wrapper">
+                          <iframe
+                            width="100%"
+                            height="400"
+                            src={
+                              selectedExercise.videoUrl.includes(
+                                "youtube.com/embed/",
+                              )
+                                ? selectedExercise.videoUrl
+                                : `https://www.youtube.com/embed/${getYouTubeVideoId(selectedExercise.videoUrl)}`
+                            }
+                            title={selectedExercise.title}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          ></iframe>
+                        </div>
+                      ) : (
+                        <div className="yoga-no-video">
+                          <p className="text-muted text-center">
+                            📹 No video available for this pose
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Right Side - Details */}
+                    <div className="yoga-info-section">
+                      <div className="yoga-info-item">
+                        <h6 className="yoga-info-label">⏱️ Duration</h6>
+                        <p className="yoga-info-value">
+                          {selectedExercise.duration}
+                        </p>
+                      </div>
+
+                      <div className="yoga-info-item">
+                        <h6 className="yoga-info-label">💪 Difficulty</h6>
+                        <p className="yoga-info-value">
+                          <span
+                            className={`badge ${
+                              selectedExercise.difficulty === "beginner"
+                                ? "bg-success"
+                                : selectedExercise.difficulty === "intermediate"
+                                  ? "bg-warning text-dark"
+                                  : "bg-danger"
+                            }`}
+                          >
+                            {selectedExercise.difficulty?.toUpperCase() ||
+                              "N/A"}
+                          </span>
+                        </p>
+                      </div>
+
+                      <div className="yoga-info-item">
+                        <h6 className="yoga-info-label">📚 Category</h6>
+                        <p className="yoga-info-value">
+                          {selectedExercise.category || "General"}
+                        </p>
+                      </div>
+
+                      <div className="yoga-info-item">
+                        <h6 className="yoga-info-label">✨ Benefits</h6>
+                        <p className="yoga-info-value text-small">
+                          {Array.isArray(selectedExercise.benefits)
+                            ? selectedExercise.benefits.join(", ")
+                            : selectedExercise.benefits}
+                        </p>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="mb-3">
-                    <h6 className="text-secondary">📖 How to Do It:</h6>
+                  {/* How to Do It - Below Video and Details */}
+                  <div className="yoga-instructions-section">
+                    <h6 className="yoga-instructions-label">📖 How to Do It</h6>
                     <p className="yoga-description">
                       {selectedExercise.description}
                     </p>
-                  </div>
-
-                  <div className="mb-0">
-                    <h6 className="text-secondary">✨ Benefits:</h6>
-                    <p>{selectedExercise.benefits}</p>
                   </div>
                 </div>
               </div>

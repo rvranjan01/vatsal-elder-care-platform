@@ -42,6 +42,155 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* Yoga Details Split Layout */
+.yoga-details-card {
+  background: white;
+}
+
+.yoga-details-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.yoga-video-section {
+  display: flex;
+  align-items: center;
+}
+
+.yoga-video-wrapper {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.yoga-video-wrapper iframe {
+  display: block;
+  border: none;
+  border-radius: 12px;
+}
+
+.yoga-no-video {
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.yoga-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.yoga-info-item {
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-left: 4px solid #667eea;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.yoga-info-item:hover {
+  background-color: #f0f0f0;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.yoga-info-label {
+  color: #495057;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.yoga-info-value {
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.yoga-info-value.text-small {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.yoga-instructions-section {
+  padding-top: 20px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.yoga-instructions-label {
+  color: #495057;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .yoga-details-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .yoga-video-wrapper iframe {
+    height: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .yoga-page {
+    padding: 15px 0;
+  }
+
+  .yoga-header {
+    padding: 30px 20px;
+    margin-bottom: 20px;
+  }
+
+  .yoga-header h1 {
+    font-size: 2rem;
+  }
+
+  .yoga-header p {
+    font-size: 1rem;
+  }
+
+  .yoga-details-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .yoga-video-wrapper iframe {
+    height: 200px;
+  }
+
+  .card-body {
+    padding: 15px;
+  }
+
+  .yoga-info-item {
+    padding: 12px;
+  }
+
+  .list-group-item {
+    padding: 12px 15px;
+    font-size: 0.95rem;
+  }
+}
+
 .list-group-item.active {
   border-color: #28a745 !important;
   background: linear-gradient(135deg, #28a745, #20c997);

@@ -11,7 +11,9 @@ const router = express.Router();
 router.get("/list", async (req, res) => {
   try {
     const exercises = await YogaExercise.find({ isActive: true })
-      .select("title description duration benefits category difficulty")
+      .select(
+        "title description duration benefits category difficulty imageUrl videoUrl",
+      )
       .sort({ createdAt: -1 })
       .limit(20);
     res.json(exercises); // Matches: Yoga.jsx + ElderDashboard expect array directly

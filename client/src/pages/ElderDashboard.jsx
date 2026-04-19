@@ -630,14 +630,30 @@ function ElderDashboard() {
             <div className="yoga-list">
               {yogaActivities.slice(0, 3).map((yoga, idx) => (
                 <div key={idx} className="yoga-item">
-                  <div className="yoga-icon">🍃</div>
+                  <div className="yoga-icon">
+                    {yoga.imageUrl ? (
+                      <img
+                        src={yoga.imageUrl}
+                        alt={yoga.title}
+                        className="yoga-thumbnail"
+                        onError={(e) => (e.target.style.display = "none")}
+                      />
+                    ) : (
+                      <span>🍃</span>
+                    )}
+                  </div>
                   <div className="yoga-content">
                     <p className="yoga-name">{yoga.title}</p>
                     <p className="yoga-level">
-                      {yoga.duration} • {yoga.benefits}
+                      {yoga.duration} min • {yoga.difficulty || "Beginner"}
                     </p>
                   </div>
-                  <button className="start-btn">Start</button>
+                  <button
+                    className="start-btn"
+                    onClick={() => navigate("/yoga")}
+                  >
+                    Start
+                  </button>
                 </div>
               ))}
             </div>

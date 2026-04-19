@@ -301,6 +301,19 @@
   font-size: 2.5rem; /* Larger icons */
   min-width: 60px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+}
+
+.yoga-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .game-content,

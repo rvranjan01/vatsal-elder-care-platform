@@ -10,6 +10,8 @@ const YogaExerciseModal = ({ exercise, onClose, onSave }) => {
     category: "stretching",
     benefits: "",
     instructions: "",
+    imageUrl: "",
+    videoUrl: "",
   });
 
   useEffect(() => {
@@ -22,6 +24,8 @@ const YogaExerciseModal = ({ exercise, onClose, onSave }) => {
         category: exercise.category || "stretching",
         benefits: exercise.benefits?.join(", ") || "",
         instructions: exercise.instructions?.join(", ") || "",
+        imageUrl: exercise.imageUrl || "",
+        videoUrl: exercise.videoUrl || "",
       });
     }
   }, [exercise]);
@@ -120,6 +124,76 @@ const YogaExerciseModal = ({ exercise, onClose, onSave }) => {
                 <option value="balance">Balance</option>
                 <option value="relaxation">Relaxation</option>
               </select>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Image URL</label>
+              <input
+                type="url"
+                className="form-control"
+                value={formData.imageUrl}
+                onChange={(e) =>
+                  setFormData({ ...formData, imageUrl: e.target.value })
+                }
+                placeholder="https://example.com/image.jpg"
+              />
+              {formData.imageUrl && (
+                <div className="mt-2" style={{ maxWidth: "100%" }}>
+                  <img
+                    src={formData.imageUrl}
+                    alt="Yoga preview"
+                    style={{
+                      width: "100%",
+                      height: "200px",
+                      objectFit: "cover",
+                      borderRadius: "8px",
+                    }}
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Video URL (YouTube)</label>
+              <div className="mb-2">
+                <small
+                  className="text-muted d-block"
+                  style={{ fontSize: "0.85rem" }}
+                >
+                  📌 Paste the YouTube embed src URL from an iframe:
+                  <br />
+                  <code
+                    style={{
+                      backgroundColor: "#f0f0f0",
+                      padding: "4px 8px",
+                      borderRadius: "4px",
+                    }}
+                  >
+                    https://www.youtube.com/embed/VIDEO_ID
+                  </code>
+                </small>
+              </div>
+              <input
+                type="text"
+                className="form-control"
+                value={formData.videoUrl}
+                onChange={(e) =>
+                  setFormData({ ...formData, videoUrl: e.target.value })
+                }
+                placeholder="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              />
+              {formData.videoUrl && (
+                <div
+                  className="mt-2"
+                  style={{ fontSize: "0.9rem", color: "#666" }}
+                >
+                  <i className="bi bi-play-circle"></i> Video link saved
+                </div>
+              )}
             </div>
           </div>
 
