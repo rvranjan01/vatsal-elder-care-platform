@@ -2,17 +2,23 @@ const Health = require("../models/health");
 
 exports.addHealthData = async (req, res) => {
   try {
-    // Only elder can add health data
-    if (req.user.role !== "elder") {
-      return res.status(403).json({
-        message: "Only elder can add health data",
-      });
+    // Allow both elder and family to add health data
+    // Family members need to specify which elder they're adding data for
+    let elderUserId = req.user.id;
+
+    if (req.user.role === "family") {
+      if (!req.body.elderId) {
+        return res.status(400).json({
+          message: "Elder ID is required for family members",
+        });
+      }
+      elderUserId = req.body.elderId;
     }
 
     const { bloodPressure, sugarLevel, notes } = req.body;
 
     const health = await Health.create({
-      user: req.user.id, // elder ID from JWT
+      user: elderUserId, // elder ID (from JWT for elder, from body for family)
       bloodPressure,
       sugarLevel,
       notes,

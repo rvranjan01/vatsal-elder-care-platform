@@ -1115,7 +1115,7 @@ function FamilyDashboard() {
               </div>
               <div className="card-footer bg-light">
                 <Link
-                  to="/health"
+                  to="/medicines"
                   className="btn btn-sm btn-outline-primary w-100"
                 >
                   <i className="bi bi-arrow-right me-1"></i>Manage Medicines

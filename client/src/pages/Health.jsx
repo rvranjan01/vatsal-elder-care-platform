@@ -85,7 +85,10 @@ function Health() {
     }
     try {
       setIsSubmitting(true);
-      await API.post("/health/add", formData);
+      // Include elderId for family members
+      const payload =
+        role === "family" ? { ...formData, elderId: selectedElder } : formData;
+      await API.post("/health/add", payload);
       alert("Health record added successfully");
       setFormData({ bloodPressure: "", sugarLevel: "", notes: "" });
       fetchHealth(selectedElder);
@@ -134,8 +137,8 @@ function Health() {
         </div>
       )}
 
-      {/* form only available to elders */}
-      {role === "elder" && (
+      {/* form available to elders and family members */}
+      {(role === "elder" || (role === "family" && selectedElder)) && (
         <div className="card shadow mb-4">
           <div className="card-header bg-primary text-white">
             <h5 className="mb-0">Add Health Data</h5>

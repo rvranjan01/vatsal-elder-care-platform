@@ -158,6 +158,17 @@ exports.createMedicine = async (req, res) => {
       return res.status(401).json({ message: "User not found in token." });
     }
 
+    // Allow family members to add medicine for their elder
+    let elderUserId = userId;
+    if (req.user.role === "family") {
+      if (!req.body.elderId) {
+        return res
+          .status(400)
+          .json({ message: "Elder ID is required for family members." });
+      }
+      elderUserId = req.body.elderId;
+    }
+
     const {
       medicineName,
       medicineType,
@@ -191,7 +202,7 @@ exports.createMedicine = async (req, res) => {
     }
 
     const medicine = await Medicine.create({
-      user: userId,
+      user: elderUserId,
       medicineName,
       medicineType,
       dosage,
@@ -208,7 +219,7 @@ exports.createMedicine = async (req, res) => {
 
     await MedicineLog.create({
       medicine: medicine._id,
-      user: userId,
+      user: elderUserId,
       action: "updated",
       quantityChanged: 0,
       note: "Medicine created",

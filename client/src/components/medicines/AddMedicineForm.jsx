@@ -13,7 +13,7 @@ const initialForm = {
   notes: "",
 };
 
-function AddMedicineForm({ show, onClose, onMedicineAdded }) {
+function AddMedicineForm({ show, onClose, onMedicineAdded, elderId }) {
   const [formData, setFormData] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
 
@@ -48,6 +48,7 @@ function AddMedicineForm({ show, onClose, onMedicineAdded }) {
         initialStock: Number(formData.currentStock),
         durationDays: Number(formData.durationDays),
         lowStockThreshold: Number(formData.lowStockThreshold),
+        elderId: elderId || undefined,
       });
 
       setFormData(initialForm);

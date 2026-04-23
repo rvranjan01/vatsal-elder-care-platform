@@ -20,6 +20,11 @@ function MedicinesPage() {
   const [loading, setLoading] = useState(true);
   const [historyLoading, setHistoryLoading] = useState(false);
 
+  // Family member - elder selection
+  const [elders, setElders] = useState([]);
+  const [selectedElder, setSelectedElder] = useState("");
+  const role = localStorage.getItem("role");
+
   const [filters, setFilters] = useState({
     search: "",
     type: "all",
@@ -30,7 +35,8 @@ function MedicinesPage() {
   const fetchMedicines = async () => {
     try {
       setLoading(true);
-      const res = await API.get("/medicines/list");
+      const elderParam = selectedElder ? `?elderId=${selectedElder}` : "";
+      const res = await API.get(`/medicines/list${elderParam}`);
       setMedicines(res.data.medicines || []);
     } catch (error) {
       console.error("Error fetching medicines:", error);
@@ -38,6 +44,28 @@ function MedicinesPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchElders = async () => {
+    try {
+      const res = await API.get("/auth/me");
+      const user = res.data.user;
+      const linked =
+        user.elderIds && Array.isArray(user.elderIds) ? user.elderIds : [];
+      setElders(linked);
+      if (linked.length > 0) {
+        const id = linked[0]._id || linked[0].id;
+        setSelectedElder(id);
+      }
+    } catch (err) {
+      console.error("Error fetching elders:", err);
+    }
+  };
+
+  const handleElderChange = async (e) => {
+    const id = e.target.value;
+    setSelectedElder(id);
+    await fetchMedicines();
   };
 
   const fetchMedicineHistory = async (medicineId) => {
@@ -54,8 +82,19 @@ function MedicinesPage() {
   };
 
   useEffect(() => {
-    fetchMedicines();
+    if (role === "family") {
+      fetchElders();
+    } else {
+      fetchMedicines();
+    }
   }, []);
+
+  // Fetch medicines when selectedElder changes
+  useEffect(() => {
+    if (role === "family" && selectedElder) {
+      fetchMedicines();
+    }
+  }, [selectedElder]);
 
   const handleMedicineAdded = async () => {
     setShowAddForm(false);
@@ -193,6 +232,28 @@ function MedicinesPage() {
           </p>
         </div>
 
+        {/* Elder selector for family members */}
+        {role === "family" && elders.length > 0 && (
+          <div className="me-3">
+            <select
+              className="form-select d-inline w-auto"
+              value={selectedElder}
+              onChange={handleElderChange}
+            >
+              <option value="">Select Elder</option>
+              {elders.map((e) => {
+                const id = e._id || e.id;
+                const name = e.name || e.username || "Unknown";
+                return (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        )}
+
         <button
           className="btn btn-success add-medicine-btn"
           onClick={() => setShowAddForm(true)}
@@ -271,6 +332,7 @@ function MedicinesPage() {
           show={showAddForm}
           onClose={() => setShowAddForm(false)}
           onMedicineAdded={handleMedicineAdded}
+          elderId={selectedElder}
         />
       )}
 
