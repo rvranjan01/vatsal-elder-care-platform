@@ -18,6 +18,11 @@ const healthSchema = new mongoose.Schema(
     notes: {
       type: String,
     },
+    addedBy: {
+      type: String,
+      enum: ["elder", "family", "doctor"],
+      default: "elder",
+    },
   },
   { timestamps: true },
 );

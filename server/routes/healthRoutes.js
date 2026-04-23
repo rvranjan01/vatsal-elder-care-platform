@@ -7,10 +7,20 @@ const { protect, authorize } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// Elder can add health data
-router.post("/add", protect, authorize("elder"), addHealthData);
+// Elder, Family, and Doctor can add health data
+router.post(
+  "/add",
+  protect,
+  authorize("elder", "family", "doctor"),
+  addHealthData,
+);
 
-// Elder & Family can view health data
-router.get("/list", protect, authorize("elder", "family"), getHealthData);
+// Elder, Family, and Doctor can view health data
+router.get(
+  "/list",
+  protect,
+  authorize("elder", "family", "doctor"),
+  getHealthData,
+);
 
 module.exports = router;

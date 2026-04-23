@@ -92,6 +92,8 @@ function FamilyDashboard() {
   const [savingMessage, setSavingMessage] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
 
+  
+
   useEffect(() => {
     fetchProfileAndData();
     fetchProviders();
@@ -1173,7 +1175,7 @@ function FamilyDashboard() {
           </div>
 
           {/* care Notes */}
-          {/* <div className="col-lg-4 mb-4">
+          <div className="col-lg-4 mb-4">
             <div className="card shadow-sm h-100">
               <div className="card-header bg-light">
                 <h5 className="card-title mb-0">
@@ -1210,7 +1212,7 @@ function FamilyDashboard() {
                 )}
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
 
         {/* Activity Timeline & Documents */}

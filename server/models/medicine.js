@@ -74,6 +74,11 @@ const medicineSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    addedBy: {
+      type: String,
+      enum: ["elder", "family", "doctor"],
+      default: "elder",
+    },
   },
   { timestamps: true },
 );

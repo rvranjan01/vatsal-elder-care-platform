@@ -158,13 +158,13 @@ exports.createMedicine = async (req, res) => {
       return res.status(401).json({ message: "User not found in token." });
     }
 
-    // Allow family members to add medicine for their elder
+    // Allow family members and doctors to add medicine for their elder
     let elderUserId = userId;
-    if (req.user.role === "family") {
+    if (req.user.role === "family" || req.user.role === "doctor") {
       if (!req.body.elderId) {
         return res
           .status(400)
-          .json({ message: "Elder ID is required for family members." });
+          .json({ message: "Elder ID is required for family/doctor members." });
       }
       elderUserId = req.body.elderId;
     }
@@ -215,6 +215,7 @@ exports.createMedicine = async (req, res) => {
       lowStockThreshold: Number(lowStockThreshold || 5),
       notes,
       status: "active",
+      addedBy: req.user.role,
     });
 
     await MedicineLog.create({
@@ -253,11 +254,16 @@ exports.getMedicines = async (req, res) => {
     if (elderId) {
       query.user = elderId;
     } else {
-      // For family members, get medicines for all their linked elders
+      // For family members and doctors, handle accordingly
       const User = require("../models/user");
       const user = await User.findById(userId);
       if (user.role === "family" && user.elderIds && user.elderIds.length > 0) {
         query.user = { $in: user.elderIds };
+      } else if (user.role === "doctor") {
+        // Doctors need to specify elderId to view medicines
+        return res
+          .status(400)
+          .json({ message: "Elder ID is required for doctors" });
       } else {
         query.user = userId;
       }

@@ -7,6 +7,8 @@ function Health() {
   const [healthData, setHealthData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [doctorNotes, setDoctorNotes] = useState([]);
+  const [loadingNotes, setLoadingNotes] = useState(false);
 
   const [formData, setFormData] = useState({
     bloodPressure: "",
@@ -48,6 +50,19 @@ function Health() {
     }
   };
 
+  const fetchDoctorNotes = async (elderId) => {
+    try {
+      setLoadingNotes(true);
+      const res = await API.get("/doctors/notes");
+      setDoctorNotes(res.data.notes || []);
+    } catch (err) {
+      console.error("Error fetching doctor notes:", err);
+      setDoctorNotes([]);
+    } finally {
+      setLoadingNotes(false);
+    }
+  };
+
   const fetchHealth = async (elderId) => {
     try {
       setLoading(true);
@@ -55,6 +70,11 @@ function Health() {
       if (elderId) url += `?elderId=${elderId}`;
       const res = await API.get(url);
       setHealthData(res.data || []);
+
+      // Fetch doctor notes for elder or family
+      if (role === "elder" || role === "family") {
+        await fetchDoctorNotes(elderId);
+      }
     } catch (err) {
       console.error("Error fetching health data:", err);
       alert("Failed to load health data");

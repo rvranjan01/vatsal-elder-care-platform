@@ -280,14 +280,7 @@ function ElderDashboard() {
       }));
 
       setGames(mergedGames);
-      // const gameRes = await API.get("/games/games-list");
-      // setGames(gameRes.data || []);
-
-      // setGames(gamesData);  // Using static data for now
-
-      // Fetch yoga activities
-      // const yogaRes = await API.get("/yoga/list");
-      // setYogaActivities(yogaRes.data || []);
+     
       const yogaRes = await API.get("/yoga/list"); // Add /api prefix
       setYogaActivities(yogaRes.data || []); // Matches new route response
       //Fetching yoga sessions for stats
@@ -865,48 +858,6 @@ function ElderDashboard() {
           </Link>
         </div>
       </div>
-
-      {/* Chat Companion */}
-      {/* <div className="dashboard-section chat-companion">
-        <h3>💬 Chat Companion</h3>
-        <div className="chat-box">
-          <div className="chat-messages">
-            {chatMessages.map((msg) => (
-              <div key={msg.id} className={`chat-message ${msg.sender}`}>
-                {msg.sender === "bot" && (
-                  <div className="chat-avatar bot">🤖</div>
-                )}
-                <div className="message-text">{msg.text}</div>
-                {msg.sender === "user" && (
-                  <div className="chat-avatar user">👤</div>
-                )}
-              </div>
-            ))}
-          </div>
-          <form onSubmit={handleSendMessage} className="chat-input-form">
-            <input
-              type="text"
-              className="chat-input"
-              placeholder="Type a message..."
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-            />
-            <button type="submit" className="chat-send-btn">
-              📤
-            </button>
-          </form>
-        </div>
-      </div> */}
-      {/* <ChatLauncher onOpen={() => setShowChat(true)} /> */}
-      {/* <ChatLauncher
-        onOpen={() => setShowChat(true)}
-        className={showChat ? "chat-launcher hidden" : "chat-launcher"}
-      />
-      <ChatOffcanvas
-        show={showChat}
-        onClose={() => setShowChat(false)}
-        userName={userName}
-      /> */}
       <ChatLauncher onClick={() => setShowChat(true)} />
       <ChatOffcanvas
         isOpen={showChat}
