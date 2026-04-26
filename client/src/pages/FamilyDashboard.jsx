@@ -65,6 +65,8 @@ function FamilyDashboard() {
   const [documents, setDocuments] = useState([]);
   const [activityLog, setActivityLog] = useState([]);
   const [familyMessages, setFamilyMessages] = useState([]);
+  const [doctorNotes, setDoctorNotes] = useState([]);
+  const [loadingDoctorNotes, setLoadingDoctorNotes] = useState(false);
 
   // Form States
   const [newElderForm, setNewElderForm] = useState({
@@ -91,8 +93,6 @@ function FamilyDashboard() {
   const [savingNote, setSavingNote] = useState(false);
   const [savingMessage, setSavingMessage] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
-
-  
 
   useEffect(() => {
     fetchProfileAndData();
@@ -196,6 +196,9 @@ function FamilyDashboard() {
       const gameHistoryReq = API.get(
         `/games/list${elderId ? `?elderId=${elderId}` : ""}`,
       );
+      const doctorNotesReq = API.get(
+        `/doctors/notes${elderId ? `?elderId=${elderId}` : ""}`,
+      ).catch(() => ({ data: { notes: [] } }));
 
       const [
         hRes,
@@ -208,6 +211,7 @@ function FamilyDashboard() {
         actRes,
         msgRes,
         elderRes,
+        doctorNotesRes,
       ] = await Promise.all([
         healthReq,
         API.get(`/medicines/list${elderId ? `?elderId=${elderId}` : ""}`),
@@ -219,6 +223,7 @@ function FamilyDashboard() {
         activityReq,
         messagesReq,
         elderDetailsReq,
+        doctorNotesReq,
       ]);
 
       const activities = actRes.data || [];
@@ -226,6 +231,7 @@ function FamilyDashboard() {
 
       setHealthData(hRes.data || []);
       setMedicines(mRes.data?.medicines || mRes.data || []);
+      setDoctorNotes(doctorNotesRes.data?.notes || []);
       setGames(history);
       setGameHistory(history);
       setYogaActivities(yRes.data || []);
@@ -1084,6 +1090,60 @@ function FamilyDashboard() {
           </div>
         </div>
 
+        {/* Doctor Notes Section */}
+        {doctorNotes.length > 0 && (
+          <div className="row mb-4">
+            <div className="col-12">
+              <div className="card shadow-sm border-success">
+                <div className="card-header bg-success text-white">
+                  <h5 className="card-title mb-0">
+                    <i className="bi bi-clipboard-medical me-2"></i>Doctor's
+                    Notes & Suggestions
+                  </h5>
+                </div>
+                <div className="card-body">
+                  <div className="table-responsive">
+                    <table className="table table-hover mb-0">
+                      <thead className="table-light">
+                        <tr>
+                          <th>Date</th>
+                          <th>Doctor</th>
+                          <th>Type</th>
+                          <th>Note</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {doctorNotes.slice(0, 10).map((note, idx) => (
+                          <tr key={idx}>
+                            <td>{formatDate(note.createdAt)}</td>
+                            <td>{note.doctorName || "Doctor"}</td>
+                            <td>
+                              <span
+                                className={`badge bg-${
+                                  note.noteType === "prescription"
+                                    ? "primary"
+                                    : note.noteType === "suggestion"
+                                      ? "info"
+                                      : note.noteType === "warning"
+                                        ? "warning"
+                                        : "secondary"
+                                }`}
+                              >
+                                {note.noteType}
+                              </span>
+                            </td>
+                            <td>{note.note}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Three Column Layout */}
         <div className="row mb-4">
           {/* Medicines */}
@@ -1139,7 +1199,7 @@ function FamilyDashboard() {
                   <p className="text-muted">No bookings found.</p>
                 ) : (
                   <div className="list-group list-group-flush">
-                    {bookings.slice(0, 8).map((b, i) => (
+                    {bookings.slice(-3).map((b, i) => (
                       <div key={i} className="list-group-item px-0 py-2">
                         <div className="d-flex justify-content-between align-items-start">
                           <div>

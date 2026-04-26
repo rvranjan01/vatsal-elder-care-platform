@@ -32,6 +32,8 @@ function ElderDashboard() {
 
   const [nurses, setNurses] = useState([]);
   const [loadingNurses, setLoadingNurses] = useState(false);
+  const [doctorNotes, setDoctorNotes] = useState([]);
+  const [loadingDoctorNotes, setLoadingDoctorNotes] = useState(false);
 
   const dummyCompanions = [
     {
@@ -280,7 +282,7 @@ function ElderDashboard() {
       }));
 
       setGames(mergedGames);
-     
+
       const yogaRes = await API.get("/yoga/list"); // Add /api prefix
       setYogaActivities(yogaRes.data || []); // Matches new route response
       //Fetching yoga sessions for stats
@@ -292,6 +294,15 @@ function ElderDashboard() {
       // Fetch bookings
       const bookingRes = await API.get("/bookings/my-bookings");
       setBookings(bookingRes.data.bookings || []);
+
+      // Fetch doctor notes
+      try {
+        const doctorNotesRes = await API.get("/doctors/notes");
+        setDoctorNotes(doctorNotesRes.data.notes || []);
+      } catch (err) {
+        console.error("Error fetching doctor notes:", err);
+        setDoctorNotes([]);
+      }
 
       // Calculate stats
       calculateStats(
@@ -512,6 +523,46 @@ function ElderDashboard() {
             View Details →
           </Link>
         </div>
+
+        {/* Doctor Notes Section */}
+        {doctorNotes.length > 0 && (
+          <div className="dashboard-section doctor-notes">
+            <div className="section-header">
+              <h3>📋 Doctor's Notes & Suggestions</h3>
+            </div>
+            <div className="notes-list">
+              {doctorNotes.slice(0, 5).map((note, idx) => (
+                <div key={idx} className="note-card">
+                  <div className="note-header">
+                    <span className="note-doctor">
+                      {note.doctorName || "Doctor"}
+                    </span>
+                    <span
+                      className={`badge bg-${
+                        note.noteType === "prescription"
+                          ? "primary"
+                          : note.noteType === "suggestion"
+                            ? "info"
+                            : note.noteType === "warning"
+                              ? "warning"
+                              : "secondary"
+                      }`}
+                    >
+                      {note.noteType}
+                    </span>
+                  </div>
+                  <p className="note-content">{note.note}</p>
+                  <small className="note-date">
+                    {new Date(note.createdAt).toLocaleDateString()}
+                  </small>
+                </div>
+              ))}
+            </div>
+            <Link to="/health" className="view-more-btn">
+              View All Notes →
+            </Link>
+          </div>
+        )}
 
         {/* Medicine Reminders */}
         <div className="dashboard-section medicine-reminders">

@@ -53,7 +53,12 @@ function Health() {
   const fetchDoctorNotes = async (elderId) => {
     try {
       setLoadingNotes(true);
-      const res = await API.get("/doctors/notes");
+      // Pass elderId as query param for family members, or use the endpoint directly for elders
+      let url = "/doctors/notes";
+      if (role === "family" && elderId) {
+        url += `?elderId=${elderId}`;
+      }
+      const res = await API.get(url);
       setDoctorNotes(res.data.notes || []);
     } catch (err) {
       console.error("Error fetching doctor notes:", err);
@@ -247,6 +252,62 @@ function Health() {
           )}
         </div>
       </div>
+
+      {/* Doctor Notes Section */}
+      {(role === "elder" || role === "family") && (
+        <div className="card shadow mt-4">
+          <div className="card-header bg-success text-white">
+            <h5 className="mb-0">
+              <i className="bi bi-clipboard-medical me-2"></i>Doctor's Notes &
+              Suggestions
+            </h5>
+          </div>
+          <div className="card-body">
+            {loadingNotes ? (
+              <p>Loading doctor notes...</p>
+            ) : doctorNotes.length === 0 ? (
+              <p className="text-muted">No doctor notes available.</p>
+            ) : (
+              <div className="table-responsive">
+                <table className="table table-hover">
+                  <thead className="table-light">
+                    <tr>
+                      <th>Date</th>
+                      <th>Doctor</th>
+                      <th>Type</th>
+                      <th>Note</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {doctorNotes.map((note) => (
+                      <tr key={note._id}>
+                        <td>{formatDate(note.createdAt)}</td>
+                        <td>{note.doctorName || "Doctor"}</td>
+                        <td>
+                          <span
+                            className={`badge bg-${
+                              note.noteType === "prescription"
+                                ? "primary"
+                                : note.noteType === "suggestion"
+                                  ? "info"
+                                  : note.noteType === "warning"
+                                    ? "warning"
+                                    : "secondary"
+                            }`}
+                          >
+                            {note.noteType}
+                          </span>
+                        </td>
+                        <td>{note.note}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

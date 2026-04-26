@@ -1,94 +1,6 @@
 const DoctorNote = require("../models/doctorNote");
 const User = require("../models/user");
 
-// Create a new doctor note
-// exports.createNote = async (req, res) => {
-//   try {
-//     const {
-//       elderId,
-//       bookingId,
-//       note,
-//       noteType,
-//       isVisibleToElder,
-//       isVisibleToFamily,
-//     } = req.body;
-
-//     if (!elderId || !note) {
-//       return res
-//         .status(400)
-//         .json({ message: "Elder ID and note are required" });
-//     }
-
-//     const doctorNote = await DoctorNote.create({
-//       elder: elderId,
-//       doctor: req.user.id,
-//       doctorName: req.user.name,
-//       bookingId,
-//       note,
-//       noteType: noteType || "general",
-//       isVisibleToElder: isVisibleToElder !== false,
-//       isVisibleToFamily: isVisibleToFamily !== false,
-//     });
-
-//     res.status(201).json({
-//       message: "Note added successfully",
-//       doctorNote,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Server error" });
-//   }
-// };
-
-
-// exports.createNote = async (req, res) => {
-//   try {
-//     const {
-//       elderId,
-//       bookingId,
-//       note,
-//       noteType,
-//       isVisibleToElder,
-//       isVisibleToFamily,
-//     } = req.body;
-
-//     if (!elderId || !note) {
-//       return res
-//         .status(400)
-//         .json({ message: "Elder ID and note are required" });
-//     }
-
-//     if (!req.user || !req.user.id) {
-//       return res.status(401).json({ message: "Unauthorized: user not found" });
-//     }
-
-//     if (!req.user.name) {
-//       return res.status(400).json({ message: "Doctor name missing in token/user" });
-//     }
-
-//     const doctorNote = await DoctorNote.create({
-//       elder: elderId,
-//       doctor: req.user.id,
-//       doctorName: req.user.name,
-//       bookingId: bookingId || undefined,
-//       note,
-//       noteType: noteType || "general",
-//       isVisibleToElder: isVisibleToElder !== false,
-//       isVisibleToFamily: isVisibleToFamily !== false,
-//     });
-
-//     res.status(201).json({
-//       message: "Note added successfully",
-//       doctorNote,
-//     });
-//   } catch (error) {
-//     console.error("createNote error:", error);
-//     res.status(500).json({
-//       message: error.message || "Server error",
-//     });
-//   }
-// };
-
 
 exports.createNote = async (req, res) => {
   try {
@@ -188,19 +100,85 @@ exports.getDoctorNotesForPatient = async (req, res) => {
 };
 
 // Get all visible notes for elder/family
+// exports.getMyNotes = async (req, res) => {
+//   try {
+//     let query = {};
+
+//     if (req.user.role === "elder") {
+//       // Elder sees their own notes
+//       query = { elder: req.user.id, isVisibleToElder: true };
+//     } else if (req.user.role === "family") {
+//   const familyUser = await User.findById(req.user.id).select("elderIds");
+
+//   if (!familyUser || !familyUser.elderIds || familyUser.elderIds.length === 0) {
+//     return res.json({ notes: [] });
+//   }
+
+//   query = {
+//     elder: { $in: familyUser.elderIds },
+//     isVisibleToFamily: true,
+//   };
+// } 
+//  else {
+//       return res.status(403).json({ message: "Unauthorized" });
+//     }
+
+//     const notes = await DoctorNote.find(query)
+//       .populate("doctor", "name")
+//       .populate("bookingId", "appointmentDate serviceType")
+//       .sort({ createdAt: -1 });
+
+//     res.json({ notes });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+
+
 exports.getMyNotes = async (req, res) => {
   try {
     let query = {};
 
     if (req.user.role === "elder") {
-      // Elder sees their own notes
-      query = { elder: req.user.id, isVisibleToElder: true };
+      query = {
+        elder: req.user.id,
+        isVisibleToElder: true,
+      };
     } else if (req.user.role === "family") {
-      // Family sees notes for their linked elders
-      if (req.user.elderIds && req.user.elderIds.length > 0) {
-        query = { elder: { $in: req.user.elderIds }, isVisibleToFamily: true };
-      } else {
+      const { elderId } = req.query;
+
+      const familyUser = await User.findById(req.user.id).select("elderIds");
+
+      if (
+        !familyUser ||
+        !familyUser.elderIds ||
+        familyUser.elderIds.length === 0
+      ) {
         return res.json({ notes: [] });
+      }
+
+      const linkedElderIds = familyUser.elderIds.map((id) => id.toString());
+
+      // If family selected one elder, show only that elder's notes
+      if (elderId) {
+        if (!linkedElderIds.includes(elderId)) {
+          return res.status(403).json({
+            message: "You are not authorized to view this elder's notes",
+          });
+        }
+
+        query = {
+          elder: elderId,
+          isVisibleToFamily: true,
+        };
+      } else {
+        // fallback: show all linked elders
+        query = {
+          elder: { $in: familyUser.elderIds },
+          isVisibleToFamily: true,
+        };
       }
     } else {
       return res.status(403).json({ message: "Unauthorized" });
@@ -213,7 +191,7 @@ exports.getMyNotes = async (req, res) => {
 
     res.json({ notes });
   } catch (error) {
-    console.error(error);
+    console.error("getMyNotes error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
