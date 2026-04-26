@@ -556,6 +556,12 @@ exports.bookCompanion = async (req, res) => {
       });
     }
 
+    if (new Date(appointmentDate) < new Date()) {
+      return res.status(400).json({
+        message: "Appointment date must be in the future",
+      });
+    }
+
     const booking = new Booking({
       user: req.user.id,
       elder: req.user.id,
@@ -615,6 +621,13 @@ exports.bookNurse = async (req, res) => {
     const nurse = await User.findById(nurseId);
     if (!nurse || nurse.role !== "nurse") {
       return res.status(404).json({ message: "Nurse not found" });
+    }
+
+    // Future date validation (same as doctor)
+    if (new Date(appointmentDate) < new Date()) {
+      return res.status(400).json({
+        message: "Appointment date must be in the future",
+      });
     }
 
     const booking = await Booking.create({
