@@ -53,12 +53,10 @@ exports.registerUser = async (req, res) => {
       if (elderUsername) usernames.push(elderUsername);
 
       if (usernames.length === 0) {
-        return res
-          .status(400)
-          .json({
-            message:
-              "At least one elder username is required for family registration",
-          });
+        return res.status(400).json({
+          message:
+            "At least one elder username is required for family registration",
+        });
       }
 
       for (const u of usernames) {

@@ -61,7 +61,11 @@ function Navbar() {
     <nav className="modern-navbar">
       <div className="navbar-container">
         {/* Brand/Logo */}
-        <Link to="/elder-dashboard" className="navbar-brand" onClick={closeMenu}>
+        <Link
+          to="/elder-dashboard"
+          className="navbar-brand"
+          onClick={closeMenu}
+        >
           <div className="brand-icon">
             <i className="fas fa-heart"></i>
           </div>

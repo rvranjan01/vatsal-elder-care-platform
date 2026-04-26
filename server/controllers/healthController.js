@@ -1,4 +1,3 @@
-
 const Health = require("../models/health");
 
 exports.addHealthData = async (req, res) => {
@@ -43,12 +42,14 @@ exports.getHealthData = async (req, res) => {
       healthData = await Health.find({
         user: req.user.id,
       }).sort({ createdAt: -1 });
-
     } else if (req.user.role === "family") {
       let elderId;
 
       if (req.query.elderUsername) {
-        console.log("🔍 Looking up elder by username:", req.query.elderUsername);
+        console.log(
+          "🔍 Looking up elder by username:",
+          req.query.elderUsername,
+        );
 
         const Elder = require("../models/elder");
         const elder = await Elder.findOne({
@@ -61,15 +62,12 @@ exports.getHealthData = async (req, res) => {
 
         elderId = elder._id;
         console.log("🔍 Found elderId:", elderId);
-
       } else if (req.query.elderId) {
         elderId = req.query.elderId;
         console.log("🔍 Using direct elderId:", elderId);
-
       } else if (req.user.elderIds && req.user.elderIds[0]) {
         elderId = req.user.elderIds[0];
         console.log("🔍 Using first JWT elderId:", elderId);
-
       } else {
         return res.status(400).json({ message: "No elder specified" });
       }
@@ -77,7 +75,6 @@ exports.getHealthData = async (req, res) => {
       healthData = await Health.find({
         user: elderId,
       }).sort({ createdAt: -1 });
-
     } else if (req.user.role === "doctor") {
       if (!req.query.elderId) {
         return res.status(400).json({
@@ -88,7 +85,6 @@ exports.getHealthData = async (req, res) => {
       healthData = await Health.find({
         user: req.query.elderId,
       }).sort({ createdAt: -1 });
-
     } else {
       return res.status(403).json({ message: "Not authorized" });
     }

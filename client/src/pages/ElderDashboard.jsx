@@ -111,8 +111,12 @@ function ElderDashboard() {
 
       if (backendCompanions.length > 0) {
         const formattedCompanions = backendCompanions.slice(0, 3).map((c) => ({
+          ...c,
           _id: c._id,
           name: c.name || "Unknown",
+          email: c.email || "",
+          specialty: c.specialty || c.specialization || "Companion",
+          experience: c.experience || "",
           role: c.specialty || c.specialization || "Companion",
           availability: "✓ Available today",
         }));
@@ -134,10 +138,13 @@ function ElderDashboard() {
       setLoadingDoctors(true);
 
       const res = await API.get("/doctors");
-
       const formattedDoctors = (res.data.doctors || []).map((doctor) => ({
+        ...doctor,
         _id: doctor._id,
         name: doctor.name,
+        email: doctor.email || "",
+        specialty: doctor.specialty || "Doctor",
+        experience: doctor.experience || "",
         role: doctor.specialty || "Doctor",
         availability: doctor.isActive ? "✓ Available today" : "Not available",
       }));
@@ -156,10 +163,13 @@ function ElderDashboard() {
       setLoadingNurses(true);
 
       const res = await API.get("/nurses");
-
       const formattedNurses = (res.data.nurses || []).map((nurse) => ({
+        ...nurse,
         _id: nurse._id,
         name: nurse.name,
+        email: nurse.email || "",
+        specialty: nurse.specialty || "Nurse",
+        experience: nurse.experience || "",
         role: nurse.specialty || "Nurse",
         availability: nurse.isActive ? "✓ Available today" : "Not available",
       }));
@@ -525,7 +535,7 @@ function ElderDashboard() {
         </div>
 
         {/* Doctor Notes Section */}
-        {doctorNotes.length > 0 && (
+        {/* {doctorNotes.length > 0 && (
           <div className="dashboard-section doctor-notes">
             <div className="section-header">
               <h3>📋 Doctor's Notes & Suggestions</h3>
@@ -562,7 +572,7 @@ function ElderDashboard() {
               View All Notes →
             </Link>
           </div>
-        )}
+        )} */}
 
         {/* Medicine Reminders */}
         <div className="dashboard-section medicine-reminders">

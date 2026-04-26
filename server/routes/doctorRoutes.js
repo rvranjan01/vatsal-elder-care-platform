@@ -13,8 +13,6 @@ const {
 } = require("../controllers/doctorNoteController");
 const authMiddleware = require("../middleware/authMiddleware");
 
-
-
 // Doctor notes routes
 router.post("/notes", authMiddleware.protect, createNote);
 router.get("/notes", authMiddleware.protect, getMyNotes); // For elder/family to view their notes - MUST be before /notes/:elderId

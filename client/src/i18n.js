@@ -18,9 +18,11 @@ i18n
           placeholder: "Type your message...",
           send: "Send",
           listening: "Listening...",
-          voiceNotSupported: "Voice input is not supported in this browser. Please use Chrome or Edge.",
+          voiceNotSupported:
+            "Voice input is not supported in this browser. Please use Chrome or Edge.",
           loadChat: "Loading chat...",
-          fallbackReply: "Sorry, I am not able to reply right now. Please try again.",
+          fallbackReply:
+            "Sorry, I am not able to reply right now. Please try again.",
           quickDoctor: "Book Doctor",
           quickNurse: "Book Nurse",
           quickCompanion: "Book Companion",
@@ -37,9 +39,11 @@ i18n
           placeholder: "अपना संदेश लिखें...",
           send: "भेजें",
           listening: "सुन रहा हूँ...",
-          voiceNotSupported: "इस ब्राउज़र में वॉइस इनपुट समर्थित नहीं है। कृपया Chrome या Edge का उपयोग करें।",
+          voiceNotSupported:
+            "इस ब्राउज़र में वॉइस इनपुट समर्थित नहीं है। कृपया Chrome या Edge का उपयोग करें।",
           loadChat: "चैट लोड हो रही है...",
-          fallbackReply: "क्षमा करें, मैं अभी उत्तर नहीं दे पा रहा हूँ। कृपया फिर प्रयास करें।",
+          fallbackReply:
+            "क्षमा करें, मैं अभी उत्तर नहीं दे पा रहा हूँ। कृपया फिर प्रयास करें।",
           quickDoctor: "डॉक्टर बुक करें",
           quickNurse: "नर्स बुक करें",
           quickCompanion: "साथी बुक करें",
@@ -56,9 +60,11 @@ i18n
           placeholder: "ನಿಮ್ಮ ಸಂದೇಶವನ್ನು ಬರೆಯಿರಿ...",
           send: "ಕಳುಹಿಸಿ",
           listening: "ಕೆಳಲಾಗುತ್ತಿದೆ...",
-          voiceNotSupported: "ಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಧ್ವನಿ ಇನ್‌ಪುಟ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು Chrome ಅಥವಾ Edge ಬಳಸಿ.",
+          voiceNotSupported:
+            "ಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಧ್ವನಿ ಇನ್‌ಪುಟ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು Chrome ಅಥವಾ Edge ಬಳಸಿ.",
           loadChat: "ಚಾಟ್ ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
-          fallbackReply: "ಕ್ಷಮಿಸಿ, ಈಗ ಉತ್ತರಿಸಲು ಆಗುತ್ತಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+          fallbackReply:
+            "ಕ್ಷಮಿಸಿ, ಈಗ ಉತ್ತರಿಸಲು ಆಗುತ್ತಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
           quickDoctor: "ಡಾಕ್ಟರ್ ಬುಕ್ ಮಾಡಿ",
           quickNurse: "ನರ್ಸ್ ಬುಕ್ ಮಾಡಿ",
           quickCompanion: "ಸಂಗಾತಿಯನ್ನು ಬುಕ್ ಮಾಡಿ",

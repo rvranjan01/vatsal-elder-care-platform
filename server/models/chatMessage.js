@@ -25,7 +25,7 @@ const chatMessageSchema = new mongoose.Schema(
       trim: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 chatMessageSchema.index({ conversationId: 1, createdAt: 1 });

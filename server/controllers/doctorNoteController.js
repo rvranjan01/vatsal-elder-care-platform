@@ -1,7 +1,6 @@
 const DoctorNote = require("../models/doctorNote");
 const User = require("../models/user");
 
-
 exports.createNote = async (req, res) => {
   try {
     const {
@@ -118,7 +117,7 @@ exports.getDoctorNotesForPatient = async (req, res) => {
 //     elder: { $in: familyUser.elderIds },
 //     isVisibleToFamily: true,
 //   };
-// } 
+// }
 //  else {
 //       return res.status(403).json({ message: "Unauthorized" });
 //     }
@@ -134,8 +133,6 @@ exports.getDoctorNotesForPatient = async (req, res) => {
 //     res.status(500).json({ message: "Server error" });
 //   }
 // };
-
-
 
 exports.getMyNotes = async (req, res) => {
   try {

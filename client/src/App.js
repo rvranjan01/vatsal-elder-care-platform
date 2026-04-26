@@ -33,7 +33,6 @@ import ViewNurseProfile from "./pages/ViewNurseProfile";
 import NurseBooking from "./pages/NurseBooking";
 import NursesList from "./pages/NursesList";
 
-
 import Health from "./pages/Health";
 
 // .........
@@ -89,7 +88,6 @@ function AppContent() {
           <Route path="/yoga" element={<Yoga />} />
           <Route path="/events" element={<Events />} />
           <Route path="/booking" element={<Booking />} />
-          
         </Routes>
       </div>
       {showNavFooter && <Footer />}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/LandingPage.css";
 
 function LandingPage() {
@@ -150,8 +150,7 @@ function LandingPage() {
         <div className="container">
           <div className="hero-content">
             <h1 className="hero-title">
-              Compassionate <span>Elder Care</span> at
-              Your Fingertips
+              Compassionate <span>Elder Care</span> at Your Fingertips
             </h1>
             <p className="hero-subtitle">
               Vatsal connects elderly individuals with trusted healthcare
@@ -191,8 +190,13 @@ function LandingPage() {
               {/* <circle cx="250" cy="150" r="80" fill="#e8eeff" />
               <circle cx="350" cy="300" r="60" fill="#e8eeff" />
               <circle cx="150" cy="300" r="60" fill="#e8eeff" /> */}
-              <image href="elder.png" x="100" y="100" width="300" height="300" />
-              
+              <image
+                href="elder.png"
+                x="100"
+                y="100"
+                width="300"
+                height="300"
+              />
             </svg>
           </div>
         </div>
