@@ -125,6 +125,7 @@ http://localhost:3000
 ### 👨‍💻 Author
 
 Ranjan Kumar Verma
+Email: vermaranjan2001@gmail.com
 
 
 ### 📌 Note
