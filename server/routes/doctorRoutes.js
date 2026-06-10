@@ -15,12 +15,16 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 // Generic doctor routes AFTER
 router.get("/", authMiddleware.protect, getAllDoctors);
-router.get("/:id", authMiddleware.protect, getDoctorById);
 
-// Doctor notes routes
 router.post("/notes", authMiddleware.protect, createNote);
+// Doctor notes routes
+//router.post("/notes", authMiddleware.protect, createNote);
 router.get("/notes/:elderId", authMiddleware.protect, getNotesForElder); // Get notes for specific elder
 router.get("/notes", authMiddleware.protect, getMyNotes); // For elder/family to view their notes
 router.delete("/notes/:noteId", authMiddleware.protect, deleteNote);
+
+router.get("/:id", authMiddleware.protect, getDoctorById);
+
+
 
 module.exports = router;

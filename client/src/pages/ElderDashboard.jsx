@@ -411,10 +411,10 @@ function ElderDashboard() {
           {/* elder image  */}
           {/* <img src="https://via.placeholder.com/80" alt="Elder" className="welcome-avatar" /> */}
           <div className="welcome-text">
-            <p className="greeting">Good Afternoon 🙏</p>
-            <h2>Welcome back, {userName}!</h2>
+            {/* <p className="greeting">Good Afternoon 🙏</p> */}
+            <h2>Welcome, {userName}!</h2>
             {/* <p className="health-status">Your health is looking great today. You have 2 medicines pending and 1 event nearby.</p> */}
-            <p className="health-status">
+            {/* <p className="health-status">
               Your health is looking great today. You have{" "}
               {
                 medicineReminders.filter((item) => item.status === "pending")
@@ -422,7 +422,7 @@ function ElderDashboard() {
               }{" "}
               medicine reminder(s) pending and {localEvents.length} event(s)
               nearby.
-            </p>
+            </p> */}
           </div>
         </div>
       </div>
