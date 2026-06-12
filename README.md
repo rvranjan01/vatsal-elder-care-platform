@@ -1,133 +1,164 @@
 # 🧓 Vatsal – Elder Care Management System
 
-Vatsal is a full-stack web application designed to help elderly users manage their health, activities, and family monitoring in a secure and user-friendly environment.
+Vatsal is a modern full-stack web platform designed to support elderly users, their families, and care providers with a secure and user-friendly experience. It brings together health monitoring, wellness activities, appointment booking, and care coordination in one place.
 
-This system allows elders to track their health data, play cognitive games, use yoga resources, and allows family members to monitor their linked elder’s data securely.
+## ✨ Overview
 
----
+This project helps elders stay connected with their caregivers while allowing families to monitor and support them easily. The platform includes role-based dashboards for elders, family members, doctors, companions, nurses, and admins.
 
-## 🚀 Features Implemented (Current Stage)
+## 📸 Screenshots
 
-### 👴 Elder
-- Register with unique username
-- Login with JWT authentication
-- Secure dashboard access
-- Username-based identity for family mapping
+- 🏠 Dashboard overview
+- 🩺 Doctor / companion booking flow
+- 🧘 Health, yoga, and games experience
 
-### 👨‍👩‍👧 Family
-- Register using elder’s unique username
-- Secure mapping to specific elder
-- Role-based login system
+Example placeholders:
 
-### 🔐 Authentication
+- ![Dashboard Screenshot](./Assets/1%20(1).png)
+- ![Admin Dashboard](./Assets/1%20(2).png)
+- ![Local Events](./Assets/1%20(6).png)
+
+> Replace the placeholder image paths with your actual screenshots once they are available.
+
+## 🌐 Live Demo
+
+- Live Website: https://vatsal-mu.vercel.app/
+
+
+## 🚀 Features
+
+### 👴 Elder Features
+
+- Secure registration and login
+- Personalized dashboard access
+- Health tracking and wellness resources
+- Games, yoga, chat, and activity support
+
+### 👨‍👩‍👧 Family Features
+
+- Family member registration and linking
+- Secure access to connected elder information
+- Better care coordination and monitoring
+
+### 🩺 Care Provider Features
+
+- Doctor, companion, and nurse profiles
+- Booking and appointment management
+- Role-based dashboard experience
+
+### 🛡️ Security & Authentication
+
 - JWT-based authentication
-- Role-based access (Elder / Family)
-- Password hashing using bcrypt
-- Secure mapping using MongoDB ObjectId
-
----
+- Role-based access control
+- Password hashing with bcrypt
+- Secure backend APIs
 
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - React.js
 - React Router DOM
 - Axios
 - Bootstrap
+- React Icons / Bootstrap UI components
 
 ### Backend
+
 - Node.js
 - Express.js
-- JWT (jsonwebtoken)
+- JWT
 - bcryptjs
+- Socket.IO
+- Nodemailer
 
 ### Database
+
 - MongoDB
 - Mongoose ODM
 
----
-
 ## 📂 Project Structure
-```
-Vatsal/
-│
-├── client/ # React Frontend
-│ ├── src/
-│ ├── public/
-│ └── package.json
-│
-├── server/ # Node + Express Backend
-│ ├── controllers/
-│ ├── models/
-│ ├── routes/
-│ ├── middleware/
-│ └── server.js
-│
-└── README.md
+
+```text
+vatsal-elder-care-platform/
+├── client/           # React frontend
+├── server/           # Node.js + Express backend
+├── scripts/          # Utility scripts
+├── README.md
+└── LICENSE
 ```
 
----
-## ⚙️ How To Run The Project
----
-### 🔹 1️⃣ Clone The Repository
+## ⚙️ Installation & Setup
 
+### 1️⃣ Clone the repository
 
-- git clone <your-repo-link>
-- cd Vatsal
----
-### 🔹 2️⃣ Setup Backend (Server)
-- cd server
-- npm install
----
-Create a .env file inside server folder:
-- PORT=5000
-- MONGO_URI=your_mongodb_connection_string
-- JWT_SECRET=your_secret_key
+```bash
+git clone https://github.com/rvranjan01/vatsal-elder-care-platform.git
+cd vatsal-elder-care-platform
+```
 
-Start backend:
-- npm run dev
-OR
-- nodemon server.js
+### 2️⃣ Setup the backend
 
-Server will run on:
+```bash
+cd server
+npm install
+```
+
+Create a `.env` file inside the `server` folder with values like:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+```
+
+Start the backend:
+
+```bash
+npm run dev
+```
+
+The backend will run at:
+
+```text
 http://localhost:5000
+```
 
----
-### 🔹 3️⃣ Setup Frontend (Client)
----
-Open new terminal:
-- cd client
-- npm install
-- npm start
+### 3️⃣ Setup the frontend
 
-Frontend will run on:
+Open a new terminal:
+
+```bash
+cd client
+npm install
+npm start
+```
+
+The frontend will run at:
+
+```text
 http://localhost:3000
+```
 
-### 🔄 Current System Flow
+## 🔄 Basic Workflow
 
-1. Elder registers with a unique username.
-2. Family registers using that username.
-3. Backend verifies username and maps family to elder.
-4. JWT token is generated on login.
-5. Protected routes use token authentication.
+1. An elder registers and logs in.
+2. Family members or caregivers link to the elder account.
+3. Care providers can be viewed and booked.
+4. Health, wellness, and activity modules become available through the dashboard.
 
-### 🔮 Upcoming Features
+## 📌 Future Improvements
 
-1. Health data management
-2. Game tracking system
-3. Medicine reminder system
-4. Yoga module
-5. Role-based dashboard filtering
-6. Route protection middleware
-7. Deployment (Render / Vercel)
+- Enhanced health analytics
+- Reminder and notification system
+- More personalized dashboards
+- Improved deployment and CI/CD setup
 
+## 👨‍💻 Author
 
-### 👨‍💻 Author
+- Ranjan Kumar Verma
+- Email: vermaranjan2001@gmail.com
 
-Ranjan Kumar Verma
-Email: vermaranjan2001@gmail.com
+## 📄 License
 
-
-### 📌 Note
-
-### This project is under active development. Features will be updated progressively.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
