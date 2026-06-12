@@ -18,7 +18,7 @@ Example placeholders:
 - ![Admin Dashboard](./Assets/1%20(2).png)
 - ![Local Events](./Assets/1%20(6).png)
 
-> Replace the placeholder image paths with your actual screenshots once they are available.
+
 
 ## 🌐 Live Demo
 
